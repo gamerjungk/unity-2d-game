@@ -1,0 +1,14 @@
+C:\Users\yogyz\Desktop\work\bin\Debug\net9.0\work.exe
+C:\Users\yogyz\Desktop\work\bin\Debug\net9.0\work.deps.json
+C:\Users\yogyz\Desktop\work\bin\Debug\net9.0\work.runtimeconfig.json
+C:\Users\yogyz\Desktop\work\bin\Debug\net9.0\work.dll
+C:\Users\yogyz\Desktop\work\bin\Debug\net9.0\work.pdb
+C:\Users\yogyz\Desktop\work\obj\Debug\net9.0\work.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\yogyz\Desktop\work\obj\Debug\net9.0\work.AssemblyInfoInputs.cache
+C:\Users\yogyz\Desktop\work\obj\Debug\net9.0\work.AssemblyInfo.cs
+C:\Users\yogyz\Desktop\work\obj\Debug\net9.0\work.csproj.CoreCompileInputs.cache
+C:\Users\yogyz\Desktop\work\obj\Debug\net9.0\work.dll
+C:\Users\yogyz\Desktop\work\obj\Debug\net9.0\refint\work.dll
+C:\Users\yogyz\Desktop\work\obj\Debug\net9.0\work.pdb
+C:\Users\yogyz\Desktop\work\obj\Debug\net9.0\work.genruntimeconfig.cache
+C:\Users\yogyz\Desktop\work\obj\Debug\net9.0\ref\work.dll
