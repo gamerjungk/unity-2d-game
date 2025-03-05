@@ -10,7 +10,7 @@ class Program
         int guess = 0;
         int attempts = 0;
 
-        Console.WriteLine("🎮 숫자 맞추기 게임! 1부터 100 사이의 숫자를 맞춰보세요!");
+        Console.WriteLine("숫자 맞추기 게임입니다. 1부터 100 사이의 숫자를 맞춰보세요!");
 
         while (guess != targetNumber)
         {
@@ -23,20 +23,20 @@ class Program
 
                 if (guess < targetNumber)
                 {
-                    Console.WriteLine("📉 너무 낮습니다! 다시 시도하세요.");
+                    Console.WriteLine("너무 낮습니다! 다시 시도하세요.");
                 }
                 else if (guess > targetNumber)
                 {
-                    Console.WriteLine("📈 너무 높습니다! 다시 시도하세요.");
+                    Console.WriteLine("너무 높습니다! 다시 시도하세요.");
                 }
                 else
                 {
-                    Console.WriteLine($"🎉 정답입니다! {attempts}번 만에 맞추셨네요!");
+                    Console.WriteLine($"정답입니다! {attempts}번 컷!");
                 }
             }
             else
             {
-                Console.WriteLine("🚨 유효한 숫자를 입력하세요.");
+                Console.WriteLine("유효한 숫자를 입력하세요.");
             }
         }
     }
