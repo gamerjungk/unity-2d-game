@@ -8,19 +8,19 @@
     "net9.0": []
   },
   "packageFolders": {
-    "C:\\Users\\yogyz\\.nuget\\packages\\": {}
+    "/Users/junghyohune/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\yogyz\\Desktop\\work\\work.csproj",
+      "projectUniqueName": "/Users/junghyohune/Desktop/TeamProject/unity-2d-game/work.csproj",
       "projectName": "work",
-      "projectPath": "C:\\Users\\yogyz\\Desktop\\work\\work.csproj",
-      "packagesPath": "C:\\Users\\yogyz\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\yogyz\\Desktop\\work\\obj\\",
+      "projectPath": "/Users/junghyohune/Desktop/TeamProject/unity-2d-game/work.csproj",
+      "packagesPath": "/Users/junghyohune/.nuget/packages/",
+      "outputPath": "/Users/junghyohune/Desktop/TeamProject/unity-2d-game/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\yogyz\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/Users/junghyohune/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
@@ -65,7 +65,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.200/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
