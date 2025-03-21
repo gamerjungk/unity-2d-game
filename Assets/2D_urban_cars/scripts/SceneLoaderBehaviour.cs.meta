@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 35532d51b01134a328cb48bb085f7963
+timeCreated: 1494056312
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 89754
+  packageName: 2D Urban Cars
+  packageVersion: 1.1.0
+  assetPath: Assets/2D_urban_cars/scripts/SceneLoaderBehaviour.cs
+  uploadId: 269619
