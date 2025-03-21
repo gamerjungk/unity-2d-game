@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
+
+    public static GameManager inst;
     public GameObject gameoverText;
     public TMP_Text turnreport;
     public TMP_Text crushreport;
@@ -41,9 +43,9 @@ public class GameManager : MonoBehaviour {
 
     public void EndGame(){
         isGameover = true;
-        gameoverText.SetActive(true);
         if (gameoverText != null) {
             gameoverText.SetActive(true);
+            Debug.Log("Endgame이 정상적으로 실행되었습니다.");
         } else {
             Debug.LogError("gameoverText가 Inspector에서 할당되지 않았습니다.");
         }
