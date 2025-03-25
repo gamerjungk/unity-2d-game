@@ -28,11 +28,10 @@ public class CarController : MonoBehaviour
     public void Die()
     {
         gameObject.SetActive(false);
-        GameManager gameManager = FindFirstObjectByType<GameManager>();
         Debug.Log("EndGame start");
-        if (gameManager != null)
+        if (GameManager.inst != null)
         {
-            gameManager.EndGame();
+            GameManager.inst.EndGame();
         }
         else
         {
