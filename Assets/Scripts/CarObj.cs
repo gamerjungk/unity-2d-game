@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class CarObj : MonoBehaviour
 {
-    // public float speed = 5f;
-    // public float rotationSpeed = 200f;
     private Rigidbody2D rb;
 
     void Start()
@@ -13,7 +11,7 @@ public class CarObj : MonoBehaviour
     }
     void MoveRandomly()
     {
-        float randomDistance = Random.Range(1f,5f);
+        float randomDistance = Random.Range(1f,2f);
         rb.MovePosition(rb.position +(Vector2)transform.right * randomDistance);
     }
     void crash()
@@ -25,12 +23,8 @@ public class CarObj : MonoBehaviour
     {  // ✅ 수정 (Collider2D → Collision2D)
         crash();
         if(other.gameObject.CompareTag("Player")){
-            CarController carController = other.gameObject.GetComponent<CarController>();
-
-            if(carController != null){
                 Debug.Log("플레이어와 충돌 감지됨! Die() 실행");
-                carController.Die();
-            }
+                GameManager.inst.Stop();
         }
     }
 }
