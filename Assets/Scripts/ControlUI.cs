@@ -3,43 +3,55 @@ using UnityEngine.EventSystems;
 
 public class ControlUI : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointerUpHandler
 {
-    public RectTransform[] uiImages;
-    public float maxSteerAngle = 50f; // 최대 회전 각도
-    private float wheelAngle = 0f; // 현재 핸들 각도
-    private float lastWheelAngle = 0f;
+    public RectTransform accel, brake, handle;
     void Start()
     {
-        uiImages = GetComponentsInChildren<RectTransform>();    // 0: uiTab     1: accel    2: brake    3: handle
+        accel = GetComponent<RectTransform>()[0];
     }
+    public float maxSteerAngle = 200f; // 최대 회전 각도
+    public float returnSpeed = 5f; // 핸들 복귀 속도
+    private float wheelAngle = 0f; // 현재 핸들 각도
+    private float lastWheelAngle = 0f;
+    private bool isDragging = false;
 
     void Update()
     {
+        if (!isDragging)
+        {
+            // 터치에서 손을 뗀 후 핸들 복귀
+            wheelAngle = Mathf.Lerp(wheelAngle, 0f, Time.deltaTime * returnSpeed);
+            handle.localEulerAngles = new Vector3(0, 0, -wheelAngle);
+        }
     }
 
-    public void OnPointerDown(PointerEventData eventData)   // 터치 누를 때 작동하는 함수
+    public void OnPointerDown(PointerEventData eventData)
     {
+        isDragging = true;
         lastWheelAngle = GetAngle(eventData.position);
     }
 
-    public void OnDrag(PointerEventData eventData)  // 터치해서 드래그할 때 작동하는 함수 현재는 핸들 ui를 드래그하면 그에 맞게 핸들이랑 player 회전
+    public void OnDrag(PointerEventData eventData)
     {
         float newAngle = GetAngle(eventData.position);
         float deltaAngle = Mathf.DeltaAngle(lastWheelAngle, newAngle);
         wheelAngle = Mathf.Clamp(wheelAngle + deltaAngle, -maxSteerAngle, maxSteerAngle);
-        uiImages[3].localEulerAngles = new Vector3(0, 0, wheelAngle);
-        GameManager.inst.player.transform.localEulerAngles = new Vector3(0, 0, wheelAngle + 90);
+        handle.localEulerAngles = new Vector3(0, 0, -wheelAngle);
         lastWheelAngle = newAngle;
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        
+        isDragging = false;
     }
 
     private float GetAngle(Vector2 touchPos)
     {
-        Vector2 dir = touchPos - (Vector2)uiImages[3].position;
+        Vector2 dir = touchPos - (Vector2)handle.position;
         return Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
     }
 
+    public float GetSteerInput()
+    {
+        return wheelAngle / maxSteerAngle; // -1 ~ 1 값 반환
+    }
 }

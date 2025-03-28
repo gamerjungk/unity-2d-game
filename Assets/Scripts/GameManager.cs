@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour {
     public static GameManager inst;         // 외부에서 GameManager 함수에 접근하고 싶을 때 GameManager.inst.function() 형식으로 접근하면 됩니다.
     public PoolManager pool;                // 외부에서 PoolManager 함수에 접근하고 싶을 때 GameManager.inst.pool.function() 형식으로 접근하면 됩니다.
     public Player player;                   // 외부에서 Player에 접근하고 싶을 때 GameManager.inst.player.function() 형식으로 접근하면 됩니다.
+    public TurnManager turnManager;
+    public UIManager uiManager;
     private void Awake()
     {
         inst = this;

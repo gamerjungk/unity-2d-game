@@ -7,9 +7,8 @@ public class CarObj : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        InvokeRepeating("MoveRandomly",1f,1f);
     }
-    void MoveRandomly()
+    public void MoveRandomly()
     {
         float randomDistance = Random.Range(1f,2f);
         rb.MovePosition(rb.position +(Vector2)transform.right * randomDistance);
