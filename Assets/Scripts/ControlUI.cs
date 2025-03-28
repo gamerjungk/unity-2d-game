@@ -6,7 +6,7 @@ public class ControlUI : MonoBehaviour, IDragHandler, IPointerDownHandler, IPoin
     public RectTransform accel, brake, handle;
     void Start()
     {
-        accel = GetComponent<RectTransform>()[0];
+        accel = GetComponent<RectTransform>();
     }
     public float maxSteerAngle = 200f; // 최대 회전 각도
     public float returnSpeed = 5f; // 핸들 복귀 속도
