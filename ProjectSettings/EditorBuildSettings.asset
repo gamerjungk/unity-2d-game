@@ -8,6 +8,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Editor/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Editor/Scenes/MainMenuScene.unity
+    guid: 2b3518da124fd8c488c461afc2365dd7
+  - enabled: 1
+    path: Assets/Editor/Scenes/TutorialScene.unity
+    guid: 820914dc671aef644af069e59de437ee
+  - enabled: 1
+    path: Assets/Editor/Scenes/CarCrushScene.unity
+    guid: e98fdf14786c6ba48b9b38df4fa0f823
   m_configObjects:
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 0f70b584225962b45a7d7c31430358c2, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
