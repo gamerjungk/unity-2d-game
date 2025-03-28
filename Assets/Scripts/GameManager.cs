@@ -5,11 +5,14 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
-    public static GameManager inst;         // ¿ÜºÎ¿¡¼­ GameManager ÇÔ¼ö¿¡ Á¢±ÙÇÏ°í ½ÍÀ» ¶§ GameManager.inst.function() Çü½ÄÀ¸·Î Á¢±ÙÇÏ¸é µË´Ï´Ù.
-    public PoolManager pool;                // ¿ÜºÎ¿¡¼­ PoolManager ÇÔ¼ö¿¡ Á¢±ÙÇÏ°í ½ÍÀ» ¶§ GameManager.inst.pool.function() Çü½ÄÀ¸·Î Á¢±ÙÇÏ¸é µË´Ï´Ù.
-    public Player player;                   // ¿ÜºÎ¿¡¼­ Player¿¡ Á¢±ÙÇÏ°í ½ÍÀ» ¶§ GameManager.inst.player.function() Çü½ÄÀ¸·Î Á¢±ÙÇÏ¸é µË´Ï´Ù.
+    public static GameManager inst;         // ï¿½ÜºÎ¿ï¿½ï¿½ï¿½ GameManager ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ GameManager.inst.function() ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½Ë´Ï´ï¿½.
+    public PoolManager pool;                // ï¿½ÜºÎ¿ï¿½ï¿½ï¿½ PoolManager ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ GameManager.inst.pool.function() ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½Ë´Ï´ï¿½.
+    public Player player;                   // ï¿½ÜºÎ¿ï¿½ï¿½ï¿½ Playerï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ GameManager.inst.player.function() ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½Ë´Ï´ï¿½.
     public TurnManager turnManager;
     public UIManager uiManager;
+    
+    public static int gold;
+
     private void Awake()
     {
         inst = this;
@@ -21,12 +24,12 @@ public class GameManager : MonoBehaviour {
     void Update(){
     }
 
-    public void Stop()      // °ÔÀÓ ¹è¼ÓÀ» 0¹è¼ÓÀ¸·Î ¼³Á¤. Áï °ÔÀÓ ¸ØÃß´Â ÇÔ¼öÀÔ´Ï´Ù.
+    public void Stop()      // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß´ï¿½ ï¿½Ô¼ï¿½ï¿½Ô´Ï´ï¿½.
     {
         Time.timeScale = 0;
     }
     
-    public void Resume()    // °ÔÀÓ ¹è¼ÓÀ» 1¹è¼ÓÀ¸·Î ¼³Á¤. Áï °ÔÀÓ Àç°³ÇÏ´Â ÇÔ¼öÀÔ´Ï´Ù.
+    public void Resume()    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ç°³ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½ï¿½Ô´Ï´ï¿½.
     {
         Time.timeScale = 1;
     }
