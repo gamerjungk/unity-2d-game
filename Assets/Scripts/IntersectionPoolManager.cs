@@ -5,24 +5,26 @@ public class RoadGraph : MonoBehaviour
 {
     private Dictionary<Vector2Int, List<Vector2Int>> graph = new Dictionary<Vector2Int, List<Vector2Int>>();
     private HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
+    private List<Vector2Int> startingRoads = new List<Vector2Int>();
     
     void Start()
     {
-        RandomizeIntersections();
+        ActivateAllIntersections();
         RandomizeRoads();
         BuildGraph();
+        IdentifyStartingRoads();
         PrintGraph();
         EnsureConnectivity();
     }
 
-    void RandomizeIntersections()
+    void ActivateAllIntersections()
     {
         for (int i = 1; i <= 16; i++)
         {
             GameObject block = GameObject.Find($"Intersection_block{i}");
             if (block != null)
             {
-                block.SetActive(Random.value > 0.5f);
+                block.SetActive(true);
             }
         }
     }
@@ -50,24 +52,19 @@ public class RoadGraph : MonoBehaviour
             for (int col = 0; col < 5; col++)
             {
                 Vector2Int pos = new Vector2Int(row, col);
-                GameObject intersection = GameObject.Find($"Intersection_block{row * 4 + col + 1}");
+                graph[pos] = new List<Vector2Int>();
                 
-                if (intersection != null && intersection.activeSelf)
-                {
-                    graph[pos] = new List<Vector2Int>();
-                    
-                    // Add Horizontal connections
-                    if (col > 0 && IsRoadActive($"Horizontal_block{row * 4 + col}"))
-                        graph[pos].Add(new Vector2Int(row, col - 1));
-                    if (col < 4 && IsRoadActive($"Horizontal_block{row * 4 + col + 1}"))
-                        graph[pos].Add(new Vector2Int(row, col + 1));
-                    
-                    // Add Vertical connections
-                    if (row > 0 && IsRoadActive($"Vertical_block{(row - 1) * 4 + col + 1}"))
-                        graph[pos].Add(new Vector2Int(row - 1, col));
-                    if (row < 4 && IsRoadActive($"Vertical_block{row * 4 + col + 1}"))
-                        graph[pos].Add(new Vector2Int(row + 1, col));
-                }
+                // Add Horizontal connections
+                if (col > 0 && IsRoadActive($"Horizontal_block{row * 4 + col}"))
+                    graph[pos].Add(new Vector2Int(row, col - 1));
+                if (col < 4 && IsRoadActive($"Horizontal_block{row * 4 + col + 1}"))
+                    graph[pos].Add(new Vector2Int(row, col + 1));
+                
+                // Add Vertical connections
+                if (row > 0 && IsRoadActive($"Vertical_block{(row - 1) * 4 + col + 1}"))
+                    graph[pos].Add(new Vector2Int(row - 1, col));
+                if (row < 4 && IsRoadActive($"Vertical_block{row * 4 + col + 1}"))
+                    graph[pos].Add(new Vector2Int(row + 1, col));
             }
         }
     }
@@ -76,6 +73,18 @@ public class RoadGraph : MonoBehaviour
     {
         GameObject road = GameObject.Find(roadName);
         return road != null && road.activeSelf;
+    }
+
+    void IdentifyStartingRoads()
+    {
+        startingRoads.Clear();
+        foreach (var node in graph.Keys)
+        {
+            if (graph[node].Count > 0)
+            {
+                startingRoads.Add(node);
+            }
+        }
     }
 
     void PrintGraph()
@@ -95,8 +104,11 @@ public class RoadGraph : MonoBehaviour
     void EnsureConnectivity()
     {
         visited.Clear();
-        Vector2Int start = new Vector2Int(0, 0);
-        DFS(start);
+        foreach (Vector2Int start in startingRoads)
+        {
+            if (graph.ContainsKey(start)) // 시작 노드가 유효한지 확인
+                DFS(start);
+        }
 
         List<Vector2Int> disconnectedNodes = new List<Vector2Int>();
         foreach (var node in graph.Keys)
@@ -129,9 +141,8 @@ public class RoadGraph : MonoBehaviour
         Vector2Int closest = FindClosestActiveIntersection(node);
         if (closest != node)
         {
-            ActivateIntersection(node);
             ActivateRoadBetween(node, closest);
-            graph[node] = new List<Vector2Int> { closest };
+            graph[node].Add(closest);
             graph[closest].Add(node);
         }
     }
@@ -141,28 +152,16 @@ public class RoadGraph : MonoBehaviour
         float minDistance = float.MaxValue;
         Vector2Int closest = node;
 
-        foreach (var other in graph.Keys)
+        foreach (var other in visited)
         {
-            if (visited.Contains(other))
+            float dist = Vector2Int.Distance(node, other);
+            if (dist < minDistance)
             {
-                float dist = Vector2Int.Distance(node, other);
-                if (dist < minDistance)
-                {
-                    minDistance = dist;
-                    closest = other;
-                }
+                minDistance = dist;
+                closest = other;
             }
         }
         return closest;
-    }
-
-    void ActivateIntersection(Vector2Int node)
-    {
-        GameObject intersection = GameObject.Find($"Intersection_block{node.x * 4 + node.y + 1}");
-        if (intersection != null)
-        {
-            intersection.SetActive(true);
-        }
     }
 
     void ActivateRoadBetween(Vector2Int from, Vector2Int to)
