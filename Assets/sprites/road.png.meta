@@ -1,17 +1,10 @@
 fileFormatVersion: 2
-guid: fc6a4cf79ce3ce447b1b7865eecfc942
-AssetOrigin:
-  serializedVersion: 1
-  productId: 235559
-  packageName: Violet Themed UI
-  packageVersion: 1.1
-  assetPath: Assets/Violet Theme Ui/Colored Icons/Map.png
-  uploadId: 700144
+guid: d10f9f492f5e85b43a07dc61fe932af0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 645411862609229670
-    second: Map_0
+      213: -5901184222578580330
+    second: aerial-scene-intersection_1308-33191_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -58,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -129,30 +122,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: iOS
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Map_0
+      name: aerial-scene-intersection_1308-33191_0
       rect:
         serializedVersion: 2
-        x: 24
+        x: 0
         y: 0
-        width: 208
-        height: 256
+        width: 740
+        height: 743
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -161,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 66775a46ba6f4f800800000000000000
-      internalID: 645411862609229670
+      spriteID: 69460132738ca1ea0800000000000000
+      internalID: -5901184222578580330
       vertices: []
       indices: 
       edges: []
@@ -181,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Map_0: 645411862609229670
+      aerial-scene-intersection_1308-33191_0: -5901184222578580330
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

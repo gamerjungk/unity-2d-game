@@ -1,17 +1,10 @@
 fileFormatVersion: 2
-guid: 12d33c45df2a46642bbc13c03009055b
-AssetOrigin:
-  serializedVersion: 1
-  productId: 235559
-  packageName: Violet Themed UI
-  packageVersion: 1.1
-  assetPath: Assets/Violet Theme Ui/Colored Icons/Timer.png
-  uploadId: 700144
+guid: 108ebafb8df440b4c98982d11e37487f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8801819111103863087
-    second: Timer_0
+      213: -8411683841297662361
+    second: "\uBC30\uBBFC_0"
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -117,19 +110,6 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
     buildTarget: iOS
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -146,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Timer_0
+      name: "\uBC30\uBBFC_0"
       rect:
         serializedVersion: 2
-        x: 33
+        x: 0
         y: 0
-        width: 190
-        height: 256
+        width: 164
+        height: 193
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -161,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1d6e8690728a9d580800000000000000
-      internalID: -8801819111103863087
+      spriteID: 76e3f840d12b34b80800000000000000
+      internalID: -8411683841297662361
       vertices: []
       indices: 
       edges: []
@@ -180,8 +160,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      Timer_0: -8801819111103863087
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
