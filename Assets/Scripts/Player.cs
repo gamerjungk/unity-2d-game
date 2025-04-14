@@ -3,47 +3,36 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     Rigidbody2D playerRigid;
-    public float acceleration = 5f;     // 가속력
-    public float maxSpeed = 20f;        // 최고 속도
-    public float deceleration = 3f;     // 감속력 (마찰)
-    public float turnSpeed = 50f;       // 회전 속도
-    private Vector3 currentSpeed = Vector3.zero;
-    float moveInput = 0, turnInput = 0;
+    public float acceleration = 5f, maxSpeed = 20f, deceleration = 3f;     // 가속도, 최고속도, 감속도
+    private float currentSpeed = 0f, currentAngle = 0f, targetAngle = 0f;
+    public float steerSensitivity = 2f;
     void Start()
     {
         playerRigid = GetComponent<Rigidbody2D>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
+        transform.rotation = Quaternion.Euler(0f, 0f, currentAngle + 90f); // 차량 정면을 맞추기 위한 +90 보정
+
         if(GameManager.inst.turnManager.isMidTurn){
-        if (moveInput != 0)        // 가속/감속
-        {
-            currentSpeed += transform.right * moveInput * acceleration * Time.deltaTime;
-        }
-        else            // 마찰력 적용 (자연 감속)
-        {
-            currentSpeed = Vector3.Lerp(currentSpeed, Vector3.zero, deceleration * Time.deltaTime);
-        }
-        currentSpeed = Vector3.ClampMagnitude(currentSpeed, maxSpeed);
 
-        if (currentSpeed.magnitude > 0.1f)
-        {
-            float turn = turnInput * turnSpeed * Time.deltaTime;
-            transform.Rotate(0, turn, 0);
-        }
-        transform.position += currentSpeed * Time.deltaTime;  
+        currentSpeed = Mathf.Clamp(currentSpeed, 0f, maxSpeed);
+        transform.position += transform.right * currentSpeed * Time.deltaTime;  // currentSpeed 비례 이동
 
-        } else currentSpeed = Vector3.zero;
+        } else currentSpeed = 0f;
     }
-    //0403���� Accelerater,brake
     public void Accelerate(float force)
     {
-        moveInput = force;
+        currentSpeed += force * acceleration * Time.deltaTime;
     }
-    public void Brake(float intensity)
+    public void Brake()
     {
-        moveInput = Mathf.Max(moveInput - intensity, 0);
+        currentSpeed = Mathf.Lerp(currentSpeed, 0f, deceleration * Time.deltaTime);
+    }
+    public void Handling(float angle) {
+        targetAngle = angle;
+        currentAngle = Mathf.Lerp(currentAngle, targetAngle, steerSensitivity * Time.deltaTime);
     }
 
 }

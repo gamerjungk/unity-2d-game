@@ -839,7 +839,7 @@ MonoBehaviour:
   acceleration: 5
   maxSpeed: 20
   deceleration: 3
-  turnSpeed: 3
+  steerSensitivity: 2
 --- !u!4 &1287600959 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 428268, guid: 15f754372833a4ce8be9c962ee0bb874, type: 3}
