@@ -5,11 +5,12 @@ TagManager:
   serializedVersion: 3
   tags:
   - Car
+  - Road
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Road
   - Water
   - UI
   - 
@@ -41,6 +42,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Road
+    uniqueID: 150021897
     locked: 0
   m_RenderingLayers:
   - Default
