@@ -12,7 +12,11 @@ EditorBuildSettings:
     path: Assets/Editor/Scenes/TutorialScene.unity
     guid: 820914dc671aef644af069e59de437ee
   - enabled: 1
-    path: Assets/Editor/Scenes/CarCrushScene.unity
+    path: Assets/Editor/Scenes/MainGameScene.unity
     guid: e98fdf14786c6ba48b9b38df4fa0f823
-  m_configObjects: {}
+  - enabled: 1
+    path: Assets/Editor/Scenes/Shop.unity
+    guid: ecd945aa55022495fa4ecddae7ece2fe
+  m_configObjects:
+    com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 65ebc16b6d3d8624ab465feb586c9177, type: 2}
   m_UseUCBPForAssetBundles: 0
