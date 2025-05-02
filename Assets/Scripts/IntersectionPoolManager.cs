@@ -43,17 +43,22 @@ public class RoadGraph : MonoBehaviour
             {
                 bool isActive = Random.value > 0.5f;
                 v.SetActive(isActive);
-                if(!isActive) 
-                    Instantiate(wallBlock_V, v.transform.position, Quaternion.identity);
-                Debug.Log($"Vertical_block{i} set to {isActive}");
+
+                if (!isActive)
+                {
+                    PoolManager_wall.Instance.GetFromPool("WallBlock_V", v.transform.position, Quaternion.identity);
+                }
             }
+
             if (roadBlocks.TryGetValue($"Horizontal_block{i}", out var h))
             {
                 bool isActive = Random.value > 0.5f;
                 h.SetActive(isActive);
-                if(!isActive)
-                Instantiate(wallBlock_H, h.transform.position, Quaternion.identity);
-                Debug.Log($"Horizontal_block{i} set to {isActive}");
+
+                if (!isActive)
+                {
+                    PoolManager_wall.Instance.GetFromPool("WallBlock_H", h.transform.position, Quaternion.identity);
+                }
             }
         }
     }
