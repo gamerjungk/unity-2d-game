@@ -110,6 +110,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
+
     buildTarget: iOS
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -162,6 +163,7 @@ TextureImporter:
       entries: []
     nameFileIdTable:
       Map_0: 645411862609229670
+
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
