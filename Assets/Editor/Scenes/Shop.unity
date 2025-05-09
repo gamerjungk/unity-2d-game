@@ -2149,7 +2149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c19ba283c58ef48d682c4bf580a4704c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: CarCrushScene
+  sceneName: MainGameScene
 --- !u!1 &1377704526
 GameObject:
   m_ObjectHideFlags: 0
@@ -2161,6 +2161,7 @@ GameObject:
   - component: {fileID: 1377704527}
   - component: {fileID: 1377704529}
   - component: {fileID: 1377704528}
+  - component: {fileID: 1377704530}
   m_Layer: 0
   m_Name: FadePanel
   m_TagString: Untagged
@@ -2225,6 +2226,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1377704526}
   m_CullTransparentMesh: 1
+--- !u!225 &1377704530
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1377704526}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1433022841
 GameObject:
   m_ObjectHideFlags: 0

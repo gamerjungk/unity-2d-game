@@ -1,5 +1,7 @@
 fileFormatVersion: 2
-guid: fc6a4cf79ce3ce447b1b7865eecfc942
+
+guid: 1b91b44d8dd6f06478c48662d0e59a97
+
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -110,6 +112,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
+<<<<<<< HEAD
     buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -123,6 +126,9 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
+=======
+
+>>>>>>> upstream/update
     buildTarget: iOS
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -173,7 +179,13 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
+<<<<<<< HEAD
     nameFileIdTable: {}
+=======
+    nameFileIdTable:
+      Map_0: 645411862609229670
+
+>>>>>>> upstream/update
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
