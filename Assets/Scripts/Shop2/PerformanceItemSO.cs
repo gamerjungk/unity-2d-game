@@ -5,11 +5,22 @@ using UnityEngine;
 public class PerformanceItemSO : ScriptableObject
 {
     public Sprite image;
-    public string itemName;
     public PerformanceCategorySO category;
     public int price;
-    public string description;
     public float speed;
     public float efficiency;
     public float capacity;
+
+    public string itemNameKR;
+    public string itemNameEN;
+
+    [TextArea] public string descriptionKR;
+    [TextArea] public string descriptionEN;
+
+    public string DisplayName =>
+        LocalizationManager.Instance.currentLanguage == Language.Korean ? itemNameKR : itemNameEN;
+
+    public string DisplayDescription =>
+        LocalizationManager.Instance.currentLanguage == Language.Korean ? descriptionKR : descriptionEN;
+
 }

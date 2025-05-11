@@ -65,6 +65,12 @@ public class GameSettingsManager : MonoBehaviour
 
         string lang = PlayerPrefs.GetString("Language", SystemLanguage.Korean.ToString());
         System.Enum.TryParse(lang, out currentLanguage);
+
+        // 디버그용
+        if (!System.Enum.TryParse(lang, out currentLanguage))
+        {
+            Debug.LogWarning($"언어 파싱 실패: {lang}, 기본값(Korean)으로 설정됨");
+        }
     }
 
     public void SetLanguage(SystemLanguage lang)

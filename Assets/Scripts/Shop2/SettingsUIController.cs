@@ -59,5 +59,7 @@ public class SettingsUIController : MonoBehaviour
     {
         var lang = index == 0 ? SystemLanguage.Korean : SystemLanguage.English;
         GameSettingsManager.Instance.SetLanguage(lang);
+
+        LocalizationManager.Instance.ChangeLanguage(index == 0 ? Language.Korean : Language.English);
     }
 }

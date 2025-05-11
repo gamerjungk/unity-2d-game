@@ -44,9 +44,9 @@ public class PerformanceItemSlot : MonoBehaviour, IPointerClickHandler
         itemImage.sprite = itemData.image;
         UpdateActionButton();
 
-        itemNameText.text = itemData.itemName;
+        itemNameText.text = itemData.DisplayName;
         priceText.text = $"{itemData.price}G";
-        descriptionText.text = itemData.description;
+        descriptionText.text = itemData.DisplayDescription;
 
         isFlipped = false;
         frontFace.SetActive(true);
