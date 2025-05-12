@@ -9,7 +9,7 @@ public class PathManager : MonoBehaviour
 
     [Header("Path Settings")]
     public Transform player;
-    public Transform destinationObject; // 씬 오브젝트 참조
+    public Transform destinationObject;
     public LineRenderer lineRenderer;
 
     private Node[,] grid;
@@ -76,8 +76,7 @@ public class PathManager : MonoBehaviour
             List<Vector3> path = FindPath(player.position, destinationObject.position);
             DrawSmoothPath(path);
 
-            float dist = Vector3.Distance(player.position, destinationObject.position);
-            if (dist < 1.0f)
+            if (Vector3.Distance(player.position, destinationObject.position) < 1.0f)
             {
                 SpawnNewDestination();
             }
@@ -89,35 +88,32 @@ public class PathManager : MonoBehaviour
         List<Node> roadNodes = new List<Node>();
         foreach (Node node in grid)
         {
-            if (!node.walkable) continue;
-
-            RaycastHit hit;
-            Vector3 rayOrigin = node.worldPosition + Vector3.up * 2f;
-            if (Physics.Raycast(rayOrigin, Vector3.down, out hit, 5f))
+            if (node.walkable && node.isOnRoad)
             {
-                if (hit.collider.CompareTag("Road"))
-                {
-                    roadNodes.Add(node);
-                }
+                roadNodes.Add(node);
             }
         }
 
         if (roadNodes.Count == 0)
         {
-            Debug.LogWarning("도로 위의 목적지 후보 노드가 없습니다!");
+            Debug.LogWarning("도로 위 목적지 노드 없음!");
             return;
         }
 
+        // 목적지 설정
         Node randNode = roadNodes[Random.Range(0, roadNodes.Count)];
-        Vector3 spawnPos = randNode.worldPosition;
-        Vector3 playerPos = player.position;
-        spawnPos.y = 0.25f;
-        playerPos.y = 0.25f;
+        Vector3 destPos = randNode.worldPosition;
+        destPos.y = 0.1f;
+        destinationObject.position = destPos;
 
-        destinationObject.position = spawnPos;
-
-        lineRenderer.SetPositions(new Vector3[] { playerPos, spawnPos });
-        Debug.Log($"[Destination Spawned] {spawnPos} / 후보 노드 수: {roadNodes.Count}");
+        // 플레이어 위치도 도로 위 노드에 스냅
+        Node playerNode = NodeFromWorldPoint(player.position);
+        if (playerNode != null && playerNode.isOnRoad)
+        {
+            Vector3 playerPos = playerNode.worldPosition;
+            playerPos.y = 0.1f;
+            player.position = playerPos;
+        }
     }
 
     void CreateGrid()
@@ -131,7 +127,20 @@ public class PathManager : MonoBehaviour
             {
                 Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
                 bool walkable = !Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask);
-                grid[x, y] = new Node(walkable, worldPoint, x, y);
+
+                // 도로 위 여부 판단
+                bool isOnRoad = false;
+                RaycastHit hit;
+                Vector3 rayOrigin = worldPoint + Vector3.up * 2f;
+                if (Physics.Raycast(rayOrigin, Vector3.down, out hit, 5f))
+                {
+                    if (hit.collider.CompareTag("Road"))
+                    {
+                        isOnRoad = true;
+                    }
+                }
+
+                grid[x, y] = new Node(walkable, worldPoint, x, y, isOnRoad);
             }
         }
     }
@@ -141,15 +150,11 @@ public class PathManager : MonoBehaviour
         Node startNode = NodeFromWorldPoint(startPos);
         Node targetNode = NodeFromWorldPoint(targetPos);
 
-        if (!startNode.walkable || !targetNode.walkable)
-        {
-            Debug.LogWarning("시작 또는 목적지 노드가 walkable하지 않습니다.");
+        if (!startNode.walkable || !targetNode.walkable || !startNode.isOnRoad || !targetNode.isOnRoad)
             return new List<Vector3>();
-        }
 
-        List<Node> openSet = new List<Node>();
+        List<Node> openSet = new List<Node> { startNode };
         HashSet<Node> closedSet = new HashSet<Node>();
-        openSet.Add(startNode);
 
         while (openSet.Count > 0)
         {
@@ -157,7 +162,7 @@ public class PathManager : MonoBehaviour
             for (int i = 1; i < openSet.Count; i++)
             {
                 if (openSet[i].fCost < currentNode.fCost ||
-                    openSet[i].fCost == currentNode.fCost && openSet[i].hCost < currentNode.hCost)
+                    (openSet[i].fCost == currentNode.fCost && openSet[i].hCost < currentNode.hCost))
                 {
                     currentNode = openSet[i];
                 }
@@ -171,7 +176,7 @@ public class PathManager : MonoBehaviour
 
             foreach (Node neighbor in GetNeighbours(currentNode))
             {
-                if (!neighbor.walkable || closedSet.Contains(neighbor))
+                if (!neighbor.walkable || !neighbor.isOnRoad || closedSet.Contains(neighbor))
                     continue;
 
                 int newCostToNeighbor = currentNode.gCost + GetDistance(currentNode, neighbor);
@@ -187,7 +192,6 @@ public class PathManager : MonoBehaviour
             }
         }
 
-        Debug.LogWarning("경로를 찾을 수 없습니다.");
         return new List<Vector3>();
     }
 
@@ -200,6 +204,8 @@ public class PathManager : MonoBehaviour
         }
 
         List<Vector3> smoothPath = new List<Vector3>();
+        float fixedY = 0.1f;
+
         for (int i = 0; i < path.Count - 1; i++)
         {
             Vector3 p0 = path[i];
@@ -207,12 +213,14 @@ public class PathManager : MonoBehaviour
             for (float t = 0; t < 1f; t += 0.1f)
             {
                 Vector3 point = Vector3.Lerp(p0, p1, t);
-                point.y = 0.1f;
+                point.y = fixedY;
                 smoothPath.Add(point);
             }
         }
 
-        smoothPath.Add(path[path.Count - 1]);
+        Vector3 last = path[path.Count - 1];
+        last.y = fixedY;
+        smoothPath.Add(last);
 
         lineRenderer.positionCount = smoothPath.Count;
         lineRenderer.SetPositions(smoothPath.ToArray());
@@ -282,6 +290,7 @@ public class PathManager : MonoBehaviour
 public class Node
 {
     public bool walkable;
+    public bool isOnRoad;
     public Vector3 worldPosition;
     public int gridX;
     public int gridY;
@@ -290,12 +299,13 @@ public class Node
     public int hCost;
     public Node parent;
 
-    public Node(bool walkable, Vector3 worldPosition, int gridX, int gridY)
+    public Node(bool walkable, Vector3 worldPosition, int gridX, int gridY, bool isOnRoad)
     {
         this.walkable = walkable;
         this.worldPosition = worldPosition;
         this.gridX = gridX;
         this.gridY = gridY;
+        this.isOnRoad = isOnRoad;
     }
 
     public int fCost => gCost + hCost;
