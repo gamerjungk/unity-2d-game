@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: car1
   m_EditorClassIdentifier: 
   image: {fileID: 21300000, guid: a6b6671f5024d4dc3af9f184cc62ba56, type: 3}
-  itemName: "\uC790\uB3D9\uCC28"
   category: {fileID: 11400000, guid: 826519c5a826740a195ad3d2534c4a14, type: 2}
   price: 50
-  description: 
   speed: 100
   efficiency: 50
   capacity: 30
+  itemNameKR: "\uB625\uCC28"
+  itemNameEN: poop
+  descriptionKR: 
+  descriptionEN: 

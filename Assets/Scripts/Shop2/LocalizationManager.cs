@@ -59,7 +59,7 @@ public class LocalizationManager : MonoBehaviour
         koreanTexts["Efficiency"] = "연비";
         koreanTexts["Capacity"] = "적재량";
         koreanTexts["Payment"] = "징수";
-        koreanTexts["MasterVolume"] = "마스터 볼륨";
+        koreanTexts["MasterVolume"] = "마스터볼륨";
         koreanTexts["BGM"] = "배경음악";
         koreanTexts["SFX"] = "효과음";
         koreanTexts["Mute"] = "음소거";
@@ -74,7 +74,7 @@ public class LocalizationManager : MonoBehaviour
         englishTexts["Efficiency"] = "Oil Efficiency";
         englishTexts["Capacity"] = "Capacity";
         englishTexts["Payment"] = "Payment";
-        englishTexts["MasterVolume"] = "Master Volume";
+        englishTexts["MasterVolume"] = "MasterVolume";
         englishTexts["BGM"] = "BGM";
         englishTexts["SFX"] = "Sound Effects";
         englishTexts["Mute"] = "Mute";
