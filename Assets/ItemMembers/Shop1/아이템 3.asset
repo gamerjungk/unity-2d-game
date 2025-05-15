@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 846e38a432ca84e97b0d02b6fe5c47dc, type: 3}
-  m_Name: "\uC544\uC774\uD15C 3"
+  m_Name: "\u110B\u1161\u110B\u1175\u1110\u1166\u11B7 3"
   m_EditorClassIdentifier: 
   category: "\uC2DC\uC791\uC544\uC774\uD15C"
   image: {fileID: 6674386295937086461, guid: 7abd59d488ec3484089d5f418816dbdb, type: 3}
