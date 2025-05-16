@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Car
   - Road
+  - Destination
   layers:
   - Default
   - TransparentFX
