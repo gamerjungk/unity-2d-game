@@ -3,10 +3,10 @@ using UnityEngine.UI;
 
 public class TurnManager : MonoBehaviour
 {
-    float updateTime = 0f, turnTime = 5f;       // updateTime ï¿½Ã°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, turnTiem ï¿½ï¿½ ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½
-    public int curTurn = 50;                    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
-    public bool isMidTurn = false;              // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-    public CarObj car;          //ï¿½×½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½Ã¼
+    float updateTime = 0f, turnTime = 5f;       // updateTime ½Ã°£ÃøÁ¤ º¯¼ö, turnTiem ÇÑ ÅÏ ½Ã°£ ¼³Á¤
+    public int curTurn = 50;                    // ÇöÀç ÅÏ
+    public bool isMidTurn = false;              // ÁøÇà ÅÏ À¯¹«
+    public CarObj car;          //Å×½ºÆ®¿ë °´Ã¼
     void Start()
     {
         
@@ -14,11 +14,11 @@ public class TurnManager : MonoBehaviour
     void Update()
     {
         updateTime += Time.deltaTime;
-        if (isMidTurn)                          // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½
+        if (isMidTurn)                          // ÁøÇàÅÏÀÌ¶ó¸é
         {
             if (updateTime >= turnTime) 
             {
-                GameManager.inst.uiManager.uiImages[3].fillAmount = 1f;     // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î±×·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                GameManager.inst.uiManager.uiImages[3].fillAmount = 1f;     // ¶ó¿îµå ÇÁ·Î±×·¹½º¹Ù ÁøÇà
                 curTurn--;
                 isMidTurn = false;
                 car.MoveRandomly();
@@ -32,10 +32,8 @@ public class TurnManager : MonoBehaviour
 
     public void midTurn()
     {
-        if(!isMidTurn) {
-            updateTime = 0;
-            isMidTurn = true;
-        } 
+        updateTime = 0;
+        isMidTurn = true;
     }
 
 }

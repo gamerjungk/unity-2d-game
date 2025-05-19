@@ -12,9 +12,11 @@ public class TopDownCamera_M : MonoBehaviour
 
         Vector3 targetPos = target.position + offset;
         transform.position = targetPos;
+        transform.rotation = Quaternion.Euler(90f, 0f, 0f);
 
         // 자동차가 바라보는 방향으로 회전 (수직 시점이므로 x/z는 고정하고 y축만 따라감)
         Quaternion desiredRotation = Quaternion.Euler(90f, target.eulerAngles.y, 0f);
         transform.rotation = Quaternion.Lerp(transform.rotation, desiredRotation, followSpeed * Time.deltaTime);
+        
     }
 }
