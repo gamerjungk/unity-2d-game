@@ -25,10 +25,15 @@ public class CarObj : MonoBehaviour
         Debug.Log("LoadSceneManager.Instance: " + LoadSceneManager.Instance);
         if (other.gameObject.CompareTag("Player")){
                 Debug.Log("플레이어와 충돌 감지됨! Die() 실행");
+<<<<<<< HEAD
                 SceneManager.LoadScene("GameOverScene");
                 //GameManager.inst.Stop();
 
 
+=======
+                //GameManager.inst.Stop();
+                SceneManager.LoadScene("GameOverScene");
+>>>>>>> 94fc44f (버그수정)
         }
     }
 }
