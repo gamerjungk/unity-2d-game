@@ -23,12 +23,13 @@ public class CarObj : MonoBehaviour
     {  // ✅ 수정 (Collider2D → Collision2D)
         crash();
         Debug.Log("LoadSceneManager.Instance: " + LoadSceneManager.Instance);
-        if (other.gameObject.CompareTag("Player")){
-                Debug.Log("플레이어와 충돌 감지됨! Die() 실행");
+        if (other.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("플레이어와 충돌 감지됨! Die() 실행");
 
-                //GameManager.inst.Stop();
-                SceneManager.LoadScene("GameOverScene");
-
+            //GameManager.inst.Stop();
+            SceneManager.LoadScene("GameOverScene");
+        }
     }
 }
 
