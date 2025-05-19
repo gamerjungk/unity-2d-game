@@ -35,7 +35,8 @@ public class LocalizationManager : MonoBehaviour
         }
 
         // UI 텍스트 갱신
-        LocalizationTarget[] targets = FindObjectsOfType<LocalizationTarget>();
+        var targets = FindObjectsByType<LocalizationTarget>(FindObjectsSortMode.None); // or .InstanceID if 필요
+
         foreach (var t in targets)
             t.RefreshText();
     }
@@ -104,7 +105,7 @@ public class LocalizationManager : MonoBehaviour
     public void ChangeLanguage(Language lang)
     {
         currentLanguage = lang;
-        LocalizationTarget[] targets = FindObjectsOfType<LocalizationTarget>();
+        LocalizationTarget[] targets = FindObjectsByType<LocalizationTarget>(FindObjectsSortMode.None);
         foreach (var t in targets)
         {
             t.RefreshText();

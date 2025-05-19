@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour {
     public UIManager uiManager;
     public static float fuel = 70;
     public static int gold = 100;
+    public static int money = 10000;
 
     private void Awake()
     {
