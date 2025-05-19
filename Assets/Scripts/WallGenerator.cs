@@ -13,7 +13,8 @@ public class ObjectChecker : MonoBehaviour
     void Set_Wall()
     {
         // Hierarchy에서 모든 오브젝트를 가져오되 비활성화된 오브젝트도 포함하도록 설정
-        Transform[] allTransforms = GameObject.FindObjectsOfType<Transform>(true);
+        Transform[] allTransforms = Object.FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+
 
         // 가로 블록 체크
         for (int i = 1; i <= 12; i++)

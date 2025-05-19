@@ -1,11 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PerformanceShopManager : MonoBehaviour
 {
     public static PerformanceShopManager Instance { get; private set; }
 
     [Header("UI References")]
+
+    public TextMeshProUGUI moneyText;
     public Transform shopPanel;
     public GameObject performanceItemSlotPrefab;
 
@@ -25,6 +28,7 @@ public class PerformanceShopManager : MonoBehaviour
     private void Start()
     {
         GenerateShopSlots();
+        UpdateMoneyUI();
     }
 
     private void GenerateShopSlots()
@@ -46,15 +50,17 @@ public class PerformanceShopManager : MonoBehaviour
             return;
         }
 
-        if (GameManager.gold < item.price)
+        if (GameManager.money < item.price)
         {
             Debug.Log("골드 부족!");
             return;
         }
 
-        GameManager.gold -= item.price;
+        GameManager.money -= item.price;
         PerformanceInventoryManager.Instance.BuyItem(item);
         RefreshAllSlots();
+
+        UpdateMoneyUI();
     }
 
     public void EquipSelectedItem(PerformanceItemSO item)
@@ -72,4 +78,11 @@ public class PerformanceShopManager : MonoBehaviour
                 slot.Refresh();
         }
     }
+
+    private void UpdateMoneyUI()
+    {
+        moneyText.text = GameManager.money.ToString() + "원";
+        Debug.Log("💰 돈 UI 갱신됨: " + moneyText.text);
+    }
+    
 }
