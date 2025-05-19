@@ -1,9 +1,13 @@
-﻿using UnityEngine;
+﻿//LoadSceneManager
+
+
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using DG.Tweening;
 using TMPro;
+using System.Diagnostics;
 public class LoadSceneManager : MonoBehaviour
 {
     public static LoadSceneManager Instance { get { return instance; } }
@@ -16,6 +20,7 @@ public class LoadSceneManager : MonoBehaviour
 
     void Start()
     {
+
         if (instance != null)
         {
             DestroyImmediate(this.gameObject);
@@ -37,12 +42,14 @@ public class LoadSceneManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        UnityEngine.Debug.Log($"씬 로드 완료: {scene.name}, 로드 모드: {mode}");
         Fade_img.DOFade(0, fadeDuration)
         .OnComplete(() => Fade_img.blocksRaycasts = false);
     }
 
     public void ChangeScene(string sceneName)
     {
+        UnityEngine.Debug.Log("ChangeScene 호출됨: " + sceneName);
         Fade_img.DOFade(1, fadeDuration)
         .OnStart(() => Fade_img.blocksRaycasts = true)
         .OnComplete(() => StartCoroutine(LoadScene(sceneName)));

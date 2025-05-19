@@ -1,5 +1,5 @@
 using UnityEngine;
-//오류해결코드
+
 // 해상도 고정 카메라 스크립트 (수정됨)
 public class CameraResolution : MonoBehaviour
 {
