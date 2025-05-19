@@ -30,7 +30,6 @@ public class GameDataManager : MonoBehaviour
         data = SaveManager.Load();
     }
 
-    // ✅ 여기에 추가!
     void OnApplicationPause(bool pause)
     {
         if (pause)
