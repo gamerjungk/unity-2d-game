@@ -18,14 +18,14 @@ public class TurnManager : MonoBehaviour
         {
             if (updateTime >= turnTime) 
             {
-                GameManager.inst.uiManager.uiImages[3].fillAmount = 1f;     // ���� ���α׷����� ����
+                GameManager.inst.uiManager.uiImages[8].fillAmount = 1f;     // ���� ���α׷����� ����
                 curTurn--;
                 isMidTurn = false;
                 car.MoveRandomly();
             }
             else
             {
-                GameManager.inst.uiManager.uiImages[3].fillAmount = 1f - (Mathf.Lerp(0, 100, updateTime / turnTime) / 100);
+                GameManager.inst.uiManager.uiImages[8].fillAmount = 1f - (Mathf.Lerp(0, 100, updateTime / turnTime) / 100);
             }
         }
     }

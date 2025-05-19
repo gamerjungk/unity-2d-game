@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour {
     public Player player;                   // �ܺο��� Player�� �����ϰ� ���� �� GameManager.inst.player.function() �������� �����ϸ� �˴ϴ�.
     public TurnManager turnManager;
     public UIManager uiManager;
-    
+    public static float fuel = 70;
     public static int gold = 100;
 
     private void Awake()

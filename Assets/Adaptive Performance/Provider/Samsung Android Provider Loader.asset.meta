@@ -1,6 +1,11 @@
 fileFormatVersion: 2
-guid: a139d4671256646deab9e742790ee053
+<<<<<<<< HEAD:Assets/Resources/PerformanceTestRunInfo.json.meta
+guid: a61cfba10ed994e61ae051fb40e29132
+TextScriptImporter:
+========
+guid: ede3caa9458782b428b8eb94fa7620d7
 NativeFormatImporter:
+>>>>>>>> upstream/update:Assets/Adaptive Performance/Provider/Samsung Android Provider Loader.asset.meta
   externalObjects: {}
   mainObjectFileID: 11400000
   userData: 
