@@ -9,6 +9,9 @@ public class LocalizationTarget : MonoBehaviour
     private void Awake()
     {
         tmp = GetComponent<TextMeshProUGUI>();
+    }
+    private void Start()
+    {
         RefreshText();
     }
 

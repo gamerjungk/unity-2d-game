@@ -79,4 +79,19 @@ public class GameSettingsManager : MonoBehaviour
         SaveSettings();
         // 이후 LocalizationManager 같은 데서 반영
     }
+
+    public void SetBGMSource(AudioSource newSource)
+    {
+        if (bgmSource == newSource)
+            return;
+
+        bgmSource = newSource;
+
+        ApplyAudioSettings(); // 볼륨 반영
+        if (!bgmSource.isPlaying)
+        {
+            bgmSource.Play();
+        }
+    }
+
 }
