@@ -1,13 +1,8 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Resources/PerformanceTestRunSettings.json.meta
 guid: 01b8375b2bff1441da70e81c567c109b
-TextScriptImporter:
-========
-guid: 42034f1c7bfbebd4fb07ba4e60012ab8
 NativeFormatImporter:
->>>>>>>> upstream/update:Assets/Adaptive Performance/Provider/Google Android Provider Loader.asset.meta
   externalObjects: {}
-  mainObjectFileID: 11400000
+  mainObjectFileID: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
