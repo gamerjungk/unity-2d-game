@@ -1,65 +1,27 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class RoadGraph : MonoBehaviour
+public class RoadGenerate : MonoBehaviour
 {
     private Dictionary<Vector2Int, List<Vector2Int>> graph = new();
     private HashSet<Vector2Int> visited = new();
     private List<Vector2Int> startingRoads = new();
-    private Dictionary<string, GameObject> roadBlocks = new();
-    public GameObject wallBlock_H;
-    public GameObject wallBlock_V;
-
-    void Awake()
-    {
-        CacheRoadBlocks();
-    }
 
     void Start()
     {
+        //ActivateAllIntersections();
         RandomizeRoads();
         BuildGraph();
         IdentifyStartingRoads();
         EnsureConnectivity();
     }
 
-    void CacheRoadBlocks()
-    {
-        Transform[] allTransforms = GameObject.FindObjectsOfType<Transform>(true);
-        foreach (Transform t in allTransforms)
-        {
-            if (t.name.StartsWith("Horizontal_block") || t.name.StartsWith("Vertical_block"))
-            {
-                roadBlocks[t.name] = t.gameObject;
-            }
-        }
-    }
-
     void RandomizeRoads()
     {
         for (int i = 1; i <= 12; i++)
         {
-            if (roadBlocks.TryGetValue($"Vertical_block{i}", out var v))
-            {
-                bool isActive = Random.value > 0.5f;
-                v.SetActive(isActive);
-
-                if (!isActive)
-                {
-                    PoolManager_wall.Instance.GetFromPool("WallBlock_V", v.transform.position, Quaternion.identity);
-                }
-            }
-
-            if (roadBlocks.TryGetValue($"Horizontal_block{i}", out var h))
-            {
-                bool isActive = Random.value > 0.5f;
-                h.SetActive(isActive);
-
-                if (!isActive)
-                {
-                    PoolManager_wall.Instance.GetFromPool("WallBlock_H", h.transform.position, Quaternion.identity);
-                }
-            }
+            SetBlockActive($"Vertical_block{i}", Random.value > 0.5f);
+            SetBlockActive($"Horizontal_block{i}", Random.value > 0.5f);
         }
     }
 
@@ -73,89 +35,71 @@ public class RoadGraph : MonoBehaviour
                 Vector2Int pos = new(row, col);
                 graph[pos] = new();
 
-                if (col > 0 && IsRoadActive($"Horizontal_block{row * 4 + col}"))
-                    graph[pos].Add(new(row, col - 1));
-                if (col < 4 && IsRoadActive($"Horizontal_block{row * 4 + col + 1}"))
-                    graph[pos].Add(new(row, col + 1));
-
-                if (row > 0 && IsRoadActive($"Vertical_block{(row - 1) * 4 + col + 1}"))
-                    graph[pos].Add(new(row - 1, col));
-                if (row < 4 && IsRoadActive($"Vertical_block{row * 4 + col + 1}"))
-                    graph[pos].Add(new(row + 1, col));
+                AddEdge(pos, new(row, col - 1), $"Horizontal_block{row * 4 + col}");
+                AddEdge(pos, new(row, col + 1), $"Horizontal_block{row * 4 + col + 1}");
+                AddEdge(pos, new(row - 1, col), $"Vertical_block{(row - 1) * 4 + col + 1}");
+                AddEdge(pos, new(row + 1, col), $"Vertical_block{row * 4 + col + 1}");
             }
         }
     }
 
-    bool IsRoadActive(string roadName)
+    void AddEdge(Vector2Int from, Vector2Int to, string roadName)
     {
-        if (roadBlocks.TryGetValue(roadName, out var obj))
-            return obj.activeSelf;
-        return false;
-    }
-
-    void ActivateRoad(string name)
-    {
-        if (roadBlocks.TryGetValue(name, out var obj))
-            obj.SetActive(true);
+        if (graph.ContainsKey(to) && IsRoadActive(roadName))
+            graph[from].Add(to);
     }
 
     void IdentifyStartingRoads()
     {
-        startingRoads.Clear();
-        foreach (var node in graph.Keys)
-        {
-            if (graph[node].Count > 0)
-                startingRoads.Add(node);
-        }
+        int[] verticalIndices = { 1, 2, 3, 10, 11, 12 };
+        int[] horizontalIndices = { 1, 4, 5, 8, 9, 12 };
+
+        foreach (int i in verticalIndices)
+            if (IsRoadActive($"Vertical_block{i}"))
+                startingRoads.Add(new(i, -1));
+
+        foreach (int i in horizontalIndices)
+            if (IsRoadActive($"Horizontal_block{i}"))
+                startingRoads.Add(new(-1, i));
     }
 
     void EnsureConnectivity()
     {
         visited.Clear();
         foreach (Vector2Int start in startingRoads)
-        {
-            DFS(start);
-        }
+            if (graph.ContainsKey(start))
+                DFS(start);
 
-        List<Vector2Int> disconnected = new();
+        List<Vector2Int> disconnectedNodes = new();
         foreach (var node in graph.Keys)
-        {
             if (!visited.Contains(node))
-                disconnected.Add(node);
-        }
+                disconnectedNodes.Add(node);
 
-        foreach (var node in disconnected)
-        {
+        foreach (var node in disconnectedNodes)
             ConnectToNearestIntersection(node);
-        }
     }
 
     void DFS(Vector2Int node)
     {
-        if (!graph.ContainsKey(node) || visited.Contains(node)) return;
-        visited.Add(node);
+        if (!graph.ContainsKey(node) || !visited.Add(node)) return;
+        foreach (var neighbor in graph[node]) DFS(neighbor);
+    }
 
-        foreach (var neighbor in graph[node])
+    void ConnectToNearestIntersection(Vector2Int node)
+    {
+        Vector2Int closest = FindClosestActiveIntersection(node);
+        if (closest != node)
         {
-            DFS(neighbor);
+            ActivateRoadBetween(node, closest);
+            graph[node].Add(closest);
+            graph[closest].Add(node);
         }
     }
 
-void ConnectToNearestIntersection(Vector2Int node)
-{
-    Vector2Int closest = FindClosestActiveIntersection(node);
-    if (closest != node)
-    {
-        ActivateRoadBetween(node, closest);
-        BuildGraph();
-        DFS(node);
-    }
-}
-
     Vector2Int FindClosestActiveIntersection(Vector2Int node)
     {
-        float minDistance = float.MaxValue;
         Vector2Int closest = node;
+        float minDistance = float.MaxValue;
 
         foreach (var other in visited)
         {
@@ -172,21 +116,20 @@ void ConnectToNearestIntersection(Vector2Int node)
     void ActivateRoadBetween(Vector2Int from, Vector2Int to)
     {
         if (from.x == to.x)
-        {
-            int minY = Mathf.Min(from.y, to.y);
-            GameObject road = GameObject.Find($"Vertical_block{from.x * 4 + minY + 1}");
-            if (road != null) road.SetActive(true);
-        }
+            SetBlockActive($"Vertical_block{from.x * 4 + Mathf.Min(from.y, to.y) + 1}", true);
         else if (from.y == to.y)
-        {
-            int minX = Mathf.Min(from.x, to.x);
-            GameObject road = GameObject.Find($"Horizontal_block{minX * 4 + from.y + 1}");
-            if (road != null) road.SetActive(true);
-        }
-
-        // 그래프에도 연결 추가
-        if (!graph[from].Contains(to)) graph[from].Add(to);
-        if (!graph[to].Contains(from)) graph[to].Add(from);
+            SetBlockActive($"Horizontal_block{Mathf.Min(from.x, to.x) * 4 + from.y + 1}", true);
     }
 
+    void SetBlockActive(string name, bool active)
+    {
+        GameObject block = GameObject.Find(name);
+        if (block != null) block.SetActive(active);
+    }
+
+    bool IsRoadActive(string roadName)
+    {
+        GameObject road = GameObject.Find(roadName);
+        return road != null && road.activeSelf;
+    }
 }
