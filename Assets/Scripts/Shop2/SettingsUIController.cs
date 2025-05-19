@@ -29,10 +29,29 @@ public class SettingsUIController : MonoBehaviour
 
     public void OnMasterVolumeChanged(float value)
     {
-        GameSettingsManager.Instance.masterVolume = Mathf.RoundToInt(value);
+        int previousMaster = GameSettingsManager.Instance.masterVolume;
+        int newMaster = Mathf.RoundToInt(value);
+
+        if (previousMaster == 0)
+            previousMaster = 1; // 0으로 나누기 방지
+
+        float ratio = newMaster / (float)previousMaster;
+
+        // 🔁 bgm/sfx 값을 비율로 조정하되 상한선 100 유지
+        GameSettingsManager.Instance.bgmVolume = Mathf.Clamp(
+            Mathf.RoundToInt(GameSettingsManager.Instance.bgmVolume * ratio), 1, 100);
+        GameSettingsManager.Instance.sfxVolume = Mathf.Clamp(
+            Mathf.RoundToInt(GameSettingsManager.Instance.sfxVolume * ratio), 1, 100);
+
+        GameSettingsManager.Instance.masterVolume = newMaster;
         GameSettingsManager.Instance.ApplyAudioSettings();
         GameSettingsManager.Instance.SaveSettings();
+
+        // ✅ 슬라이더 UI 반영
+        bgmSlider.value = GameSettingsManager.Instance.bgmVolume;
+        sfxSlider.value = GameSettingsManager.Instance.sfxVolume;
     }
+
 
     public void OnBGMVolumeChanged(float value)
     {

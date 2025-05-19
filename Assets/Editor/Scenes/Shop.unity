@@ -1280,6 +1280,53 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD
+=======
+--- !u!1 &843763977
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 843763978}
+  - component: {fileID: 843763979}
+  m_Layer: 0
+  m_Name: SceneLoaderManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &843763978
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 843763977}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 451.98453, y: 258.05353, z: 0.3298074}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &843763979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 843763977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78bef684b56c1ac4cbcd846bfa97bd07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+>>>>>>> ae0199a1deb01d4b8f6c77a42d52d439fe9d1331
 --- !u!1 &901075634
 GameObject:
   m_ObjectHideFlags: 0
@@ -2118,7 +2165,6 @@ GameObject:
   - component: {fileID: 1326191413}
   - component: {fileID: 1326191412}
   - component: {fileID: 1326191411}
-  - component: {fileID: 1326191414}
   m_Layer: 5
   m_Name: StartButton
   m_TagString: Untagged
@@ -2190,7 +2236,11 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+<<<<<<< HEAD
       - m_Target: {fileID: 1326191414}
+=======
+      - m_Target: {fileID: 843763979}
+>>>>>>> ae0199a1deb01d4b8f6c77a42d52d439fe9d1331
         m_TargetAssemblyTypeName: SceneLoaderBehaviour, Assembly-CSharp
         m_MethodName: SceneLoad
         m_Mode: 5
@@ -2240,6 +2290,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1326191409}
   m_CullTransparentMesh: 1
+<<<<<<< HEAD
 --- !u!114 &1326191414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2252,6 +2303,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78bef684b56c1ac4cbcd846bfa97bd07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+=======
+>>>>>>> ae0199a1deb01d4b8f6c77a42d52d439fe9d1331
 --- !u!1 &1433022841
 GameObject:
   m_ObjectHideFlags: 0
@@ -2679,7 +2732,6 @@ GameObject:
   - component: {fileID: 1552880154}
   - component: {fileID: 1552880153}
   - component: {fileID: 1552880152}
-  - component: {fileID: 1552880155}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -2751,7 +2803,11 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+<<<<<<< HEAD
       - m_Target: {fileID: 1552880155}
+=======
+      - m_Target: {fileID: 843763979}
+>>>>>>> ae0199a1deb01d4b8f6c77a42d52d439fe9d1331
         m_TargetAssemblyTypeName: SceneLoaderBehaviour, Assembly-CSharp
         m_MethodName: SceneLoad
         m_Mode: 5
@@ -2801,6 +2857,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1552880150}
   m_CullTransparentMesh: 1
+<<<<<<< HEAD
 --- !u!114 &1552880155
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2813,6 +2870,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78bef684b56c1ac4cbcd846bfa97bd07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+=======
+>>>>>>> ae0199a1deb01d4b8f6c77a42d52d439fe9d1331
 --- !u!1 &1560445661
 GameObject:
   m_ObjectHideFlags: 0
@@ -3819,5 +3878,9 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 754512372}
   - {fileID: 901075638}
+<<<<<<< HEAD
+=======
+  - {fileID: 843763978}
+>>>>>>> ae0199a1deb01d4b8f6c77a42d52d439fe9d1331
   - {fileID: 78596358}
   - {fileID: 1445007501}
