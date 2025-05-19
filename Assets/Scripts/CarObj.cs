@@ -24,8 +24,8 @@ public class CarObj : MonoBehaviour
         crash();
         if(other.gameObject.CompareTag("Player")){
                 Debug.Log("플레이어와 충돌 감지됨! Die() 실행");
-                GameManager.inst.Stop();
-            SceneManager.LoadScene("GameOverScene");
+                //GameManager.inst.Stop();
+                SceneManager.LoadScene("GameOverScene");
         }
     }
 }
