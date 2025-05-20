@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3168730392114890696}
   - component: {fileID: 3168730392114890699}
   m_Layer: 0
-  m_Name: MissileSceneLight
+  m_Name: MainSceneLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24,12 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3168730392114890697}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1.02, y: 5.28, z: 4.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!108 &3168730392114890699
 Light:
@@ -39,11 +40,10 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3168730392114890697}
   m_Enabled: 1
-  serializedVersion: 10
+  serializedVersion: 11
   m_Type: 2
-  m_Shape: 0
-  m_Color: {r: 0.38416696, g: 0.542733, b: 0.8396226, a: 1}
-  m_Intensity: 8
+  m_Color: {r: 0.62941176, g: 0.70175797, b: 0.8392157, a: 1}
+  m_Intensity: 6
   m_Range: 45
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -90,5 +90,10 @@ Light:
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
