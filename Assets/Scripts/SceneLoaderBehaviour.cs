@@ -1,3 +1,4 @@
+/*
 using UnityEngine;
 public class SceneLoaderBehaviour : MonoBehaviour
 {
@@ -6,4 +7,4 @@ public class SceneLoaderBehaviour : MonoBehaviour
         LoadSceneManager.Instance.ChangeScene(SceneName);
   }
 
-}
+}*/

@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour {
     public TurnManager turnManager;
     public UIManager uiManager;
     
-    public static int gold = 100;
+    public static int gold;
 
     private void Awake()
     {
