@@ -7,10 +7,10 @@ public class PerformanceShopManager : MonoBehaviour
     public static PerformanceShopManager Instance { get; private set; }
 
     [Header("UI References")]
-
     public TextMeshProUGUI moneyText;
     public Transform shopPanel;
     public GameObject performanceItemSlotPrefab;
+    [SerializeField] private Button payButton; // 💸 집세 납부 버튼
 
     [Header("Items")]
     public PerformanceItemSO[] performanceItems;
@@ -29,6 +29,9 @@ public class PerformanceShopManager : MonoBehaviour
     {
         GenerateShopSlots();
         UpdateMoneyUI();
+
+        // 💸 납부 버튼 이벤트 연결
+        payButton.onClick.AddListener(TryPayNextStage);
     }
 
     private void GenerateShopSlots()
@@ -50,13 +53,13 @@ public class PerformanceShopManager : MonoBehaviour
             return;
         }
 
-        if (GameManager.money < item.price)
+        if (GameDataManager.Instance.data.money < item.price)
         {
             Debug.Log("골드 부족!");
             return;
         }
 
-        GameManager.money -= item.price;
+        GameDataManager.Instance.data.money -= item.price;
         PerformanceInventoryManager.Instance.BuyItem(item);
         RefreshAllSlots();
 
@@ -81,8 +84,23 @@ public class PerformanceShopManager : MonoBehaviour
 
     private void UpdateMoneyUI()
     {
-        moneyText.text = GameManager.money.ToString() + "원";
+        moneyText.text = GameDataManager.Instance.data.money.ToString() + "원";
         Debug.Log("💰 돈 UI 갱신됨: " + moneyText.text);
     }
-    
+
+    // 💸 집세 납부 로직
+    public void TryPayNextStage()
+    {
+        bool success = GameDataManager.Instance.TryPay();
+
+        if (success)
+        {
+            Debug.Log("✅ 납부 성공! 현재 납부 단계: " + GameDataManager.Instance.data.paidStageIndex);
+            UpdateMoneyUI();
+        }
+        else
+        {
+            Debug.Log("❌ 돈이 부족하여 납부할 수 없습니다.");
+        }
+    }
 }

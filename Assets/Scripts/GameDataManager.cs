@@ -40,4 +40,23 @@ public class GameDataManager : MonoBehaviour
     {
         Save();
     }
+
+        public int GetRequiredPayment()
+    {
+        // 예: 1단계당 1000원 증가
+        return 1000 + (data.paidStageIndex * 1000);
+    }
+
+    public bool TryPay()
+    {
+        int required = GetRequiredPayment();
+        if (data.money >= required)
+        {
+            data.money -= required;
+            data.paidStageIndex++;
+            SaveManager.Save(data);
+            return true;
+        }
+        return false;
+    }
 }
