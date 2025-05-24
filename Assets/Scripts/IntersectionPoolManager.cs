@@ -1,135 +1,63 @@
-using UnityEngine;
-using System.Collections.Generic;
+﻿using UnityEngine;
 
-public class RoadGenerate : MonoBehaviour
+public class IntersectionPoolManager : MonoBehaviour
 {
-    private Dictionary<Vector2Int, List<Vector2Int>> graph = new();
-    private HashSet<Vector2Int> visited = new();
-    private List<Vector2Int> startingRoads = new();
+    [Header("Random Road Settings")]
+    public int minActiveBlocks = 8;   // 최소 활성 도로 수
+    public int totalBlocks = 12; // Vertical / Horizontal 블록 개수
 
-    void Start()
+    private void Start()
     {
-        //ActivateAllIntersections();
         RandomizeRoads();
-        BuildGraph();
-        IdentifyStartingRoads();
-        EnsureConnectivity();
     }
 
-    void RandomizeRoads()
+    /// <summary>
+    /// 세로 · 가로 블록을 무작위로 ON/OFF.
+    /// 중심 블록(6,7번)은 항상 ON.
+    /// </summary>
+    public void RandomizeRoads()
     {
-        for (int i = 1; i <= 12; i++)
+        int activeCount = 0;
+
+        for (int i = 1; i <= totalBlocks; i++)
         {
-            SetBlockActive($"Vertical_block{i}", Random.value > 0.5f);
-            SetBlockActive($"Horizontal_block{i}", Random.value > 0.5f);
+            bool forceActive = (i == 6 || i == 7);            // 중심 도로
+            bool verticalActive = forceActive || Random.value > 0.5f;
+            bool horizontalActive = forceActive || Random.value > 0.5f;
+
+            if (verticalActive) activeCount++;
+            if (horizontalActive) activeCount++;
+
+            SetBlockActive($"Vertical_block{i}", verticalActive);
+            SetBlockActive($"Horizontal_block{i}", horizontalActive);
         }
+
+        Debug.Log($"✅ 도로 생성 완료: 활성 블록 수 = {activeCount}");
+
+        if (activeCount < minActiveBlocks)
+            Debug.LogWarning("⚠️ 활성 도로 수가 너무 적습니다. 경로가 불안정할 수 있습니다.");
     }
 
-    void BuildGraph()
+    /// <summary>
+    /// 이름으로 도로 블록 ON/OFF + NavMesh 즉시 갱신
+    /// </summary>
+    public void SetBlockActive(string name, bool isActive)
     {
-        graph.Clear();
-        for (int row = 0; row < 5; row++)
+        GameObject obj = GameObject.Find(name);
+        if (obj == null)
         {
-            for (int col = 0; col < 5; col++)
-            {
-                Vector2Int pos = new(row, col);
-                graph[pos] = new();
-
-                AddEdge(pos, new(row, col - 1), $"Horizontal_block{row * 4 + col}");
-                AddEdge(pos, new(row, col + 1), $"Horizontal_block{row * 4 + col + 1}");
-                AddEdge(pos, new(row - 1, col), $"Vertical_block{(row - 1) * 4 + col + 1}");
-                AddEdge(pos, new(row + 1, col), $"Vertical_block{row * 4 + col + 1}");
-            }
+            Debug.LogWarning($"🚧 도로 오브젝트 {name}을(를) 찾을 수 없습니다.");
+            return;
         }
-    }
 
-    void AddEdge(Vector2Int from, Vector2Int to, string roadName)
-    {
-        if (graph.ContainsKey(to) && IsRoadActive(roadName))
-            graph[from].Add(to);
-    }
+        // RoadToggle 있으면 Area 변경 + 노드 동기화
+        var toggle = obj.GetComponent<RoadToggle>();
+        if (toggle != null)
+            toggle.SetActiveRoad(isActive);
+        else
+            obj.SetActive(isActive); // 예외적으로 Toggle 없는 경우
 
-    void IdentifyStartingRoads()
-    {
-        int[] verticalIndices = { 1, 2, 3, 10, 11, 12 };
-        int[] horizontalIndices = { 1, 4, 5, 8, 9, 12 };
-
-        foreach (int i in verticalIndices)
-            if (IsRoadActive($"Vertical_block{i}"))
-                startingRoads.Add(new(i, -1));
-
-        foreach (int i in horizontalIndices)
-            if (IsRoadActive($"Horizontal_block{i}"))
-                startingRoads.Add(new(-1, i));
-    }
-
-    void EnsureConnectivity()
-    {
-        visited.Clear();
-        foreach (Vector2Int start in startingRoads)
-            if (graph.ContainsKey(start))
-                DFS(start);
-
-        List<Vector2Int> disconnectedNodes = new();
-        foreach (var node in graph.Keys)
-            if (!visited.Contains(node))
-                disconnectedNodes.Add(node);
-
-        foreach (var node in disconnectedNodes)
-            ConnectToNearestIntersection(node);
-    }
-
-    void DFS(Vector2Int node)
-    {
-        if (!graph.ContainsKey(node) || !visited.Add(node)) return;
-        foreach (var neighbor in graph[node]) DFS(neighbor);
-    }
-
-    void ConnectToNearestIntersection(Vector2Int node)
-    {
-        Vector2Int closest = FindClosestActiveIntersection(node);
-        if (closest != node)
-        {
-            ActivateRoadBetween(node, closest);
-            graph[node].Add(closest);
-            graph[closest].Add(node);
-        }
-    }
-
-    Vector2Int FindClosestActiveIntersection(Vector2Int node)
-    {
-        Vector2Int closest = node;
-        float minDistance = float.MaxValue;
-
-        foreach (var other in visited)
-        {
-            float dist = Vector2Int.Distance(node, other);
-            if (dist < minDistance)
-            {
-                minDistance = dist;
-                closest = other;
-            }
-        }
-        return closest;
-    }
-
-    void ActivateRoadBetween(Vector2Int from, Vector2Int to)
-    {
-        if (from.x == to.x)
-            SetBlockActive($"Vertical_block{from.x * 4 + Mathf.Min(from.y, to.y) + 1}", true);
-        else if (from.y == to.y)
-            SetBlockActive($"Horizontal_block{Mathf.Min(from.x, to.x) * 4 + from.y + 1}", true);
-    }
-
-    void SetBlockActive(string name, bool active)
-    {
-        GameObject block = GameObject.Find(name);
-        if (block != null) block.SetActive(active);
-    }
-
-    bool IsRoadActive(string roadName)
-    {
-        GameObject road = GameObject.Find(roadName);
-        return road != null && road.activeSelf;
+        // NavMeshSurface 실시간 재빌드
+        DestinationManager.Instance?.RebuildNavMesh();
     }
 }
