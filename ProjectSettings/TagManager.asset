@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Car
   - Road
+  - RoadNode
+  - SideWalk
+  - Destination
+  - Ocean
   layers:
   - Default
   - TransparentFX

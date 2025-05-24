@@ -6,7 +6,7 @@ public class TurnManager : MonoBehaviour
     float updateTime = 0f, turnTime = 5f;       // updateTime �ð����� ����, turnTiem �� �� �ð� ����
     public int curTurn = 50;                    // ���� ��
     public bool isMidTurn = false;              // ���� �� ����
-    public CarObj car;          //�׽�Ʈ�� ��ü
+    // public CarObj car;          //�׽�Ʈ�� ��ü
     void Start()
     {
         
@@ -21,7 +21,6 @@ public class TurnManager : MonoBehaviour
                 GameManager.inst.uiManager.uiImages[8].fillAmount = 1f;     // ���� ���α׷����� ����
                 curTurn--;
                 isMidTurn = false;
-                car.MoveRandomly();
             }
             else
             {
