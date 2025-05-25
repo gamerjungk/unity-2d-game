@@ -11,6 +11,8 @@ public class PerformanceItemSO : ScriptableObject
     public float efficiency;
     public float capacity;
 
+    public ItemType itemType; // 🎯 여기에 타입 추가
+
     public string itemNameKR;
     public string itemNameEN;
 
