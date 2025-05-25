@@ -3,13 +3,13 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using DG.Tweening;
-
+using TMPro;
 public class LoadSceneManager : MonoBehaviour
 {
     public static LoadSceneManager Instance { get { return instance; } }
 
     public CanvasGroup Fade_img;
-    public Text Loading_text;
+    public TextMeshProUGUI Loading_text;
     public Slider ProgressBar; // 🎯 ProgressBar
     private static LoadSceneManager instance;
     float fadeDuration = 2;
