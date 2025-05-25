@@ -11,6 +11,7 @@ public class PerformanceItemSlot : MonoBehaviour, IPointerClickHandler
     public Image itemImage;
     public Button actionButton;
     public TextMeshProUGUI actionButtonText;
+    public Button useButton; // ✅ 소모성 아이템 전용 사용 버튼
 
     [Header("Back (상세 정보 상태)")]
     public GameObject backFace;
@@ -47,6 +48,8 @@ public class PerformanceItemSlot : MonoBehaviour, IPointerClickHandler
         itemNameText.text = itemData.DisplayName;
         priceText.text = $"{itemData.price}G";
         descriptionText.text = itemData.DisplayDescription;
+
+        useButton.gameObject.SetActive(false); // 기본은 숨김
 
         isFlipped = false;
         frontFace.SetActive(true);
@@ -144,7 +147,6 @@ public class PerformanceItemSlot : MonoBehaviour, IPointerClickHandler
         button.interactable = interactable;
     }
 
-
     public void UpdateActionButton()
     {
         bool isOwned = PerformanceInventoryManager.Instance.IsOwned(itemData);
@@ -163,6 +165,13 @@ public class PerformanceItemSlot : MonoBehaviour, IPointerClickHandler
             SetButtonState(actionButton, actionButtonText, () => PerformanceShopManager.Instance.EquipSelectedItem(itemData), label, interactable);
             SetButtonState(actionButton_Back, actionButtonText_Back, () => PerformanceShopManager.Instance.EquipSelectedItem(itemData), label, interactable);
         }
+    }
+
+    public void EnableUseButton(UnityEngine.Events.UnityAction onClick)
+    {
+        useButton.gameObject.SetActive(true);
+        useButton.onClick.RemoveAllListeners();
+        useButton.onClick.AddListener(onClick);
     }
 
     public void Refresh()

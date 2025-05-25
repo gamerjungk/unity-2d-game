@@ -69,7 +69,8 @@ public class GameSettingsManager : MonoBehaviour
         // 디버그용
         if (!System.Enum.TryParse(lang, out currentLanguage))
         {
-            Debug.LogWarning($"언어 파싱 실패: {lang}, 기본값(Korean)으로 설정됨");
+        currentLanguage = SystemLanguage.Korean;
+        Debug.LogWarning($"언어 파싱 실패: {lang}, 기본값(Korean)으로 설정됨");
         }
     }
 
@@ -87,11 +88,8 @@ public class GameSettingsManager : MonoBehaviour
 
         bgmSource = newSource;
 
-        ApplyAudioSettings(); // 볼륨 반영
-        if (!bgmSource.isPlaying)
-        {
-            bgmSource.Play();
-        }
+        ApplyAudioSettings(); // 볼륨값 적용
     }
+
 
 }
