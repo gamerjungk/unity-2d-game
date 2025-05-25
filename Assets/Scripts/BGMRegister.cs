@@ -3,8 +3,9 @@ using UnityEngine.SceneManagement;
 
 public class BGMRegister : MonoBehaviour
 {
+    public float skipSeconds = 0f;
     private AudioSource audioSource;
-
+    
     void Awake()
     {
         // 오브젝트가 씬 전환 때마다 살아있으면 안 되므로 DontDestroyOnLoad 안 씀
@@ -28,7 +29,17 @@ public class BGMRegister : MonoBehaviour
             GameSettingsManager.Instance.SetBGMSource(audioSource);
         }
 
-        audioSource.Play(); // 씬 진입 시 재생
+        Debug.Log($"🎧 BGMRegister: audioSource.clip = {(audioSource.clip != null ? audioSource.clip.name : "null")}");
+        Debug.Log($"🎧 skipSeconds = {skipSeconds}");
+
+        if (skipSeconds > 0f && audioSource.clip != null)
+        {
+            Debug.Log($"🎵 스킵 적용: {skipSeconds}초");
+            audioSource.Stop(); // 강제로 초기화
+            audioSource.time = Mathf.Min(skipSeconds, audioSource.clip.length - 0.01f);
+        }
+
+        audioSource.Play();
     }
 
     void OnSceneUnloaded(Scene scene)
