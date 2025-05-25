@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    Rigidbody playerRigid;
 
     public float acceleration = 5f, maxSpeed = 20f, deceleration = 3f;
     public float currentSpeed = 0f, currentAngle = 0f, targetAngle = 0f;
@@ -10,7 +9,6 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        playerRigid = GetComponent<Rigidbody>();
         currentAngle = transform.eulerAngles.y;
     }
 
@@ -19,9 +17,9 @@ public class Player : MonoBehaviour
         if (GameManager.inst.turnManager.isMidTurn)
         {
             // 연료 소모 및 감속 처리
-            if (GameManager.fuel >= currentSpeed * 0.1f * Time.deltaTime)
+            if (GameManager.fuel >= currentSpeed * 0.01f * Time.deltaTime)
             {
-                GameManager.fuel -= currentSpeed * 0.1f * Time.deltaTime;
+                GameManager.fuel -= Mathf.Abs(currentSpeed) * 0.01f * Time.deltaTime;
                 currentSpeed = Mathf.Lerp(currentSpeed, currentSpeed * 0.5f, deceleration * 0.1f * Time.deltaTime);
                 currentSpeed = Mathf.Clamp(currentSpeed, -maxSpeed, maxSpeed);
             }
@@ -62,6 +60,6 @@ public class Player : MonoBehaviour
 
     public void Handling(float angle)
     {
-        targetAngle = transform.eulerAngles.y - angle * steerSensitivity;
+        targetAngle = -angle;
     }
 }
