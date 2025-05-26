@@ -1,95 +1,143 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 using TMPro;
-
-public enum ShopTab
-{
-    Vehicle,
-    Consumable,
-    OneTime
-}
+using System.Collections;
 
 public class PerformanceShopManager : MonoBehaviour
 {
     public static PerformanceShopManager Instance { get; private set; }
 
-    [Header("UI References")]
-    public TextMeshProUGUI moneyText;
-    public Transform shopPanel;
-    public GameObject performanceItemSlotPrefab;
-    [SerializeField] private Button payButton; // 💸 징세 내변 버튼
+    [Header("탭별 패널")]
+    [SerializeField] private Transform vehiclePanel;
+    [SerializeField] private Transform consumablePanel;
+    [SerializeField] private Transform oneTimePanel;
+
+    [Header("슬롯 프리팹")]
     [SerializeField] private GameObject vehicleSlotPrefab;
     [SerializeField] private GameObject consumableSlotPrefab;
     [SerializeField] private GameObject oneTimeSlotPrefab;
 
-    [Header("Items")]
+    [Header("UI")]
+    [SerializeField] private TextMeshProUGUI moneyText;
+    [SerializeField] private TextMeshProUGUI turnStatusText;
+    [SerializeField] private TextMeshProUGUI paymentAmountText;
+    [SerializeField] private Button payButton;
+    private bool payButtonAssigned = false;
+
+    [Header("아이템 데이터")]
     public PerformanceItemSO[] allItems;
 
     private ShopTab currentTab = ShopTab.Vehicle;
-    public bool showOneTimeItems = false; // 해당 턴에만 OneTime 탭 표시
+    private const int totalTurnsPerRound = 5;
+    private bool isSubscribed = false;
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
+        if (Instance != null && Instance != this) Destroy(gameObject);
+        else Instance = this;
+
+        payButton.onClick.RemoveAllListeners(); // 💡 중복 방지
+        payButton.onClick.AddListener(() => TryPayNextStage()); // ✅ 람다로 고정
     }
 
-    private IEnumerator Start()
+    private void OnEnable()
     {
-        yield return null; // GameDataManager 처리 기다리기
+        if (!isSubscribed)
+        {
+            GameDataManager.OnDataLoaded += OnGameDataReady;
+            isSubscribed = true;
+        }
 
-        GenerateShopSlots();
+        // 💡 리스너는 오직 1번만 등록되도록 방지
+        if (!payButtonAssigned)
+        {
+            payButton.onClick.RemoveAllListeners(); // 혹시 남아있는 걸 제거
+            payButtonAssigned = true;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (isSubscribed)
+        {
+            GameDataManager.OnDataLoaded -= OnGameDataReady;
+            isSubscribed = false;
+        }
+    }
+
+    private void OnGameDataReady()
+    {   
+        Debug.Log("🚨 OnGameDataReady 호출됨");
+        vehiclePanel.gameObject.SetActive(true);
+        consumablePanel.gameObject.SetActive(false);
+        oneTimePanel.gameObject.SetActive(false);
+
         UpdateMoneyUI();
-        payButton.onClick.AddListener(TryPayNextStage);
+        UpdateTurnAndPaymentUI();
+        GenerateShopSlots();
     }
 
     public void OnTabSelected(int tabIndex)
     {
         currentTab = (ShopTab)tabIndex;
+
+        vehiclePanel.gameObject.SetActive(currentTab == ShopTab.Vehicle);
+        consumablePanel.gameObject.SetActive(currentTab == ShopTab.Consumable);
+        oneTimePanel.gameObject.SetActive(false);
+
         GenerateShopSlots();
     }
 
     private void GenerateShopSlots()
     {
-        foreach (Transform child in shopPanel)
+        Transform targetPanel = GetCurrentPanel();
+
+        foreach (Transform child in targetPanel)
             Destroy(child.gameObject);
 
         foreach (var item in allItems)
         {
             if (!IsItemInCurrentTab(item)) continue;
 
-            var slotPrefab = GetPrefabForItem(item.itemType);
-            var slot = Instantiate(slotPrefab, shopPanel);
-            var slotComponent = slot.GetComponent<PerformanceItemSlot>();
-            slotComponent.Setup(item);
-            if (item.itemType == ItemType.Consumable)
+            var prefab = GetPrefabForItem(item.itemType);
+            var slot = Instantiate(prefab, targetPanel);
+
+            if (slot.TryGetComponent(out PerformanceItemSlot generalSlot))
             {
-                slotComponent.EnableUseButton(() =>
+                generalSlot.Setup(item);
+
+                if (item.itemType == ItemType.Consumable)
                 {
-                    var ownedItem = GameDataManager.Instance.data.ownedItems.Find(x => x.itemId == item.name);
-                    if (ownedItem != null && ownedItem.count > 0)
+                    generalSlot.EnableUseButton(() =>
                     {
-                        ownedItem.count--;
-                        Debug.Log($"✨ {item.name} 사용함. 남은 수량: {ownedItem.count}");
+                        var ownedItem = GameDataManager.Instance.data.ownedItems.Find(x => x.itemId == item.name);
+                        if (ownedItem != null && ownedItem.count > 0)
+                        {
+                            ownedItem.count--;
+                            if (ownedItem.count <= 0)
+                                GameDataManager.Instance.data.ownedItems.Remove(ownedItem);
 
-                        if (ownedItem.count <= 0)
-                            GameDataManager.Instance.data.ownedItems.Remove(ownedItem);
-
-                        GameDataManager.Instance.Save();
-                        RefreshAllSlots();
-                    }
-                });
+                            GameDataManager.Instance.Save();
+                            PerformanceInventoryManager.Instance.LoadFromGameData(GameDataManager.Instance.data);
+                            RefreshAllSlots();
+                        }
+                    });
+                }
             }
         }
 
-        LayoutRebuilder.ForceRebuildLayoutImmediate(shopPanel.GetComponent<RectTransform>());
+        LayoutRebuilder.ForceRebuildLayoutImmediate(targetPanel.GetComponent<RectTransform>());
     }
 
+    private Transform GetCurrentPanel()
+    {
+        return currentTab switch
+        {
+            ShopTab.Vehicle => vehiclePanel,
+            ShopTab.Consumable => consumablePanel,
+            _ => vehiclePanel
+        };
+    }
 
     private bool IsItemInCurrentTab(PerformanceItemSO item)
     {
@@ -97,30 +145,23 @@ public class PerformanceShopManager : MonoBehaviour
         {
             ShopTab.Vehicle => item.itemType == ItemType.Permanent || item.itemType == ItemType.Vehicle,
             ShopTab.Consumable => item.itemType == ItemType.Consumable,
-            ShopTab.OneTime => showOneTimeItems && item.itemType == ItemType.OneTime,
             _ => false,
         };
     }
 
     public void BuySelectedItem(PerformanceItemSO item)
     {
-        if (PerformanceInventoryManager.Instance.IsOwned(item))
-        {
-            Debug.Log("이미 소유한 아이템입니다.");
-            return;
-        }
-
+        if (PerformanceInventoryManager.Instance.IsOwned(item)) return;
         if (GameDataManager.Instance.data.money < item.price)
         {
-            Debug.Log("골드 부족!");
+            Debug.Log("❌ 골드 부족");
             return;
         }
 
         GameDataManager.Instance.data.money -= item.price;
         PerformanceInventoryManager.Instance.BuyItem(item);
-        RefreshAllSlots();
-
         UpdateMoneyUI();
+        RefreshAllSlots();
     }
 
     public void EquipSelectedItem(PerformanceItemSO item)
@@ -131,53 +172,124 @@ public class PerformanceShopManager : MonoBehaviour
 
     private void RefreshAllSlots()
     {
-        foreach (Transform child in shopPanel)
+        Transform targetPanel = GetCurrentPanel();
+        PerformanceInventoryManager.Instance.LoadFromGameData(GameDataManager.Instance.data);
+
+        foreach (Transform child in targetPanel)
         {
-            PerformanceItemSlot slot = child.GetComponent<PerformanceItemSlot>();
-            if (slot != null)
+            if (child.TryGetComponent(out PerformanceItemSlot slot))
                 slot.Refresh();
         }
     }
 
     private void UpdateMoneyUI()
     {
-        if (GameDataManager.Instance == null || GameDataManager.Instance.data == null)
-        {
-            Debug.LogWarning("❗ GameDataManager 또는 data가 아직 초기화되지 않았습니다.");
-            return;
-        }
-
-        moneyText.text = GameDataManager.Instance.data.money.ToString() + "원";
-        Debug.Log("💰 돈 UI 갱신됨: " + moneyText.text);
+        moneyText.text = GameDataManager.Instance.data.money + "원";
     }
 
-    // 💸 집세 납부 로직
+    private void UpdateTurnAndPaymentUI()
+    {
+        int remainingTurns = totalTurnsPerRound - (GameDataManager.Instance.data.turn % totalTurnsPerRound);
+        string color = remainingTurns <= 1 ? "#FF5555" : "#55FF55";
+
+        turnStatusText.text = $"<color={color}>남은 턴: {remainingTurns} / {totalTurnsPerRound}</color>";
+        paymentAmountText.text = $"집세 : {GameDataManager.Instance.GetRequiredPayment()}원";
+    }
+
     public void TryPayNextStage()
     {
-        bool success = GameDataManager.Instance.TryPay();
+        Debug.Log($"[TryPayNextStage] 호출됨 - money: {GameDataManager.Instance.data.money}");
 
+        bool success = GameDataManager.Instance.TryPay();
         if (success)
         {
-            Debug.Log("✅ 납부 성공! 현재 납부 단계: " + GameDataManager.Instance.data.paidStageIndex);
             UpdateMoneyUI();
+            UpdateTurnAndPaymentUI();
         }
         else
         {
-            Debug.Log("❌ 돈이 부족하여 납부할 수 없습니다.");
+            Debug.Log("❌ 돈이 부족합니다.");
         }
     }
 
-    //프리팹 선택 분기
-// 🔧 이렇게 바꿔주세요
+
+    public void OnGameStartButtonClicked()
+    {
+        vehiclePanel.gameObject.SetActive(false);
+        consumablePanel.gameObject.SetActive(false);
+
+        ShowOneTimeItemSelection();
+        oneTimePanel.gameObject.SetActive(true);
+    }
+
+    public void OnOneTimeConfirmButtonClicked()
+    {
+        ApplySelectedOneTimeItems();
+        oneTimePanel.gameObject.SetActive(false);
+
+        StartCoroutine(DelayedStartGame());
+    }
+
+    private IEnumerator DelayedStartGame()
+    {
+        yield return null;
+        Debug.Log("🎮 게임 시작!");
+        // SceneManager.LoadScene("GameScene");
+    }
+
+    private void ShowOneTimeItemSelection()
+    {
+        foreach (Transform child in oneTimePanel)
+            Destroy(child.gameObject);
+
+        foreach (var item in allItems)
+        {
+            if (item.itemType != ItemType.OneTime) continue;
+
+            var slot = Instantiate(oneTimeSlotPrefab, oneTimePanel);
+            if (slot.TryGetComponent(out PerformanceOneTimeSlot oneTimeSlot))
+                oneTimeSlot.Setup(item);
+        }
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(oneTimePanel.GetComponent<RectTransform>());
+    }
+
+    public void ApplySelectedOneTimeItems()
+    {
+        var oneTimeSlots = Object.FindObjectsByType<PerformanceOneTimeSlot>(FindObjectsSortMode.None);
+
+        foreach (var slot in oneTimeSlots)
+        {
+            if (!slot.IsSelected) continue;
+
+            var data = slot.GetItemData();
+            if (GameDataManager.Instance.data.money >= data.price)
+            {
+                GameDataManager.Instance.data.money -= data.price;
+                GameDataManager.Instance.data.ownedItems.Add(new SerializableItem
+                {
+                    itemId = data.name,
+                    itemType = ItemType.OneTime,
+                    count = 1,
+                    isUnlocked = true,
+                    isEquipped = false
+                });
+
+                Debug.Log($"✅ {data.DisplayName} 선택됨 - {data.price}원 차감됨");
+            }
+        }
+
+        GameDataManager.Instance.Save();
+        UpdateMoneyUI();
+    }
+
     private GameObject GetPrefabForItem(ItemType itemType)
     {
         return itemType switch
         {
             ItemType.Consumable => consumableSlotPrefab,
             ItemType.OneTime => oneTimeSlotPrefab,
-            _ => vehicleSlotPrefab,
+            _ => vehicleSlotPrefab
         };
     }
-
-
 }

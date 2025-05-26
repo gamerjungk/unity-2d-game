@@ -1,45 +1,41 @@
 using UnityEngine;
-using System.IO;   
+using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement; 
+using UnityEngine.SceneManagement;
 
 public class GameDataManager : MonoBehaviour
 {
     public static GameDataManager Instance { get; private set; }
 
+    public static event Action OnDataLoaded; // ✅ 이벤트 추가
+
     public GameData data;
 
     void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-            Load();
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        Instance = this;
+        Load(); // 항상 실행
     }
+
 
     private void Start()
     {
-        // 한 프레임 뒤에 초기화
         StartCoroutine(DelayedInit());
     }
 
     private IEnumerator DelayedInit()
     {
-        yield return null; // 한 프레임 대기
+        yield return null;
         PerformanceInventoryManager.Instance?.LoadFromGameData(data);
+
+        OnDataLoaded?.Invoke(); // ✅ 데이터 초기화 완료 알림
     }
 
     public void Save()
     {
         SaveManager.Save(data);
-        //저장경로 로그로 보여주기
         Debug.Log("📁 저장경로: " + Application.persistentDataPath);
     }
 
@@ -55,22 +51,10 @@ public class GameDataManager : MonoBehaviour
             data.turn = 0;
             data.paidStageIndex = 0;
             data.currentRound = 1;
-            /*
-                        data.ownedItems = new List<SerializableItem>()
-                        {
-                            new SerializableItem
-                            {
-                                itemId = "StarterPack",
-                                count = 1,
-                                itemType = ItemType.Permanent,
-                                isEquipped = false,
-                                isUnlocked = true
-                            }
-                        };
-            */
             Save();
             PlayerPrefs.SetInt("HasPlayed", 1);
         }
+
         PerformanceInventoryManager.Instance?.LoadFromGameData(data);
     }
 
@@ -92,34 +76,40 @@ public class GameDataManager : MonoBehaviour
 
     public int GetRequiredPayment()
     {
-        // 예: 1단계당 1000원 증가
         return 1000 + (data.paidStageIndex * 1000);
     }
 
-
     public bool TryPay()
     {
-        int required = GetRequiredPayment();
+        int currentIndex = data.paidStageIndex;
+        int required = 1000 + (currentIndex * 1000); // 납부액 확정 (UI와 동일 기준)
+
+        Debug.Log($"납부 시도 - 현재 paidStageIndex: {currentIndex}, 납부액: {required}, 현재 보유금액: {data.money}");
+
         if (data.money >= required)
         {
             data.money -= required;
             data.paidStageIndex++;
+
+             Debug.Log($"납부 성공. 남은 금액: {data.money}, 다음 paidStageIndex: {data.paidStageIndex}");
+
             SaveManager.Save(data);
             return true;
         }
+        Debug.Log("돈 부족으로 납부 실패");
         return false;
     }
+
+
     public void ClearOneTimeItems()
     {
         int before = data.ownedItems.Count;
         data.ownedItems.RemoveAll(item => item.itemType == ItemType.OneTime);
         int after = data.ownedItems.Count;
-
         Debug.Log($"🧹 라운드 종료로 일회성 아이템 {before - after}개 제거됨");
     }
-    
-    // 게임 초기화
-        public void ResetGameData()
+
+    public void ResetGameData()
     {
         string path = Application.persistentDataPath + "/save.json";
         if (File.Exists(path))
@@ -134,5 +124,4 @@ public class GameDataManager : MonoBehaviour
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-
 }
