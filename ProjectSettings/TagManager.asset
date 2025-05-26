@@ -10,6 +10,7 @@ TagManager:
   - SideWalk
   - Destination
   - Ocean
+  - TrafficLight
   layers:
   - Default
   - TransparentFX
@@ -17,10 +18,10 @@ TagManager:
   - Road
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - Pedestrian
+  - Buliding
+  - Obstacle
+  - Player
   - 
   - 
   - 
