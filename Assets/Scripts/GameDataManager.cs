@@ -81,16 +81,25 @@ public class GameDataManager : MonoBehaviour
 
     public bool TryPay()
     {
-        int required = GetRequiredPayment();
+        int currentIndex = data.paidStageIndex;
+        int required = 1000 + (currentIndex * 1000); // 납부액 확정 (UI와 동일 기준)
+
+        Debug.Log($"납부 시도 - 현재 paidStageIndex: {currentIndex}, 납부액: {required}, 현재 보유금액: {data.money}");
+
         if (data.money >= required)
         {
             data.money -= required;
             data.paidStageIndex++;
+
+             Debug.Log($"납부 성공. 남은 금액: {data.money}, 다음 paidStageIndex: {data.paidStageIndex}");
+
             SaveManager.Save(data);
             return true;
         }
+        Debug.Log("돈 부족으로 납부 실패");
         return false;
     }
+
 
     public void ClearOneTimeItems()
     {

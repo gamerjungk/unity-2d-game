@@ -22,31 +22,52 @@ public class PerformanceShopManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI turnStatusText;
     [SerializeField] private TextMeshProUGUI paymentAmountText;
     [SerializeField] private Button payButton;
+    private bool payButtonAssigned = false;
 
     [Header("아이템 데이터")]
     public PerformanceItemSO[] allItems;
 
     private ShopTab currentTab = ShopTab.Vehicle;
     private const int totalTurnsPerRound = 5;
+    private bool isSubscribed = false;
 
     private void Awake()
     {
         if (Instance != null && Instance != this) Destroy(gameObject);
         else Instance = this;
+
+        payButton.onClick.RemoveAllListeners(); // 💡 중복 방지
+        payButton.onClick.AddListener(() => TryPayNextStage()); // ✅ 람다로 고정
     }
 
     private void OnEnable()
     {
-        GameDataManager.OnDataLoaded += OnGameDataReady;
+        if (!isSubscribed)
+        {
+            GameDataManager.OnDataLoaded += OnGameDataReady;
+            isSubscribed = true;
+        }
+
+        // 💡 리스너는 오직 1번만 등록되도록 방지
+        if (!payButtonAssigned)
+        {
+            payButton.onClick.RemoveAllListeners(); // 혹시 남아있는 걸 제거
+            payButtonAssigned = true;
+        }
     }
 
     private void OnDisable()
     {
-        GameDataManager.OnDataLoaded -= OnGameDataReady;
+        if (isSubscribed)
+        {
+            GameDataManager.OnDataLoaded -= OnGameDataReady;
+            isSubscribed = false;
+        }
     }
 
     private void OnGameDataReady()
-    {
+    {   
+        Debug.Log("🚨 OnGameDataReady 호출됨");
         vehiclePanel.gameObject.SetActive(true);
         consumablePanel.gameObject.SetActive(false);
         oneTimePanel.gameObject.SetActive(false);
@@ -54,14 +75,12 @@ public class PerformanceShopManager : MonoBehaviour
         UpdateMoneyUI();
         UpdateTurnAndPaymentUI();
         GenerateShopSlots();
-        payButton.onClick.AddListener(TryPayNextStage);
     }
 
     public void OnTabSelected(int tabIndex)
     {
         currentTab = (ShopTab)tabIndex;
 
-        // 탭 전환 시 패널 전환
         vehiclePanel.gameObject.SetActive(currentTab == ShopTab.Vehicle);
         consumablePanel.gameObject.SetActive(currentTab == ShopTab.Consumable);
         oneTimePanel.gameObject.SetActive(false);
@@ -179,6 +198,8 @@ public class PerformanceShopManager : MonoBehaviour
 
     public void TryPayNextStage()
     {
+        Debug.Log($"[TryPayNextStage] 호출됨 - money: {GameDataManager.Instance.data.money}");
+
         bool success = GameDataManager.Instance.TryPay();
         if (success)
         {
@@ -191,17 +212,12 @@ public class PerformanceShopManager : MonoBehaviour
         }
     }
 
-    // ==============================
-    // 👇 일회성 아이템 관련
-    // ==============================
 
     public void OnGameStartButtonClicked()
     {
-        // 다른 탭 패널들 숨기기
         vehiclePanel.gameObject.SetActive(false);
         consumablePanel.gameObject.SetActive(false);
 
-        // 일회성 패널 생성 및 보여주기
         ShowOneTimeItemSelection();
         oneTimePanel.gameObject.SetActive(true);
     }
@@ -240,7 +256,8 @@ public class PerformanceShopManager : MonoBehaviour
 
     public void ApplySelectedOneTimeItems()
     {
-        var oneTimeSlots = FindObjectsOfType<PerformanceOneTimeSlot>(true);
+        var oneTimeSlots = Object.FindObjectsByType<PerformanceOneTimeSlot>(FindObjectsSortMode.None);
+
         foreach (var slot in oneTimeSlots)
         {
             if (!slot.IsSelected) continue;
@@ -257,6 +274,7 @@ public class PerformanceShopManager : MonoBehaviour
                     isUnlocked = true,
                     isEquipped = false
                 });
+
                 Debug.Log($"✅ {data.DisplayName} 선택됨 - {data.price}원 차감됨");
             }
         }
