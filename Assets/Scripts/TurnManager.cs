@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TurnManager : MonoBehaviour
@@ -21,6 +22,11 @@ public class TurnManager : MonoBehaviour
                 GameManager.inst.uiManager.uiImages[8].fillAmount = 1f;     // ���� ���α׷����� ����
                 curTurn--;
                 isMidTurn = false;
+
+                if (curTurn <= 0)
+                {
+                    LoadSceneManager.Instance.ChangeScene("Shop 2");
+                }
             }
             else
             {
