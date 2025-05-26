@@ -256,8 +256,24 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 117868, guid: 15f754372833a4ce8be9c962ee0bb874, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 117868, guid: 15f754372833a4ce8be9c962ee0bb874, type: 3}
       propertyPath: m_TagString
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 125828, guid: 15f754372833a4ce8be9c962ee0bb874, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 134440, guid: 15f754372833a4ce8be9c962ee0bb874, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 166854, guid: 15f754372833a4ce8be9c962ee0bb874, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 428268, guid: 15f754372833a4ce8be9c962ee0bb874, type: 3}
       propertyPath: m_LocalScale.x

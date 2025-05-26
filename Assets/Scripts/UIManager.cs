@@ -24,7 +24,9 @@ public class UIManager : MonoBehaviour, IDragHandler, IPointerDownHandler, IPoin
         if(isAccel) {
             pressTime += Time.deltaTime;
             if (gearState == 4) GameManager.inst.player.Accelerate(pressTime);
+            else if (gearState == 3) GameManager.inst.player.Accelerate(0);
             else if (gearState == 2) GameManager.inst.player.Accelerate(-pressTime);
+            else if (gearState == 1) GameManager.inst.player.Accelerate(0);
         } else if(isBrake) {
             pressTime += Time.deltaTime;
             GameManager.inst.player.Brake();
