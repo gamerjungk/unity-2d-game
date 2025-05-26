@@ -20,12 +20,19 @@ public class DestinationManager : MonoBehaviour
 
     private readonly List<Transform> activeRoadNodes = new();
 
+    //추가
+    private Vector3 lastDestinationPosition;
+
     void Awake()
     {
         if (Instance == null) Instance = this;
         else { Destroy(gameObject); return; }
 
         RefreshRoadNodeList();
+
+        //추가
+        lastDestinationPosition = player.position;
+
         MoveDestination();          // 목적지 & NavMesh 세팅
     }
 
@@ -62,10 +69,27 @@ public class DestinationManager : MonoBehaviour
         Transform next = activeRoadNodes[Random.Range(0, activeRoadNodes.Count)];
         destinationMarker.position = next.position + Vector3.up * 0.3f;
 
+        destinationMarker.GetComponent<MoneyTrigger>()?.ResetTrigger();
+
         surface.BuildNavMesh();   // 경로 계산 전에 반드시 NavMesh 준비
         if (PathDrawer_m.Instance != null)
             PathDrawer_m.Instance.DrawPath(player, destinationMarker);
     }
 
-   
+    //[추가] 목적지 도달 시 호출 → 보상 계산 및 다음 목적지 이동
+    public void OnDestinationReached(Vector3 currentDestination)
+    {
+        float distance = Vector3.Distance(lastDestinationPosition, currentDestination);
+        int reward = Mathf.FloorToInt(distance + 0.5f) * 100;
+
+        GameManager.inst.AddMoney(reward);
+ 
+        Debug.Log($"보상 지급: {reward} (거리: {distance:F2})");
+
+
+        // 기준 위치 갱신
+        lastDestinationPosition = currentDestination;
+
+        MoveDestination();  // 다음 목적지 설정
+    }
 }
