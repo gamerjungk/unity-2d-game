@@ -1030,7 +1030,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 426.96313, y: -657.7501}
+  m_AnchoredPosition: {x: 425.91718, y: -657.7501}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &122699374
@@ -2421,50 +2421,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &633548072
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 633548074}
-  - component: {fileID: 633548076}
-  m_Layer: 0
-  m_Name: ScenLoader
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &633548074
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 633548072}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 200.20624, y: 193.7509, z: -2.0572414}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &633548076
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 633548072}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78bef684b56c1ac4cbcd846bfa97bd07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &707638030
 GameObject:
   m_ObjectHideFlags: 0
@@ -3995,6 +3951,7 @@ GameObject:
   - component: {fileID: 1060868816}
   - component: {fileID: 1060868815}
   - component: {fileID: 1060868814}
+  - component: {fileID: 1060868817}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -4066,7 +4023,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 633548076}
+      - m_Target: {fileID: 1060868817}
         m_TargetAssemblyTypeName: SceneLoaderBehaviour, Assembly-CSharp
         m_MethodName: SceneLoad
         m_Mode: 5
@@ -4116,6 +4073,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1060868811}
   m_CullTransparentMesh: 1
+--- !u!114 &1060868817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1060868811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78bef684b56c1ac4cbcd846bfa97bd07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1070322351
 GameObject:
   m_ObjectHideFlags: 0
@@ -7648,7 +7617,6 @@ SceneRoots:
   - {fileID: 1934151596}
   - {fileID: 1017962237}
   - {fileID: 607122621}
-  - {fileID: 633548074}
   - {fileID: 1870659094}
   - {fileID: 976421390}
   - {fileID: 952824410}
