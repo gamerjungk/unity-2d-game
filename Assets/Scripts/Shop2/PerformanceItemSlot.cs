@@ -188,6 +188,55 @@ public class PerformanceItemSlot : MonoBehaviour, IPointerClickHandler
 
     public void Refresh()
     {
-        UpdateActionButton();
+        if (itemData == null) return;
+
+        bool isEquipped = PerformanceInventoryManager.Instance.IsEquipped(itemData.category, itemData);
+        bool isOwned = PerformanceInventoryManager.Instance.IsOwned(itemData);
+
+        if (actionButton != null)
+        {
+            if (!isOwned)
+            {
+                actionButton.interactable = true;
+                actionButtonText.text = "구매";
+                actionButton.onClick.RemoveAllListeners();
+                actionButton.onClick.AddListener(() => PerformanceShopManager.Instance.BuySelectedItem(itemData));
+            }
+            else
+            {
+                actionButton.interactable = true; // ✅ 무조건 누를 수 있어야 함
+                actionButtonText.text = isEquipped ? "장착중" : "장착";
+
+                actionButton.onClick.RemoveAllListeners();
+
+                if (!isEquipped)
+                    actionButton.onClick.AddListener(() => PerformanceShopManager.Instance.EquipSelectedItem(itemData));
+            }
+        }
+
+        if (actionButton_Back != null)
+        {
+            if (!isOwned)
+            {
+                actionButton_Back.interactable = true;
+                actionButtonText_Back.text = "구매";
+                actionButton_Back.onClick.RemoveAllListeners();
+                actionButton_Back.onClick.AddListener(() => PerformanceShopManager.Instance.BuySelectedItem(itemData));
+            }
+            else
+            {
+                actionButton_Back.interactable = true;
+                actionButtonText_Back.text = isEquipped ? "장착중" : "장착";
+
+                actionButton_Back.onClick.RemoveAllListeners();
+
+                if (!isEquipped)
+                    actionButton_Back.onClick.AddListener(() => PerformanceShopManager.Instance.EquipSelectedItem(itemData));
+            }
+        }
+        Debug.Log($"[Refresh] {itemData.name} / isOwned: {isOwned}, isEquipped: {isEquipped}");
+
     }
+
+
 }
