@@ -49,13 +49,16 @@ public class PerformanceItemSlot : MonoBehaviour, IPointerClickHandler
         priceText.text = $"{itemData.price}G";
         descriptionText.text = itemData.DisplayDescription;
 
-        useButton.gameObject.SetActive(false); // 기본은 숨김
+        // ✅ null 체크 추가
+        if (useButton != null)
+            useButton.gameObject.SetActive(false);
 
         isFlipped = false;
         frontFace.SetActive(true);
         backFace.SetActive(false);
         transform.localRotation = Quaternion.identity;
     }
+
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -149,6 +152,13 @@ public class PerformanceItemSlot : MonoBehaviour, IPointerClickHandler
 
     public void UpdateActionButton()
     {
+        if (itemData.itemType == ItemType.OneTime)
+        {
+            actionButton.gameObject.SetActive(false);
+            actionButton_Back.gameObject.SetActive(false);
+            return;
+        }
+
         bool isOwned = PerformanceInventoryManager.Instance.IsOwned(itemData);
         bool isEquipped = PerformanceInventoryManager.Instance.IsEquipped(itemData.category, itemData);
 
@@ -169,6 +179,8 @@ public class PerformanceItemSlot : MonoBehaviour, IPointerClickHandler
 
     public void EnableUseButton(UnityEngine.Events.UnityAction onClick)
     {
+        if (useButton == null) return;
+
         useButton.gameObject.SetActive(true);
         useButton.onClick.RemoveAllListeners();
         useButton.onClick.AddListener(onClick);
