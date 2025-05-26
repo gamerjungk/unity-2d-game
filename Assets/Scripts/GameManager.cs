@@ -12,8 +12,8 @@ public class GameManager : MonoBehaviour
     public TurnManager turnManager;
     public UIManager uiManager;
     public static float fuel = 70;
-    public static int gold = 100;
-    public static int money = 10000;
+    //public static int gold = 100;
+    //public static int money = 10000;
 
     private void Awake()
     {
@@ -37,11 +37,7 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1;
     }
-    public  void AddMoney(int amount)
-    {
-        money += amount;
-        Debug.Log("현재 돈: " + money);
-    }
+
     public void GameOver()
     {
         Time.timeScale = 1; // 혹시 멈춰있을 수도 있으니 복원

@@ -82,7 +82,7 @@ public class DestinationManager : MonoBehaviour
         float distance = Vector3.Distance(lastDestinationPosition, currentDestination);
         int reward = Mathf.FloorToInt(distance + 0.5f) * 100;
 
-        GameManager.inst.AddMoney(reward);
+        GameDataManager.Instance.AddMoney(reward);
  
         Debug.Log($"보상 지급: {reward} (거리: {distance:F2})");
 

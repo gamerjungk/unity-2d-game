@@ -75,7 +75,7 @@ public class ShopManager : MonoBehaviour
             return;
         }
 
-        if (GameManager.gold < item.price)
+        if (GameDataManager.Instance.data.gold < item.price)
         {
             ShowPopup("골드가 부족합니다!");
             return;
@@ -93,7 +93,7 @@ public class ShopManager : MonoBehaviour
 
     private void ConfirmPurchase()
     {
-        GameManager.gold -= pendingItem.price;
+        GameDataManager.Instance.data.gold -= pendingItem.price;
         PlayerInventory.AddItem(pendingItem);
         UpdateGoldUI();
         RefreshShopSlots();
@@ -135,6 +135,6 @@ public class ShopManager : MonoBehaviour
 
     private void UpdateGoldUI()
     {
-        goldText.text = GameManager.gold.ToString() + "G";
+        goldText.text = GameDataManager.Instance.data.gold.ToString() + "G";
     }
 }

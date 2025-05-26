@@ -45,10 +45,16 @@ public class PerformanceShopManager : MonoBehaviour
         if (!isSubscribed)
         {
             GameDataManager.OnDataLoaded += OnGameDataReady;
+            PerformanceInventoryManager.OnInventoryLoaded += RefreshAllSlots;
             isSubscribed = true;
         }
+        if (GameDataManager.Instance != null && GameDataManager.Instance.IsInitialized)
+        {
+            Debug.Log("⚠️ OnDataLoaded 이벤트 놓쳐서 수동으로 호출");
+            OnGameDataReady();
+        }
 
-        // 💡 리스너는 오직 1번만 등록되도록 방지
+        // 리스너는 오직 1번만 등록되도록 방지
         if (!payButtonAssigned)
         {
             payButton.onClick.RemoveAllListeners(); // 혹시 남아있는 걸 제거
@@ -61,12 +67,13 @@ public class PerformanceShopManager : MonoBehaviour
         if (isSubscribed)
         {
             GameDataManager.OnDataLoaded -= OnGameDataReady;
+            PerformanceInventoryManager.OnInventoryLoaded -= RefreshAllSlots;
             isSubscribed = false;
         }
     }
 
     private void OnGameDataReady()
-    {   
+    {
         Debug.Log("🚨 OnGameDataReady 호출됨");
         vehiclePanel.gameObject.SetActive(true);
         consumablePanel.gameObject.SetActive(false);
@@ -97,6 +104,7 @@ public class PerformanceShopManager : MonoBehaviour
 
         foreach (var item in allItems)
         {
+            Debug.Log($"[CHECK] item.name = {item.name}, itemId = {item.itemId}, isOwned: {PerformanceInventoryManager.Instance.IsOwned(item)}");
             if (!IsItemInCurrentTab(item)) continue;
 
             var prefab = GetPrefabForItem(item.itemType);
@@ -110,7 +118,7 @@ public class PerformanceShopManager : MonoBehaviour
                 {
                     generalSlot.EnableUseButton(() =>
                     {
-                        var ownedItem = GameDataManager.Instance.data.ownedItems.Find(x => x.itemId == item.name);
+                        var ownedItem = GameDataManager.Instance.data.ownedItems.Find(x => x.itemId == item.itemId);
                         if (ownedItem != null && ownedItem.count > 0)
                         {
                             ownedItem.count--;
@@ -172,8 +180,9 @@ public class PerformanceShopManager : MonoBehaviour
 
     private void RefreshAllSlots()
     {
+        Debug.Log("🔁 RefreshAllSlots 호출됨");
+
         Transform targetPanel = GetCurrentPanel();
-        PerformanceInventoryManager.Instance.LoadFromGameData(GameDataManager.Instance.data);
 
         foreach (Transform child in targetPanel)
         {
@@ -182,12 +191,12 @@ public class PerformanceShopManager : MonoBehaviour
         }
     }
 
-    private void UpdateMoneyUI()
+    public void UpdateMoneyUI()
     {
         moneyText.text = GameDataManager.Instance.data.money + "원";
     }
 
-    private void UpdateTurnAndPaymentUI()
+    public void UpdateTurnAndPaymentUI()
     {
         int remainingTurns = totalTurnsPerRound - (GameDataManager.Instance.data.turn % totalTurnsPerRound);
         string color = remainingTurns <= 1 ? "#FF5555" : "#55FF55";
@@ -291,5 +300,10 @@ public class PerformanceShopManager : MonoBehaviour
             ItemType.OneTime => oneTimeSlotPrefab,
             _ => vehicleSlotPrefab
         };
+    }
+        private void OnDataReloadedExternally()
+    {
+        Debug.Log("🔄 외부에서 데이터가 갱신됨, 상점 UI 다시 생성");
+        OnGameDataReady(); // 전체 다시 초기화해서 UI 재생성
     }
 }

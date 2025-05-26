@@ -9,14 +9,25 @@ public class GameDataManager : MonoBehaviour
 {
     public static GameDataManager Instance { get; private set; }
 
-    public static event Action OnDataLoaded; // ✅ 이벤트 추가
+    public static event Action OnDataLoaded; // 이벤트 추가
+    public static event Action OnDataReloaded;
+    public bool IsInitialized { get; private set; } = false;
 
     public GameData data;
 
-    void Awake()
+    private void Awake()
     {
+        // 중복 제거
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
-        Load(); // 항상 실행
+        DontDestroyOnLoad(gameObject); // 씬 전환에도 유지
+
+        Load(); // 항상 먼저 실행
     }
 
 
@@ -28,9 +39,13 @@ public class GameDataManager : MonoBehaviour
     private IEnumerator DelayedInit()
     {
         yield return null;
-        PerformanceInventoryManager.Instance?.LoadFromGameData(data);
 
-        OnDataLoaded?.Invoke(); // ✅ 데이터 초기화 완료 알림
+        // ❗다른 시스템보다 늦게 실행되도록 1프레임 대기
+        // PerformanceInventoryManager.Instance?.LoadFromGameData(data);
+        IsInitialized = true;
+
+        Debug.Log("✅ GameDataManager 초기화 완료");
+        OnDataLoaded?.Invoke();
     }
 
     public void Save()
@@ -43,7 +58,7 @@ public class GameDataManager : MonoBehaviour
     {
         data = SaveManager.Load();
 
-        if (IsFirstPlay())
+        if (IsFirstPlay() || data.ownedItems == null || data.ownedItems.Count == 0)
         {
             Debug.Log("🎉 최초 실행 - 기본값 세팅");
             data.gold = 100;
@@ -51,28 +66,21 @@ public class GameDataManager : MonoBehaviour
             data.turn = 0;
             data.paidStageIndex = 0;
             data.currentRound = 1;
+            data.ownedItems = new List<SerializableItem>();
+
             Save();
             PlayerPrefs.SetInt("HasPlayed", 1);
+
+            OnDataReloaded?.Invoke(); // ✅ 꼭 있어야 함
         }
 
         PerformanceInventoryManager.Instance?.LoadFromGameData(data);
     }
 
-    private bool IsFirstPlay()
-    {
-        return PlayerPrefs.GetInt("HasPlayed", 0) == 0;
-    }
 
-    void OnApplicationPause(bool pause)
-    {
-        if (pause)
-            Save();
-    }
-
-    void OnApplicationQuit()
-    {
-        Save();
-    }
+    private bool IsFirstPlay() => PlayerPrefs.GetInt("HasPlayed", 0) == 0;
+    private void OnApplicationPause(bool pause) { if (pause) Save(); }
+    private void OnApplicationQuit() { Save(); }
 
     public int GetRequiredPayment()
     {
@@ -91,7 +99,7 @@ public class GameDataManager : MonoBehaviour
             data.money -= required;
             data.paidStageIndex++;
 
-             Debug.Log($"납부 성공. 남은 금액: {data.money}, 다음 paidStageIndex: {data.paidStageIndex}");
+            Debug.Log($"납부 성공. 남은 금액: {data.money}, 다음 paidStageIndex: {data.paidStageIndex}");
 
             SaveManager.Save(data);
             return true;
@@ -122,6 +130,17 @@ public class GameDataManager : MonoBehaviour
         PlayerPrefs.Save();
         Debug.Log("🧼 PlayerPrefs 초기화됨");
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        PerformanceInventoryManager.Instance.ClearAll();
+        
+        Load(); // ✅ 다시 불러오기
+        OnDataReloaded?.Invoke(); // ✅ 다른 시스템에게 알려줌
     }
+    
+
+    public void AddMoney(int amount)
+    {
+        data.money += amount;
+        Debug.Log("현재 돈: " + data.money);
+    }
+    
 }

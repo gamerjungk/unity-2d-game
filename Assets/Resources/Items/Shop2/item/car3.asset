@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68110b16d340845b6ac9066b99c89d9b, type: 3}
+  m_Name: car3
+  m_EditorClassIdentifier: 
+  itemId: car3
+  image: {fileID: 21300000, guid: 1ed9ba05136f04601a60ca02cfee2fd7, type: 3}
+  category: {fileID: 11400000, guid: 826519c5a826740a195ad3d2534c4a14, type: 2}
+  price: 100
+  speed: 60
+  efficiency: 70
+  capacity: 80
+  itemType: 3
+  itemNameKR: "\uC790\uB3D9\uCC28"
+  itemNameEN: car
+  descriptionKR: 
+  descriptionEN: 

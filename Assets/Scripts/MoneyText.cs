@@ -7,6 +7,6 @@ public class MoneyDisplay : MonoBehaviour
 
     void Update()
     {
-        moneyText.text = "Money: " + GameManager.money.ToString();
+        moneyText.text = "Money: " + GameDataManager.Instance.data.money.ToString();
     }
 }
