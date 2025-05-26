@@ -37,7 +37,11 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1;
     }
-
+    public  void AddMoney(int amount)
+    {
+        money += amount;
+        Debug.Log("현재 돈: " + money);
+    }
     public void GameOver()
     {
         Time.timeScale = 1; // 혹시 멈춰있을 수도 있으니 복원
