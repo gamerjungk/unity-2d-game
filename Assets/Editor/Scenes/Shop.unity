@@ -398,6 +398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a9fe78e4f0934a1db7cbf56da0b0ccb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skipSeconds: 0
 --- !u!1 &99139720
 GameObject:
   m_ObjectHideFlags: 0
@@ -2507,7 +2508,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Polygon
+          m_StringArgument: Polygon 1
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1265502594
