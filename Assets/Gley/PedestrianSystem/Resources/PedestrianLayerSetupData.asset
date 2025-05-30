@@ -12,19 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 349c2a327304e7e44b7d699cfcfd22a0, type: 3}
   m_Name: PedestrianLayerSetupData
   m_EditorClassIdentifier: 
-  Edited: 0
+  Edited: 1
   GroundLayers:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 32768
   PedestrianLayers:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 64
   BuildingsLayers:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 256
   ObstaclesLayers:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 512
   PlayerLayers:
     serializedVersion: 2
-    m_Bits: 4096
+    m_Bits: 1024
