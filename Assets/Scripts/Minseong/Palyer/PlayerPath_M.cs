@@ -2,19 +2,16 @@ using UnityEngine;
 
 public class PlayerPath : MonoBehaviour
 {
-    [SerializeField] private float arrivalRadius = 1.2f;   // 필요시 조정
+    [SerializeField] private float arriveRadius = 1.2f;
 
     private void Update()
     {
         var dm = DestinationManager.Instance;
-        if (dm == null) return;
+        if (dm == null || dm.CurrentTarget == null) return;
 
-        Transform dest = dm.DestinationMarker;
-        if (dest == null) return;
-
-        if (Vector3.Distance(transform.position, dest.position) <= arrivalRadius)
+        if (Vector3.Distance(transform.position, dm.CurrentTarget.position) <= arriveRadius)
         {
-            dm.MoveDestination();
+            dm.ArrivedCurrentTarget();
         }
     }
 }
