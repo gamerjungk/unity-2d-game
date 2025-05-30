@@ -5,6 +5,7 @@ namespace Gley.TrafficSystem
 	public enum VehicleTypes
 	{
 		Car,
+		Truch,
 	}
 }
 #endif

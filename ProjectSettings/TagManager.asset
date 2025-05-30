@@ -11,6 +11,9 @@ TagManager:
   - Destination
   - Ocean
   - TrafficLight
+  - Terrain
+  - Node
+  - Cell
   layers:
   - Default
   - TransparentFX
@@ -19,14 +22,14 @@ TagManager:
   - Water
   - UI
   - Pedestrian
+  - Traffic
   - Buliding
   - Obstacle
   - Player
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Terrain
+  - Node
+  - Road
+  - Cell
   - 
   - 
   - 
