@@ -29,6 +29,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Editor/Scenes/GameOverScene.unity
     guid: 2c7d6e64a13f6164b9a828f7c4915bca
+  - enabled: 1
+    path: Assets/Editor/Scenes/Polygon 1.unity
+    guid: f173e0ced1d3ad44496b948b4121c14d
   m_configObjects:
     com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000, guid: 42ea2a3c5e2d28f4a96ee30a785b069c, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: f3f0f34d093db6c4ebf5389231a49fe0, type: 2}

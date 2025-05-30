@@ -29,12 +29,34 @@ public class ShopManager : MonoBehaviour
         else Instance = this;
     }
 
+    private void OnEnable()
+    {
+        GameDataManager.OnDataLoaded += OnDataReady;
+        GameDataManager.OnDataReloaded += OnDataReady;
+
+        if (GameDataManager.Instance != null && GameDataManager.Instance.IsInitialized)
+        {
+            OnDataReady();
+        }
+    }
+
+    private void OnDisable()
+    {
+        GameDataManager.OnDataLoaded -= OnDataReady;
+        GameDataManager.OnDataReloaded -= OnDataReady;
+    }
+
+    private void OnDataReady()
+    {
+        PlayerInventory.LoadFromGameData(GameDataManager.Instance.data);
+        UpdateGoldUI();
+        RefreshShopSlots();
+    }
+
     private void Start()
     {
         popupPanel.SetActive(false);
         confirmPopupPanel.SetActive(false);
-        UpdateGoldUI();
-        GenerateShopSlots();
     }
 
     private void GenerateShopSlots()
@@ -59,14 +81,11 @@ public class ShopManager : MonoBehaviour
                 slot.GetComponent<ItemSlot>().Setup(item);
                 Debug.Log("슬롯 생성 성공: " + item.itemName);
             }
-            
         }
         if (bottomSpacerPrefab != null)
             Instantiate(bottomSpacerPrefab, shopPanel);
     }
 
-    
-    
     public void BuyItem(ItemSO item)
     {
         if (PlayerInventory.GetCount(item) >= item.maxCount)
@@ -95,6 +114,7 @@ public class ShopManager : MonoBehaviour
     {
         GameDataManager.Instance.data.gold -= pendingItem.price;
         PlayerInventory.AddItem(pendingItem);
+        GameDataManager.Instance.Save();
         UpdateGoldUI();
         RefreshShopSlots();
         confirmPopupPanel.SetActive(false);
@@ -112,15 +132,10 @@ public class ShopManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        // 레이아웃 깨짐 방지용 - 레이아웃 강제 업데이트
         Canvas.ForceUpdateCanvases();
-
         GenerateShopSlots();
-
-        // 재배치 직후 다시 강제 레이아웃 계산
         LayoutRebuilder.ForceRebuildLayoutImmediate(shopPanel.GetComponent<RectTransform>());
     }
-
 
     private void ShowPopup(string message)
     {
