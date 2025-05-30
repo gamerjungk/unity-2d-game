@@ -50,11 +50,11 @@ MonoBehaviour:
   ShowPriority: 0
   ShowVehicles: 0
   ViewOtherRoads: 0
-  ViewRoadLanes: 0
-  ViewRoadWaypoints: 0
+  ViewRoadLanes: 1
+  ViewRoadWaypoints: 1
   ViewLabels: 0
   PathFindingEnabled: 0
-  WaypointDistance: 4
-  LaneWidth: 4
+  WaypointDistance: 5
+  LaneWidth: 10
   MoveTool: 1
-  GlobalPedestrianList: 
+  GlobalPedestrianList: 00000000

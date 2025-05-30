@@ -30,8 +30,8 @@ TagManager:
   - Node
   - Road
   - Cell
-  - 
-  - 
+  - sidewalk
+  - FootCollider
   - 
   - 
   - 

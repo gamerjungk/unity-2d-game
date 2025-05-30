@@ -38,7 +38,7 @@ public class DestinationUI_M : MonoBehaviour
         for (int i = 0; i < buttons.Count; i++)
         {
             float dist = Vector3.Distance(playerPos, manager.Markers[i].position);
-            buttons[i].SetLabel($"배달지{i + 1}   {dist:0} m");
+            buttons[i].SetLabel($"#{i + 1}   {dist:0} m");
 
             Color c = buttons[i].GetComponent<Image>().color;
             c.a = (i == selectedIdx) ? 1f : 0.55f;   // 선택-버튼만 진하게
