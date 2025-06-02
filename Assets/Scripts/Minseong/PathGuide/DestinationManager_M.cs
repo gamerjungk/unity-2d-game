@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -19,6 +20,7 @@ public class DestinationManager : MonoBehaviour
     [Header("Option")]
     [Tooltip("목적지끼리 최소 거리(m)")]
     [Range(1, 50)] public float minDistanceBetween = 12f;
+    private Vector3? lastTargetPosition = null;
 
     /* ────────── 런타임 상태 ────────── */
     readonly List<Transform> roadNodes = new();   // 현재 활성 도로노드
@@ -49,9 +51,10 @@ public class DestinationManager : MonoBehaviour
         RefreshRoadNodeList();
         PlaceAllMarkersRandom();
         SelectTarget(0);                   // 기본 목표
+        lastTargetPosition = player.position;
     }
 
-    #endregion
+    #endregion  
     /* ===================================================================== */
 
     /* ===================================================================== */
@@ -72,7 +75,33 @@ public class DestinationManager : MonoBehaviour
     {
         if (CurrentTarget == null) return;
 
+        Vector3 currentPos = CurrentTarget.position;
+
+        if (lastTargetPosition.HasValue)
+        {
+            // 유클리드 거리 계산
+            float dx = currentPos.x - lastTargetPosition.Value.x;
+            float dy = currentPos.y - lastTargetPosition.Value.y;
+            float dz = currentPos.z - lastTargetPosition.Value.z;
+            float distance = Mathf.Sqrt(dx * dx + dy * dy + dz * dz);
+
+            int reward = Mathf.RoundToInt(distance * 100);
+            GameDataManager.Instance.AddMoney(reward);
+
+            Debug.Log($"도착한 마커 거리: {distance:F2}m → 보상 {reward} 지급");
+        }
+        else
+        {
+            Debug.Log("🚩 최초 도착: 보상 없음 (거리 기준 없음)");
+        }
+
+        // 이번 마커 위치를 다음 비교 기준으로 저장
+        lastTargetPosition = currentPos;
+
+        // 마커 이동
         MoveMarkerRandom(CurrentTarget);
+
+        // 경로 그리기
         PathDrawer_m.Instance?.DrawPath(player, CurrentTarget);
     }
 

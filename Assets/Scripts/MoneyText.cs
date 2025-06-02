@@ -26,7 +26,7 @@ public class MoneyDisplay : MonoBehaviour
         if (currentMoney != cachedMoney)
         {
             cachedMoney = currentMoney;
-            moneyText.text = "Money : {currentMoney}";
+            moneyText.text = $"Money : {currentMoney}";
         }
     }
 }
