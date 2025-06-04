@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1762387864601162889
+--- !u!1 &1227578598039167221
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4342218632862487417}
-  - component: {fileID: 2165548265068469080}
+  - component: {fileID: 7122363845956349382}
+  - component: {fileID: 5719628648407648866}
   m_Layer: 6
   m_Name: FrontTrigger
   m_TagString: Untagged
@@ -17,13 +17,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4342218632862487417
+--- !u!4 &7122363845956349382
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1762387864601162889}
+  m_GameObject: {fileID: 1227578598039167221}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.8967766, z: 0}
@@ -32,13 +32,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1430335019448432340}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &2165548265068469080
+--- !u!65 &5719628648407648866
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1762387864601162889}
+  m_GameObject: {fileID: 1227578598039167221}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -266,6 +266,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 123474, guid: 4c0e3eca026348d45adec14e11046ab2, type: 3}
+      propertyPath: m_TagString
+      value: Pedestrian
+      objectReference: {fileID: 0}
     - target: {fileID: 123804, guid: 4c0e3eca026348d45adec14e11046ab2, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -492,7 +496,7 @@ PrefabInstance:
       addedObject: {fileID: 3888555633222806027}
     - targetCorrespondingSourceObject: {fileID: 455626, guid: 4c0e3eca026348d45adec14e11046ab2, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4342218632862487417}
+      addedObject: {fileID: 7122363845956349382}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 123474, guid: 4c0e3eca026348d45adec14e11046ab2, type: 3}
       insertIndex: -1
