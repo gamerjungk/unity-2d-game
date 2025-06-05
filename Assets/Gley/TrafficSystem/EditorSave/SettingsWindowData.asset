@@ -54,20 +54,21 @@ MonoBehaviour:
   ViewRoadLanes: 0
   ViewRoadWaypoints: 1
   ViewLabels: 0
-  PathFindingEnabled: 0
+  PathFindingEnabled: 1
   WaypointDistance: 4
-  LaneWidth: 4
+  LaneWidth: 5
   MoveTool: 1
   speedRoutes:
     RoutesColor:
+    - {r: 1, g: 0, b: 0, a: 1}
     - {r: 1, g: 1, b: 1, a: 1}
-    Active: 01
+    Active: 0101
   showOtherLanes: 0
   showSpeed: 0
   viewRoadLaneChanges: 1
   leftSideTraffic: 0
   maxSpeed: 50
-  nrOfLanes: 2
+  nrOfLanes: 4
   otherLaneLinkDistance: 1
   globalCarList: 
   showAllIntersections: 0

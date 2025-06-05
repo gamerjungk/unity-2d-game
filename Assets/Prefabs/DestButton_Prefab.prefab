@@ -65,10 +65,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '#1 00 m'
+  m_text: "\uD53D\uC5C5\uC9C01 00 m"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: afd9dea235efe4d93ad3648c721a4e0d, type: 2}
+  m_sharedMaterial: {fileID: -6759707758374398170, guid: afd9dea235efe4d93ad3648c721a4e0d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -270,6 +270,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88898873454958e44b7eb98be8bc5001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  index: 0
-  ui: {fileID: 0}
   label: {fileID: 3723149817712863183}
