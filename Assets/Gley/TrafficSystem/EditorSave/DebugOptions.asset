@@ -12,18 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dee86a1dde50364fb4b2a27344026f5, type: 3}
   m_Name: DebugOptions
   m_EditorClassIdentifier: 
-  debug: 0
-  debugSpeed: 0
+  debug: 1
+  debugSpeed: 1
   debugBehaviours: 0
   debugIntersections: 0
-  debugWaypoints: 0
-  debugDisabledWaypoints: 0
+  debugWaypoints: 1
+  debugDisabledWaypoints: 1
   drawBodyForces: 0
   debugDensity: 0
-  debugPathFinding: 0
-  DebugSpawnWaypoints: 0
+  debugPathFinding: 1
+  DebugSpawnWaypoints: 1
   DebugPlayModeWaypoints: 0
   ShowIndex: 0
   ShowPosition: 0
   ShowBlinkers: 0
-  DebugGiveWay: 0
+  DebugGiveWay: 1
