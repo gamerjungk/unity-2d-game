@@ -9,7 +9,8 @@ public class UIManager : MonoBehaviour, IDragHandler, IPointerDownHandler, IPoin
     public float maxSteerAngle = 180f, wheelAngle = 0f, lastWheelAngle = 0f, pressTime = 0f; // 최대 회전 각도 , 현재 핸들 각도
     public int gearState = 4;       // 1: P     2: R    3: N    4: D
     private bool isAccel = false, isBrake = false, isHandling = false, isGear = false;
-
+    public float wheelDelta = 0f;
+    public float prevWheelAngle = 0f;  
     void Start()
     {
         uiImages = GetComponentsInChildren<Image>();    // 1: accel    2: brake    3: handle   4: gear  5: gearStick     6: fuel     7: fuelStick     8: turnBar
@@ -19,10 +20,19 @@ public class UIManager : MonoBehaviour, IDragHandler, IPointerDownHandler, IPoin
     {
         
         turnText.text = string.Format("cur\nTurn: " + GameManager.inst.turnManager.curTurn);
-        uiImages[3].rectTransform.localEulerAngles = new Vector3(0, 0, wheelAngle);     // 실시간으로 핸들 회전
-        if (isHandling)
-            GameManager.inst.player.Handling(wheelAngle);
+        uiImages[3].rectTransform.localEulerAngles = new Vector3(0, 0, wheelAngle);  
         
+        if (isHandling)
+        {
+            
+            wheelDelta = wheelAngle - prevWheelAngle;
+            GameManager.inst.player.Handling(wheelDelta); 
+            prevWheelAngle = wheelAngle;
+        }
+        // if (isHandling)
+        // {
+        //     GameManager.inst.player.Handling(wheelAngle);
+        // }
         uiImages[7].rectTransform.rotation = Quaternion.Euler(0, 0, 70f - 2 * GameManager.fuel);
         if(isAccel) {
             pressTime += Time.deltaTime;
@@ -94,6 +104,7 @@ public class UIManager : MonoBehaviour, IDragHandler, IPointerDownHandler, IPoin
         {
             isHandling = true;
             lastWheelAngle = GetAngle(eventData.position);
+            prevWheelAngle = wheelAngle; 
         }
         if (IsPointerOn(eventData, uiImages[4]))
         {
@@ -106,6 +117,7 @@ public class UIManager : MonoBehaviour, IDragHandler, IPointerDownHandler, IPoin
         if(IsPointerOn(eventData, uiImages[3])) {
         float newAngle = GetAngle(eventData.position);   
         float deltaAngle = Mathf.DeltaAngle(lastWheelAngle, newAngle);
+
         wheelAngle = Mathf.Clamp(wheelAngle + deltaAngle, -maxSteerAngle, maxSteerAngle);
         uiImages[3].rectTransform.localEulerAngles = new Vector3(0, 0, wheelAngle);                 // 핸들 회전
         lastWheelAngle = newAngle;

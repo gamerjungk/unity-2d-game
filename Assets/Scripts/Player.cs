@@ -58,8 +58,13 @@ public class Player : MonoBehaviour
         currentSpeed = Mathf.Lerp(currentSpeed, 0f, deceleration * Time.deltaTime);
     }
 
-    public void Handling(float angle)
+    public void Handling(float deltaAngle) // 변화량 전달
     {
-        targetAngle = -angle;
+        targetAngle -= deltaAngle * steerSensitivity; //후 저장해서 각도를 설정함
     }
+    // 고정 각도 사용 (기존 내용)
+    // public void Handling(float angle)
+    // {
+    //     targetAngle = -angle;
+    // }
 }
