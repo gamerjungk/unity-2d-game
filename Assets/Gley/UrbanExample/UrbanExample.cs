@@ -1,3 +1,4 @@
+using Gley.TrafficSystem;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -70,6 +71,16 @@ namespace Gley.UrbanSystem.Internal
                     TrafficSystem.API.SetCamera(_player);
                     PedestrianSystem.API.SetCamera(_player);
                 }
+            }
+
+            if (Input.GetKeyDown(KeyCode.I))
+            {
+                API.StartVehicleBehaviour<IgnoreTrafficRules>(_vehicleToFollow);
+            }
+
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+                API.StopVehicleBehaviour<IgnoreTrafficRules>(_vehicleToFollow);
             }
 
             if (Input.GetKeyDown(KeyCode.Escape))

@@ -24,7 +24,8 @@ namespace Gley.TrafficSystem
                 new SlowDownAndStop(),
                 new CurveSlowDown(),
                 new Reverse(),
-                new ClearPath()
+                new ClearPath(),
+                new IgnoreTrafficRules(),
             };
         }
     }

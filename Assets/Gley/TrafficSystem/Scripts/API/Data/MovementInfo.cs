@@ -30,6 +30,7 @@ namespace Gley.TrafficSystem
         private float _originalOffset;
         private float _correctionPercent;
         private bool _hasPath;
+        private bool _ignoreRuls;
 
         public Vector3 OldPosition { get; private set; }
         public int OldWaypointIndex { get; private set; }
@@ -152,6 +153,11 @@ namespace Gley.TrafficSystem
         public Vector3 GetFirstPosition()
         {
             return GetPosition(_activePosition);
+        }
+
+        public void SetIgnoreRules(bool ignoreRules)
+        {
+            _ignoreRuls = ignoreRules;
         }
 
 
@@ -697,6 +703,11 @@ namespace Gley.TrafficSystem
             if (_activePosition <= 0)
             {
                 return false;
+            }
+
+            if(_ignoreRuls == true)
+            {
+                return true;
             }
 
             if (_stop[0] == true)
