@@ -988,7 +988,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 35.05
+  m_fontSize: 41.65
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1074,7 +1074,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 340.77176, y: -657.75006}
+  m_AnchoredPosition: {x: 426.1173, y: -657.75006}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &122699374
@@ -2687,7 +2687,7 @@ GameObject:
   - component: {fileID: 719017141}
   - component: {fileID: 719017140}
   m_Layer: 5
-  m_Name: StartButton
+  m_Name: ReadyButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2710,7 +2710,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.7068168, y: 0.088541664}
   m_AnchorMax: {x: 0.8805688, y: 0.110416666}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &719017140
@@ -2759,7 +2759,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1092116061}
         m_TargetAssemblyTypeName: PerformanceShopManager, Assembly-CSharp
-        m_MethodName: OnGameStartButtonClicked
+        m_MethodName: OnGamePrepareButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2894,7 +2894,7 @@ GameObject:
   - component: {fileID: 751851905}
   - component: {fileID: 751851904}
   m_Layer: 5
-  m_Name: StartButton
+  m_Name: ReadyButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4195,7 +4195,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 70.4
+  m_fontSize: 72
   m_fontSizeBase: 80
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -4624,6 +4624,8 @@ MonoBehaviour:
   turnStatusText: {fileID: 118831086}
   paymentAmountText: {fileID: 1879316788}
   payButton: {fileID: 1294440651}
+  gamePrepareButton: {fileID: 719017138}
+  gameStartButton: {fileID: 1515896088}
   allItems:
   - {fileID: 11400000, guid: 6a5aa86d85b7244cfb8f42bfd6611c68, type: 2}
   - {fileID: 11400000, guid: 4e1c20c901b9d44d988b5efb0f388493, type: 2}
@@ -5922,7 +5924,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.70985544, y: 0.076953165}
   m_AnchorMax: {x: 0.88453966, y: 0.097408496}
-  m_AnchoredPosition: {x: -0.00018310547, y: -0.00024414062}
+  m_AnchoredPosition: {x: -0.00018310547, y: 24}
   m_SizeDelta: {x: 15.994446, y: 4.052185}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1515896090

@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 113342957}
   - component: {fileID: 113342956}
   - component: {fileID: 113342955}
+  - component: {fileID: 113342958}
   m_Layer: 5
   m_Name: Tutorial
   m_TagString: Untagged
@@ -202,7 +203,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 113342958}
         m_TargetAssemblyTypeName: SceneLoaderBehaviour, Assembly-CSharp
         m_MethodName: SceneLoad
         m_Mode: 5
@@ -211,7 +212,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: TutorialScene
+          m_StringArgument: Tutorial
           m_BoolArgument: 0
         m_CallState: 1
 --- !u!114 &113342956
@@ -252,121 +253,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 113342953}
   m_CullTransparentMesh: 1
---- !u!1 &162745118
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 162745120}
-  - component: {fileID: 162745119}
-  m_Layer: 0
-  m_Name: CiDyGraph
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &162745119
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 162745118}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4c27170121944a38516b30f441a4a2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  terrainTag: Terrain
-  cellTag: Cell
-  roadTag: Road
-  nodeTag: Node
-  roadMask:
-    serializedVersion: 2
-    m_Bits: 2048
-  roadMask2:
-    serializedVersion: 2
-    m_Bits: 8
-  cellMask:
-    serializedVersion: 2
-    m_Bits: 16384
-  drawCycles: 0
-  drawEdges: 0
-  drawFilaments: 0
-  nodePrefab: {fileID: 100000, guid: 710fb0d654b74c4ea248d81701b482a6, type: 3}
-  graphEdges: []
-  roads: []
-  userDefinedRoadPnts: []
-  userDefinedRoad: []
-  masterGraph: []
-  cells: []
-  nodeCount: 0
-  nodeCount2: 0
-  nodeSpacing: 50
-  intersectionAngleLimit: 6
-  globalLeftHandTraffic: 0
-  globalTrafficWaypointDistance: 10
-  crossWalkTrafficStopDistance: 4
-  globalTrafficIntersectionWaypointDistance: 3
-  cellsHolder: {fileID: 1188536930}
-  boundaryHolder: {fileID: 1574799821}
-  roadHolder: {fileID: 1319485628}
-  secondaryRdHolder: {fileID: 1404680237}
-  nodeHolder: {fileID: 2136775077}
-  foundationMaterial: {fileID: 2100000, guid: dbc19e06b0e94b239bc8f3d37cb98848, type: 2}
-  buildingType: 0
-  intersectionMaterial: {fileID: 2100000, guid: a40590db540b464ba1e10942d740291a, type: 2}
-  roadMaterial: {fileID: 2100000, guid: cb641a03f22f445e80fe88f8cde36da2, type: 2}
-  sideWalkMaterial: {fileID: 2100000, guid: 82edfd1219c64074951c3eeee99e96fd, type: 2}
-  activeCells: 1
-  activeNodes: 1
-  districtTheme:
-  - DownTown
-  - Industrial
-  - Residential
-  index: 0
-  themeSettings: {fileID: 0}
-  sidewalkHeight: 0
-  sidewalkWidth: 0
-  sphereSpots: []
-  sceneTerrains: []
-  terrains: []
-  radius: 11
-  zBuffer: 0.08
-  edgeOffset: 4
-  blendProgress: 0
-  prefab: {fileID: 0}
-  totalProblems: 0
-  curProblems: 0
-  sampleType: 0
-  fovRange: 2.5
-  nSample: 20
-  devAngle: 45
-  slopeHeight: 1000
---- !u!4 &162745120
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 162745118}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1188536931}
-  - {fileID: 1574799822}
-  - {fileID: 1319485629}
-  - {fileID: 1404680238}
-  - {fileID: 2136775078}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &218907668
 GameObject:
   m_ObjectHideFlags: 0
