@@ -2,190 +2,218 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System.Linq;
 
 [RequireComponent(typeof(RectTransform))]
 public class MiniMapToggle_M : MonoBehaviour, IPointerClickHandler
 {
     [Header("Refs")]
-    [SerializeField] Camera miniCam;                 // 미니맵 전용 카메라
-    [SerializeField] Camera fullCam;             // FullMapCamera
-    [SerializeField] RawImage miniRaw;           // MiniMap Raw-Image
-    [SerializeField] RawImage fullRaw;           // FullMap Raw-Image
-    [SerializeField] Transform[] worldMarkers;       // DestinationManager.Markers 넣기
-    [SerializeField] Image iconPrefab;               // ★ 또는 ● 프리팹
-    [SerializeField] float animTime = 0.25f;        // 패널 확대/축소 속도
-    [SerializeField] float fullPadding = 80f;        // 전체맵 모서리 여백(px)
-    [SerializeField] float fullCamSize = 75f;       // 도시 전체가 보이도록 orthographicSize
+    [SerializeField] Camera miniCam;        // 미니맵 전용 카메라
+    [SerializeField] Camera fullCam;        // 풀맵 전용 카메라
+    [SerializeField] RawImage miniRaw;        // 미니맵 RawImage
+    [SerializeField] RawImage fullRaw;        // 풀맵 RawImage
+
+    [Header("Map Markers")]
+    [SerializeField] Transform[] worldMarkers;    // 목적지 Transform 배열
+    [SerializeField] Image iconPrefab;       // 목적지 아이콘(별)
+
+    [Header("Gas Stations")]
+    [SerializeField] Transform[] gasStationNodes;
+    [SerializeField] Image gasIconPrefab;
+
+    [Header("Animation Settings")]
+    [SerializeField] float animTime = 0.25f;
+    [SerializeField] float fullCamSize = 75f;
+    [SerializeField] float extraTopPadding = 100f;
+    [SerializeField] float extraBottomPadding = 100f;
+    [SerializeField] float extraLeftPadding = 0f;
+    [SerializeField] float extraRightPadding = 0f;
+
+    [Header("UI Panel")]
     [SerializeField] CanvasGroup destPanelCG;
-    [SerializeField] float extraTopPadding = 100;      // 상단 UI 덮지 않도록
-    [SerializeField] float extraBottomPadding = 100;  // 하단 회색바 여백
-    [SerializeField] float extraLeftPadding = 0;   // 왼쪽 여백 (px)
-    [SerializeField] float extraRightPadding = 0;   // 오른쪽 여백 (px)
 
-
-    /* ---------- 내부 ---------- */
+    /* ---------- internal ---------- */
     RectTransform rt;
-    Vector2 miniSize;            // 작은 상태 사이즈
     Vector2 miniAnchMin, miniAnchMax;
-    float miniCamSize;          // 원래 ortho Size
+    Vector2 miniSize;
+    float miniCamSize;
     bool isFull = false;
-    float iconEdgeMargin = 0.0f;
+    float iconEdgeMargin = 0f;
 
-    class UIIcon
-    {
-        public Image img;
-        public Transform target;      // 월드 목적지 Transform
-    }
+    class UIIcon { public Image img; public Transform target; }
     List<UIIcon> uiIcons = new();
 
     void Awake()
     {
         rt = GetComponent<RectTransform>();
 
-        // 작은 상태(초기) 값 저장
+        // 저장: 초기(미니) 상태
         miniAnchMin = rt.anchorMin;
         miniAnchMax = rt.anchorMax;
         miniSize = rt.sizeDelta;
         miniCamSize = miniCam.orthographicSize;
 
-        miniCam.enabled = true;   // ← 처음엔 ‘작은’ 카메라만 켜기
-        miniRaw.enabled = true;
+        // 초기 카메라/RawImage 상태
+        miniCam.enabled = true; miniRaw.enabled = true;
+        fullCam.enabled = false; fullRaw.enabled = false;
 
-        fullCam.enabled = false;  // ‘풀맵’은 꺼 두기
-        fullRaw.enabled = false;
-
-        /* ---------- 목적지 아이콘 동적 생성 ---------- */
-        foreach (var m in worldMarkers)
+        if (gasStationNodes == null || gasStationNodes.Length == 0)
         {
-            Image icon = Instantiate(iconPrefab, transform.Find("MarkerRoot"));
-            icon.color = m.GetComponent<ParticleSystem>().main.startColor.color;
-            icon.transform.SetAsLastSibling();
-            uiIcons.Add(new UIIcon { img = icon, target = m });
+            var gos = GameObject.FindGameObjectsWithTag("GasStation");
+            Debug.Log($"[MiniMapToggle] found {gos.Length} GasStations");
+            gasStationNodes = gos.Select(go => go.transform).ToArray();
         }
+
+        // 1) 목적지 아이콘 생성
+        foreach (var m in worldMarkers)
+            CreateIcon(m, iconPrefab, m.GetComponent<ParticleSystem>().main.startColor.color);
+
+        var gasObjs = GameObject.FindGameObjectsWithTag("GasStation");
+        foreach (var go in gasObjs)
+        {
+            Image icon = Instantiate(gasIconPrefab, transform.Find("MarkerRoot"));
+            icon.transform.SetAsLastSibling();
+            // 투명도 살짝 낮춰서 별 아이콘 느낌
+            Color c = icon.color;
+            c.a = 0.3f;
+            icon.color = c;
+
+            uiIcons.Add(new UIIcon { img = icon, target = go.transform });
+        }
+
         SetIconsActive(false);
+    }
+
+    //  주유소 초기화 이벤트 구독
+    void OnEnable() => DestinationManager.OnGasStationsInitialized += AddGasIcons;
+    void OnDisable() => DestinationManager.OnGasStationsInitialized -= AddGasIcons;
+
+    /// DestinationManager 에서 모든 주유소가 배치된 뒤 호출
+    void AddGasIcons()
+    {
+        // 이미 아이콘이 있으면 중복 생성 방지
+        if (gasStationNodes != null && gasStationNodes.Length > 0 &&
+            uiIcons.Any(u => u.img.sprite == gasIconPrefab.sprite))
+            return;
+
+        gasStationNodes = GameObject.FindGameObjectsWithTag("GasStation")
+                                    .Select(go => go.transform).ToArray();
+
+        foreach (var g in gasStationNodes)
+            CreateIcon(g, gasIconPrefab, Color.white);   // 색은 필요한 대로
+
+        // 풀맵이 펼쳐져 있다면 즉시 보이도록
+        if (isFull) SetIconsActive(true);
+    }
+
+    /// <summary>
+    /// Transform target에 대해 아이콘 프리팹 인스턴스화 + uiIcons 리스트에 추가
+    /// </summary>
+    void CreateIcon(Transform target, Image prefab, Color tint)
+    {
+        var icon = Instantiate(prefab, transform.Find("MarkerRoot"));
+        icon.color = tint;
+        icon.transform.SetAsLastSibling();
+        uiIcons.Add(new UIIcon { img = icon, target = target });
     }
 
     Coroutine co;
 
-    /* ======== 토글 클릭 ======== */
     public void OnPointerClick(PointerEventData e)
     {
         if (co != null) StopCoroutine(co);
 
-        if (isFull)   // ▶ 접힐 때
+        if (isFull)
         {
-            fullCam.enabled = false;
-            fullRaw.enabled = false;
-            miniCam.enabled = true;
-            miniRaw.enabled = true;
-
+            // 접힐 때: 풀맵 쓰지 않고 미니맵 카메라/Raw 다시 켬
+            fullCam.enabled = false; fullRaw.enabled = false;
+            miniCam.enabled = true; miniRaw.enabled = true;
             co = StartCoroutine(Shrink());
         }
-        else          // ▶ 펼칠 때
+        else
         {
-            miniCam.enabled = false;
-            miniRaw.enabled = false;
-            fullCam.enabled = true;
-            fullRaw.enabled = true;
-
+            // 펼칠 때: 풀맵 카메라/Raw 켬
+            miniCam.enabled = false; miniRaw.enabled = false;
+            fullCam.enabled = true; fullRaw.enabled = true;
             co = StartCoroutine(Expand());
         }
         isFull = !isFull;
     }
 
-
-    /* ======== 매 프레임 아이콘 위치 보정 ======== */
     void LateUpdate()
     {
         if (!isFull) return;
 
-        Camera Cam = isFull ? fullCam : miniCam;
-        float m = iconEdgeMargin;        // 가독성을 위해 변수에 저장
+        var cam = fullCam;  // 풀맵 모드일 때만 아이콘 위치 보정
+        float m = iconEdgeMargin;
 
         foreach (var ui in uiIcons)
         {
-            Vector3 vp = Cam.WorldToViewportPoint(ui.target.position);
-
-            /* ▼ ① Viewport 값을 0~1 → m~1-m 로 잘라내기(Clamp) */
-            vp.x = Mathf.Clamp01(vp.x);
-            vp.y = Mathf.Clamp01(vp.y);
-            vp.x = Mathf.Lerp(m, 1f - m, vp.x);    // m-(1-m) 범위로 다시 매핑
+            Vector3 vp = cam.WorldToViewportPoint(ui.target.position);
+            vp.x = Mathf.Clamp01(vp.x); vp.y = Mathf.Clamp01(vp.y);
+            vp.x = Mathf.Lerp(m, 1f - m, vp.x);
             vp.y = Mathf.Lerp(m, 1f - m, vp.y);
 
-            /* ▼ ② 이미지의 Anchor 를 바로 Viewport 로 */
-            RectTransform r = ui.img.rectTransform;
-            r.anchorMin = r.anchorMax = new Vector2(vp.x, vp.y);
-            r.anchoredPosition = Vector2.zero;     // 안 쓰므로 0
+            var iconRT = ui.img.rectTransform;
+            iconRT.anchorMin = iconRT.anchorMax = new Vector2(vp.x, vp.y);
+            iconRT.anchoredPosition = Vector2.zero;
         }
     }
-
-
-    /* =================================================================== */
-    /*                                코 루 튠                             */
-    /* =================================================================== */
 
     System.Collections.IEnumerator Expand()
     {
         SetIconsActive(true);
 
-        CanvasScaler cs = GetComponentInParent<CanvasScaler>();
-        float refW = cs.referenceResolution.x;   // 예: 1080
-        float refH = cs.referenceResolution.y;   // 예: 1920
+        var cs = GetComponentInParent<CanvasScaler>();
+        float refW = cs.referenceResolution.x;
+        float refH = cs.referenceResolution.y;
 
-        /* ─ 새 좌표 (여백 포함) ─ */
-        Vector2 targetMin = new(
-            extraLeftPadding / refW,      // ← 왼쪽 패딩
-            extraBottomPadding / refH);     // ↓ 아래 패딩
+        Vector2 targetMin = new Vector2(extraLeftPadding / refW,
+                                        extraBottomPadding / refH);
+        Vector2 targetMax = new Vector2(1f - extraRightPadding / refW,
+                                        1f - extraTopPadding / refH);
 
-        Vector2 targetMax = new(
-            1 - extraRightPadding / refW,   // → 오른쪽 패딩
-            1 - extraTopPadding / refH); // ↑ 위 패딩
-
-        /* ─ 애니메이션 준비 ─ */
-        Vector2 startMin = rt.anchorMin;
-        Vector2 startMax = rt.anchorMax;
+        Vector2 startMin = rt.anchorMin, startMax = rt.anchorMax;
         float camStart = fullCam.orthographicSize;
-        float t = 0;
+        float t = 0f;
 
         while (t < 1f)
         {
             t += Time.unscaledDeltaTime / animTime;
-            float k = Mathf.SmoothStep(0, 1, t);
+            float k = Mathf.SmoothStep(0f, 1f, t);
 
-            /* ─ 여기!  targetMin / targetMax 로 보간 ─ */
             rt.anchorMin = Vector2.Lerp(startMin, targetMin, k);
             rt.anchorMax = Vector2.Lerp(startMax, targetMax, k);
-
             fullCam.orthographicSize = Mathf.Lerp(camStart, fullCamSize, k);
+
             yield return null;
         }
     }
-
 
     System.Collections.IEnumerator Shrink()
     {
         SetIconsActive(false);
 
-        float t = 0;
-        Vector2 startMin = rt.anchorMin;
-        Vector2 startMax = rt.anchorMax;
+        float t = 0f;
+        Vector2 startMin = rt.anchorMin, startMax = rt.anchorMax;
         float camStart = miniCam.orthographicSize;
 
         while (t < 1f)
         {
             t += Time.unscaledDeltaTime / animTime;
-            float k = Mathf.SmoothStep(0, 1, t);
+            float k = Mathf.SmoothStep(0f, 1f, t);
 
             rt.anchorMin = Vector2.Lerp(startMin, miniAnchMin, k);
             rt.anchorMax = Vector2.Lerp(startMax, miniAnchMax, k);
             miniCam.orthographicSize = Mathf.Lerp(camStart, miniCamSize, k);
+
             yield return null;
         }
     }
 
-    /* ---------- 헬퍼 ---------- */
     void SetIconsActive(bool on)
     {
-        foreach (var ui in uiIcons) ui.img.enabled = on;
+        foreach (var ui in uiIcons)
+            ui.img.enabled = on;
     }
 }
