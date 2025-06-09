@@ -22,13 +22,14 @@ public class UIManager : MonoBehaviour, IDragHandler, IPointerDownHandler, IPoin
         turnText.text = string.Format("cur\nTurn: " + GameManager.inst.turnManager.curTurn);
         uiImages[3].rectTransform.localEulerAngles = new Vector3(0, 0, wheelAngle);  
         
-        if (isHandling)
+        if (isHandling) //이제 이전 턴 핸들의 앵글을 저장하고 현재 각도와 비교 연산
         {
             
             wheelDelta = wheelAngle - prevWheelAngle;
-            GameManager.inst.player.Handling(wheelDelta); 
-            prevWheelAngle = wheelAngle;
+            GameManager.inst.player.Handling(wheelDelta); //변화량만큼 Angle을 이동
+            prevWheelAngle = wheelAngle; //매턴이 끝날 때는 핸들링 함수가 마지막으로 호출된 각도를 유지함
         }
+        // 이전 내용(핸들링을 할 때 현재 핸들의 Angle을 가져오기)
         // if (isHandling)
         // {
         //     GameManager.inst.player.Handling(wheelAngle);
@@ -104,7 +105,8 @@ public class UIManager : MonoBehaviour, IDragHandler, IPointerDownHandler, IPoin
         {
             isHandling = true;
             lastWheelAngle = GetAngle(eventData.position);
-            prevWheelAngle = wheelAngle; 
+            prevWheelAngle = wheelAngle;
+            GameManager.inst.turnManager.midTurn();
         }
         if (IsPointerOn(eventData, uiImages[4]))
         {
