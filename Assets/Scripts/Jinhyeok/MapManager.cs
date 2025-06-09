@@ -14,8 +14,8 @@ public class MapManager : MonoBehaviour
     public int roadSegmentLength = 5;
     public int flattenAmount = 1;
     public bool flipStopSign = false;
-    public CiDyRoad.RoadLevel roadLevel = CiDyRoad.RoadLevel.Road;
-    public CiDyRoad.LaneType laneType = 0;
+    public CiDyRoad.RoadLevel roadLevel;
+    public CiDyRoad.LaneType laneType;
     public float leftShoulderWidth = 0.5f;
     public float centerWidth = 0.5f;
     public float rightShoulderWidth = 0.5f;
@@ -24,7 +24,7 @@ public class MapManager : MonoBehaviour
     {
         graph = FindObjectOfType<CiDyGraph>();
         if (graph == null)
-        {
+        {        
             Debug.LogError("CiDyGraph가 연결되지 않았습니다!");
             return;
         }
