@@ -729,7 +729,7 @@ namespace Gley.TrafficSystem.Internal
             }
             else
             {
-                _behaviourImplementation = trafficOptions.BehaviourImplementation;
+                _behaviourImplementation = trafficOptions.BehaviourImplementation.Initialize(AllVehiclesData.AllVehicles, trafficOptions.DefaultPathLength);
             }
 
             _playerWaypointsManager = new PlayerWaypointsManager();

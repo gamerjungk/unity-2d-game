@@ -38,6 +38,12 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
     }
 
+    public void RoundOver()
+    {
+        Time.timeScale = 1; // 혹시 멈춰있을 수도 있으니 복원
+        SceneManager.LoadScene("Shop2");
+    }
+
     public void GameOver()
     {
         Time.timeScale = 1; // 혹시 멈춰있을 수도 있으니 복원

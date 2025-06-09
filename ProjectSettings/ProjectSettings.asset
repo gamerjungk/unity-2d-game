@@ -827,7 +827,7 @@ PlayerSettings:
     WebGL: DOTWEEN
     Windows Store Apps: DOTWEEN
     XboxOne: DOTWEEN
-    iPhone: DOTWEEN;CiDy;MODULAR_3D_TEXT
+    iPhone: DOTWEEN;CiDy;MODULAR_3D_TEXT;GLEY_TRAFFIC_SYSTEM;GLEY_PEDESTRIAN_SYSTEM
     tvOS: DOTWEEN
   additionalCompilerArguments: {}
   platformArchitecture: {}

@@ -1,5 +1,5 @@
 {
     "folderName": "UrbanExample",
-    "longVersion": "1.0.4",
-    "shortVersion": 5
+    "longVersion": "1.0.6",
+    "shortVersion": 7
 }

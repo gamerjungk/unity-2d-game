@@ -13,6 +13,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 285687
   packageName: Urban Traffic & Pedestrian System
-  packageVersion: 1.0.4
+  packageVersion: 1.0.6
   assetPath: Assets/Gley/PedestrianSystem/Scripts/Editor/SetupWindows/ShowPriorityEditedWaypoints.cs
-  uploadId: 756891
+  uploadId: 760591

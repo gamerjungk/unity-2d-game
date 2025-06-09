@@ -23,6 +23,9 @@ public class PerformanceShopManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI paymentAmountText;
     [SerializeField] private Button payButton;
     private bool payButtonAssigned = false;
+    [Header("게임 시작 버튼들")]
+    [SerializeField] private GameObject gamePrepareButton;
+    [SerializeField] private GameObject gameStartButton;
 
     [Header("아이템 데이터")]
     public PerformanceItemSO[] allItems;
@@ -60,6 +63,9 @@ public class PerformanceShopManager : MonoBehaviour
             payButton.onClick.RemoveAllListeners(); // 혹시 남아있는 걸 제거
             payButtonAssigned = true;
         }
+
+        gamePrepareButton.SetActive(true);
+        gameStartButton.SetActive(false);
     }
 
     private void OnDisable()
@@ -230,14 +236,17 @@ public class PerformanceShopManager : MonoBehaviour
         ShowOneTimeItemSelection();
         oneTimePanel.gameObject.SetActive(true);
     }
-
     public void OnOneTimeConfirmButtonClicked()
     {
         ApplySelectedOneTimeItems();
+
+        // 시작 버튼도 숨기기
+        gameStartButton.SetActive(false);
         oneTimePanel.gameObject.SetActive(false);
 
         StartCoroutine(DelayedStartGame());
     }
+
 
     private IEnumerator DelayedStartGame()
     {
@@ -301,9 +310,22 @@ public class PerformanceShopManager : MonoBehaviour
             _ => vehicleSlotPrefab
         };
     }
-        private void OnDataReloadedExternally()
+    private void OnDataReloadedExternally()
     {
         Debug.Log("🔄 외부에서 데이터가 갱신됨, 상점 UI 다시 생성");
         OnGameDataReady(); // 전체 다시 초기화해서 UI 재생성
     }
+    
+    public void OnGamePrepareButtonClicked()
+    {
+        gamePrepareButton.SetActive(false);  // 준비 버튼 숨김
+        gameStartButton.SetActive(true);     // 시작 버튼 표시
+
+        // 선택 UI 표시
+        vehiclePanel.gameObject.SetActive(false);
+        consumablePanel.gameObject.SetActive(false);
+        ShowOneTimeItemSelection();
+        oneTimePanel.gameObject.SetActive(true);
+    }
+
 }

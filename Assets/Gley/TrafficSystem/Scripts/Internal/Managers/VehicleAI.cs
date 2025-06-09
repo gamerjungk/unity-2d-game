@@ -81,7 +81,7 @@ namespace Gley.TrafficSystem.Internal
         }
 
 
-        public bool AllPreviousWaypointsAreFree(int waypointIndex, int vehicleIndexThatMadeTheRequest)
+        public bool AllPreviousWaypointsAreFree(int waypointIndex, int vehicleIndexThatMadeTheRequest, bool ignoreTime)
         {
             // has no waypoints to advance
             if (waypointIndex == TrafficSystemConstants.INVALID_WAYPOINT_INDEX)
@@ -100,6 +100,11 @@ namespace Gley.TrafficSystem.Internal
                 {
                     return false;
                 }
+            }
+
+            if(ignoreTime)
+            {
+                return true;
             }
 
             var vehicle = _allVehiclesData.AllVehicles[vehicleIndexThatMadeTheRequest];

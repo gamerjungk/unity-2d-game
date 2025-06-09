@@ -84,12 +84,12 @@ namespace Gley.TrafficSystem
         /// <param name="waypointIndex">The index of the waypoint to check.</param>
         /// <param name="vehicleIndex">The index of the vehicle performing the check.</param>
         /// <returns>True if all previous waypoints are free; otherwise, false.</returns>
-        public static bool AllPreviousWaypointsAreFree(int waypointIndex, int vehicleIndex)
+        public static bool AllPreviousWaypointsAreFree(int waypointIndex, int vehicleIndex, bool ignoreTime = false)
         {
 #if GLEY_TRAFFIC_SYSTEM
             if (TrafficManager.Instance.VehicleAI != null)
             {
-                return TrafficManager.Instance.VehicleAI.AllPreviousWaypointsAreFree(waypointIndex, vehicleIndex);
+                return TrafficManager.Instance.VehicleAI.AllPreviousWaypointsAreFree(waypointIndex, vehicleIndex, ignoreTime);
             }
 #endif
             return false;
