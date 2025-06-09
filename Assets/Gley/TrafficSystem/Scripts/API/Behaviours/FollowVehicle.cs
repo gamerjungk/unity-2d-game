@@ -9,9 +9,8 @@ namespace Gley.TrafficSystem
     public class FollowVehicle : VehicleBehaviour
     {
 #if GLEY_TRAFFIC_SYSTEM
-        private const float _minFollowSpeed = 3;
-        private const float _overtakeTime = 5;
-
+        private float _minFollowSpeed = 3;
+        private float _overtakeTime = 5;
         private float _followTime;
         private bool _disableOvertake;
         private bool _stopped;
@@ -21,9 +20,21 @@ namespace Gley.TrafficSystem
         {
             base.OnBecomeActive();
             _followTime = 0;
+            _overtakeTime = 5;
+            _minFollowSpeed = 3;
+        }
+
+
+        public void SetOvertakeTime(float time)
+        {
+            _overtakeTime = time;
+        }
+
+        public void SetMinFollowSpeed(float speed)
+        {
+            _minFollowSpeed = speed;
         }
 #endif
-
         public void DisableOvertake(bool active)
         {
 #if GLEY_TRAFFIC_SYSTEM

@@ -12,11 +12,13 @@ namespace Gley.TrafficSystem
         private const float _minOvertakeSpeed = 2;
 
         private bool _checkWaypoint;
-#endif
+        private bool _ignoreTime;
+
 
         protected override void OnBecomeActive()
         {
             base.OnBecomeActive();
+            _ignoreTime = false;
             MovementInfo.OnKnownListUpdated += KnownListUpdatedHandler;
         }
 
@@ -26,6 +28,12 @@ namespace Gley.TrafficSystem
             base.OnBecameInactive();
             MovementInfo.OnKnownListUpdated -= KnownListUpdatedHandler;
         }
+
+        public void SetIgnoreTime(bool ignoreTime)
+        {
+            _ignoreTime = ignoreTime;
+        }
+#endif
 
 #if GLEY_TRAFFIC_SYSTEM
         public override BehaviourResult Execute(MovementInfo knownWaypointsList, float requiredBrakePower, bool stopTargetReached, float3 stopPosition, int currentGear)
@@ -65,11 +73,14 @@ namespace Gley.TrafficSystem
                     {
                         Blink(index);
                         // if waypoint is free change to other lane and return back to follow
-                        if (API.AllPreviousWaypointsAreFree(index, VehicleIndex))
+                        if (API.AllPreviousWaypointsAreFree(index, VehicleIndex, _ignoreTime))
                         {
                             API.AddWaypointAndClear(index, VehicleIndex);
                             Stop();
-                            API.StartVehicleBehaviour<FollowVehicle>(VehicleIndex);
+                            if (!_ignoreTime)
+                            {
+                                API.StartVehicleBehaviour<FollowVehicle>(VehicleIndex);
+                            }
                         }
                     }
                 }

@@ -13,6 +13,7 @@ namespace Gley.TrafficSystem
 
         public TargetSpeedPoint SpeedInPoint { get; set; }
         public string Name { get; set; }
+        public int Priority { get; set; }
         public float BrakePercent { get; set; }
         public float MaxAllowedSpeed { get; set; }
 
@@ -28,9 +29,10 @@ namespace Gley.TrafficSystem
             set => _targetGear = Math.Sign(value);
         }
 
-        public BehaviourResult()
+        public BehaviourResult(int priority = 0)
         {
             Name = "DEFAULT";
+            Priority = priority;
             BrakePercent = 0;
             MaxAllowedSpeed = TrafficSystemConstants.DEFAULT_SPEED;
             TargetGear = 1;
@@ -43,6 +45,21 @@ namespace Gley.TrafficSystem
 #if GLEY_TRAFFIC_SYSTEM
         public void Append(BehaviourResult value, float3 frontTriggerPosition)
         {
+            if (value.Priority != 0 || Priority != 0)
+            {
+                if (Priority < value.Priority)
+                {
+                    Priority = value.Priority;
+                    _targetGear = value.TargetGear;
+                    _steerPercent = value.SteerPercent;
+                    SpeedInPoint = value.SpeedInPoint;
+                    BrakePercent = value.BrakePercent;
+                    MaxAllowedSpeed = value.MaxAllowedSpeed;
+                    Name = value.Name;
+                }
+                return;
+            }
+
             //value.Print();
             // min target gear
             if (TargetGear > value.TargetGear)

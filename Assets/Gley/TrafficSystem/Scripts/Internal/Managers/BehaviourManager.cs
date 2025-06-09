@@ -134,7 +134,7 @@ namespace Gley.TrafficSystem.Internal
 
 
             //Debug.Log(" RESULT ");
-            //behaviourResult.Print();
+            //Debug.Log(behaviourResult.Print());
             //Debug.Log(vehicleIndex + "END---------------------");
             _appliedBehaviour[vehicleIndex] = behaviourResult;
             return behaviourResult;

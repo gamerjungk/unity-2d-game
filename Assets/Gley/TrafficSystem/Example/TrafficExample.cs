@@ -71,6 +71,16 @@ namespace Gley.TrafficSystem.Internal
                 }
             }
 
+            if(Input.GetKeyDown(KeyCode.I))
+            {
+                API.StartVehicleBehaviour<IgnoreTrafficRules>(_vehicleToFollow);
+            }
+
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+                API.StopVehicleBehaviour<IgnoreTrafficRules>(_vehicleToFollow);
+            }
+
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 Application.Quit();

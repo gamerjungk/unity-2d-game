@@ -1,34 +1,69 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 using Gley.TrafficSystem;
+using Unity.AI.Navigation;            // NavMeshModifier
 
 public class RoadDisablerAfterInit_M : MonoBehaviour
 {
-    [SerializeField] Transform roadRoot;       // RoadRoot¸¦ Inspector¿¡ µå·¡±×
-    [Range(0f, 1f)] public float disableRatio = 0.30f;   // 30 % Â÷´Ü
+    [SerializeField] Transform roadRoot;       // RoadRoot
+    [Tooltip("IntersectionPoolManager ê°€ ëë‚œ ë’¤ ëª‡ í”„ë ˆì„ ê¸°ë‹¤ë¦´ì§€")]
+    [SerializeField] int waitFrames = 2;
 
     IEnumerator Start()
     {
-        // ÃÊ±âÈ­ ¿Ï·á ´ë±â
-        yield return new WaitUntil(() => FindObjectOfType<TrafficComponent>() != null);
+        // â‘  Traffic System ì´ˆê¸°í™” ì™„ë£Œ ëŒ€ê¸°
+        yield return new WaitUntil(() =>
+            Object.FindAnyObjectByType<TrafficComponent>() != null);
 
-        // ¸ğµç RoadToggle Å½»ö
-        var toggles = roadRoot.GetComponentsInChildren<RoadToggle>(true);
-        Debug.Log($"[Disabler] found {toggles.Length} toggles");
+        // â‘¡ IntersectionPoolManager ê°€ NavMesh Rebuild ë¥¼ ëë‚¼ ë•Œê¹Œì§€
+        //    í•œë‘ í”„ë ˆì„ ë” ëŒ€ê¸° (ì‹¤í–‰ ìˆœì„œ ë¶ˆí™•ì • ëŒ€ë¹„)
+        for (int i = 0; i < waitFrames; ++i)
+            yield return null;
 
-        // Â÷´Ü ½ÇÇà
-        foreach (var tog in toggles)
+        int effected = 0;
+
+        // â‘¢ RoadRoot ì•„ë˜ ëª¨ë“  RoadToggle ê²€ì‚¬
+        foreach (var tog in roadRoot.GetComponentsInChildren<RoadToggle>(true))
         {
-            // (1) ¿Ü°ûµµ·Î¡¤°íÁ¤µµ·Î °Ç³Ê¶Ù±â
-            if (tog.alwaysWalkable)                 // Inspector Ã¼Å©¹Ú½º
-                continue;                           // ¶Ç´Â  tog.CompareTag("FixedRoad")
+            // (A) ì™¸ê³½â€§í•­ìƒ ì¼œë‘˜ ë„ë¡œ ê±´ë„ˆëœ€
+            if (tog.alwaysWalkable) continue;
 
-            // (2) disableRatio% ¸¸Å­ ¹«ÀÛÀ§·Î ºñÈ°¼º
-            if (Random.value < disableRatio)
+            bool visuallyOff = !tog.gameObject.activeInHierarchy ||
+                               !AnyRendererEnabled(tog.transform);
+
+            bool areaBlocked = false;
+            var mod = tog.GetComponent<NavMeshModifier>();
+            if (mod && mod.overrideArea && mod.area == 1)      // 1 = Not Walkable
+                areaBlocked = true;
+
+            // IntersectionPoolManager ì— ì˜í•´ ì´ë¯¸ ë¹„í™œì„±í™”ëœ ë¸”ë¡ë§Œ ì²˜ë¦¬
+            if (visuallyOff || areaBlocked)
             {
-                Debug.Log($"[Disabler] disable {tog.name}");
-                tog.SetActiveRoad(false);
+                DisableWaypointsAndTraffic(tog);
+                effected++;
             }
         }
+
+        Debug.Log($"[AfterInit] disabled waypoint ì˜ì—­ ìˆ˜ = {effected}");
+    }
+
+    // ----------------- Helper -----------------
+    bool AnyRendererEnabled(Transform root)
+    {
+        foreach (var r in root.GetComponentsInChildren<Renderer>(true))
+            if (r.enabled) return true;
+        return false;
+    }
+
+    void DisableWaypointsAndTraffic(RoadToggle tog)
+    {
+        Collider col = tog.GetComponentInChildren<Collider>(true);
+        if (col == null) return;
+
+        Bounds b = col.bounds;
+        float r = Mathf.Max(b.extents.x, b.extents.z);
+
+        API.DisableAreaWaypoints(b.center, r);  // ì›¨ì´í¬ì¸íŠ¸ OFF
+        API.ClearTrafficOnArea(b.center, r);         // ì´ë¯¸ ë‹¬ë¦¬ëŠ” ì°¨ëŸ‰ íšŒìˆ˜
     }
 }
