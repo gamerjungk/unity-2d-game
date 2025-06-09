@@ -58,10 +58,15 @@ public class Player : MonoBehaviour
         currentSpeed = Mathf.Lerp(currentSpeed, 0f, deceleration * Time.deltaTime);
     }
 
-    public void Handling(float angle)
+    public void Handling(float deltaAngle) // 변화량 전달
     {
-        targetAngle = -angle;
+        targetAngle -= deltaAngle * steerSensitivity; //후 저장해서 각도를 설정함
     }
+    // 고정 각도 사용 (기존 내용)
+    // public void Handling(float angle)
+    // {
+    //     targetAngle = -angle;
+    // }
     void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("GasStation") && GameManager.inst.uiManager.gearState == 1 && GameManager.fuel < 69)
@@ -69,6 +74,7 @@ public class Player : MonoBehaviour
             currentSpeed = 0;
             GameManager.inst.turnManager.midTurn();
             GameManager.fuel += Time.deltaTime;
+            Debug.Log("주유소 발동!");
         }
     }
 }

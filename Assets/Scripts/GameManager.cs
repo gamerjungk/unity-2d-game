@@ -44,6 +44,7 @@ public class GameManager : MonoBehaviour
         // 다른 매니저들도 필요시 자동 연결
         turnManager = FindFirstObjectByType<TurnManager>();
         player = FindFirstObjectByType<Player>();
+        pool = FindFirstObjectByType<PoolManager>();
     }
         
     void Start()
@@ -53,6 +54,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        
     }
 
     public void Stop()      // ���� ����� 0������� ����. �� ���� ���ߴ� �Լ��Դϴ�.

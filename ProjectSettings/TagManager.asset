@@ -16,6 +16,7 @@ TagManager:
   - Cell
   - Pedestrian
   - Building
+  - GasStation
   layers:
   - Default
   - TransparentFX
