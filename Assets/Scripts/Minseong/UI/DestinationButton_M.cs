@@ -6,32 +6,23 @@ public class DestinationButton_M : MonoBehaviour
 {
     [SerializeField] TMP_Text label;
 
-    // 색상 추가(3줄)
-    [Header("Text Colors")]
-    [SerializeField] Color pickupColor = Color.black;     // 기본(픽업지) 색
-    [SerializeField] Color deliveryColor = new(0.12f, 0.55f, 1f); // 배달지 색
-
     int index;
     DestinationUI_M ui;
 
-    /* ─────────────────────────────────────────────── */
-    /* 초기화                                          */
-    /* ─────────────────────────────────────────────── */
     public void Init(int idx, DestinationUI_M parent)
     {
         index = idx;
         ui = parent;
-        GetComponent<Button>()
-            .onClick.AddListener(() => ui.SelectIndex(index));
+        GetComponent<Button>().onClick.AddListener(() => ui.SelectIndex(index));
     }
 
-    public void SetLabel(string text)
+    public void SetLabel(string txt) => label.text = txt;
+
+    /* ─ 픽업 / 배달 단계에 따른 글자 색상 ─ */
+    public void SetStage(bool isPickup)
     {
-        label.text = text;
+        label.color = isPickup
+            ? Color.black                                  // 픽업 : 흰색
+            : new Color(0.12f, 0.55f, 1f);               // 배달 : 푸른 계열
     }
-
-    // 픽업/배달에 따른 색 변경 추가
-    public void SetAsPickup() => label.color = pickupColor;
-    public void SetAsDelivery() => label.color = deliveryColor;
-
 }

@@ -1,181 +1,120 @@
-﻿
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Unity.AI.Navigation;
 
 public class DestinationManager : MonoBehaviour
 {
-    /* ────────── 싱글턴 ────────── */
     public static DestinationManager Instance { get; private set; }
 
-    /* ────────── 외부 연결 ────────── */
     [Header("External refs")]
     [SerializeField] Transform player;
-    [SerializeField] NavMeshSurface surface;      // RoadRoot(NavMeshSurface)
-    [Tooltip("Hierarchy 에 있는 4개의 Destination_* 파티클")]
-    [SerializeField] Transform[] markers;         // 0~3
+    [SerializeField] NavMeshSurface surface;      // RoadRoot 의 NavMeshSurface
+    [SerializeField] Transform[] markers;      // 4개 파티클
     [SerializeField] DestinationUI_M destUI;
-    [SerializeField] DestinationUI_M ui;
 
-    [Header("Option")]
-    [Tooltip("목적지끼리 최소 거리(m)")]
-    [Range(1, 50)] public float minDistanceBetween = 12f;
-    private Vector3? lastTargetPosition = null;
-
-    int currentIndex = 0;
-
-    /* ────────── 런타임 상태 ────────── */
-    readonly List<Transform> roadNodes = new();   // 현재 활성 도로노드
+    /* ─ 내부 상태 ─ */
+    readonly List<Transform> roadNodes = new();
+    Vector3?[] pickupPos;                             // 마커별 최근 픽업 위치
+    int currentIdx;
     public Transform CurrentTarget { get; private set; }
 
-    /* ===================================================================== */
-    #region Unity Lifecycle
-    /* ===================================================================== */
-
+    /* ─────────────────────────────── */
     void Awake()
     {
         if (Instance == null) Instance = this;
         else { Destroy(gameObject); return; }
-
-        if (markers == null || markers.Length != 4)
-        {
-            Debug.LogError("DestinationManager ▸ markers 배열이 비어 있거나 4개가 아닙니다.");
-            enabled = false;
-            return;
-        }
     }
 
-    // NavMesh 빌드 & RoadGenerator 등이 끝난 다음-프레임에 초기화
-    IEnumerator Start()
+    void Start()
     {
-        yield return null;                 // 한 프레임 대기
+        pickupPos = new Vector3?[markers.Length];
+        RefreshRoadNodes();
+        foreach (var m in markers) MoveMarkerRandom(m);
 
-        RefreshRoadNodeList();
-        PlaceAllMarkersRandom();
-        SelectTarget(0);                   // 기본 목표
-        lastTargetPosition = player.position;
+        SelectTarget(0);                              // 첫 목표
     }
 
-    #endregion  
-    /* ===================================================================== */
+    /* ================================================================= */
+    /*                  ▼    UI / 트리거가 호출하는 API    ▼             */
+    /* ================================================================= */
+    public Transform[] Markers => markers;
+    public Transform Player => player;
 
-    /* ===================================================================== */
-    #region Public API (다른 스크립트/UI에서 호출)
-    /* ===================================================================== */
-
-    /// UI 버튼에서 호출 (idx = 0~3)
     public void SelectTarget(int idx)
     {
-        if (idx < 0 || idx >= markers.Length) return;
-
-        currentIndex = idx;
+        if ((uint)idx >= (uint)markers.Length) return;
+        currentIdx = idx;
         CurrentTarget = markers[idx];
+
         PathDrawer_m.Instance?.DrawPath(player, CurrentTarget);
     }
 
-    /// 플레이어가 현재 타깃에 도달했을 때 MoneyTrigger → PlayerPath → 여기
+    /// MoneyTrigger → 플레이어가 현 목표 Collider 에 닿음
     public void ArrivedCurrentTarget()
     {
         if (CurrentTarget == null) return;
 
-        Vector3 currentPos = CurrentTarget.position;
+        bool isPickupStage = destUI.IsPickup(currentIdx);
 
-        if (lastTargetPosition.HasValue)
+        /* ───────── 픽업 도착 ───────── */
+        if (isPickupStage)
         {
-            // 유클리드 거리 계산
-            float dx = currentPos.x - lastTargetPosition.Value.x;
-            float dy = currentPos.y - lastTargetPosition.Value.y;
-            float dz = currentPos.z - lastTargetPosition.Value.z;
-            float distance = Mathf.Sqrt(dx * dx + dy * dy + dz * dz);
-
-            int reward = Mathf.RoundToInt(distance * 100);
-            GameDataManager.Instance.AddMoney(reward);
-
-            Debug.Log($"도착한 마커 거리: {distance:F2}m → 보상 {reward} 지급");
+            pickupPos[currentIdx] = CurrentTarget.position;   // 픽업 좌표 기억
+            destUI.ArrivedAt(currentIdx);                     // UI 토글(배달 단계)
+            Debug.Log($"픽업 완료 ▸ '{currentIdx}' 배달 단계 전환");
         }
+        /* ───────── 배달 도착 ───────── */
         else
         {
-            Debug.Log("🚩 최초 도착: 보상 없음 (거리 기준 없음)");
+            if (pickupPos[currentIdx].HasValue)
+            {
+                float dist = Vector3.Distance(pickupPos[currentIdx].Value,
+                                                CurrentTarget.position);
+                int reward = Mathf.RoundToInt(dist * 100);
+
+                GameDataManager.Instance.AddMoney(reward);
+                Debug.Log($"배달 완료 ▸ {dist:F1} m  ➜  +{reward} ₩");
+            }
+            else
+                Debug.LogWarning("배달 단계인데 픽업 좌표가 없습니다(논리 오류)");
+
+            pickupPos[currentIdx] = null;            // 다음 사이클 준비
+            destUI.ArrivedAt(currentIdx);            // 다시 픽업 단계
         }
 
-        // 이번 마커 위치를 다음 비교 기준으로 저장
-        lastTargetPosition = currentPos;
-
-        // 마커 이동
+        /* 목적지 새 위치로 이동 + 경로 갱신 */
         MoveMarkerRandom(CurrentTarget);
-
-        // 경로 그리기
         PathDrawer_m.Instance?.DrawPath(player, CurrentTarget);
-
-        // UI 에게 “idx 목적지에 도착했다” 알림
-        ui.ArrivedAt(currentIndex);
     }
 
-    /// 실시간 도로 On/Off 후 호출 (RoadToggle.cs)
-    public void RebuildNavMesh() => surface.BuildNavMesh();
-
-    public Transform[] Markers => markers;
-    public Transform Player => player;
-
-    #endregion
-    /* ===================================================================== */
-
-    /* ===================================================================== */
-    #region Marker 배치 · 이동
-    /* ===================================================================== */
-
-    void RefreshRoadNodeList()
+    /* ================================================================= */
+    /*                       ▼       마커 배치        ▼                  */
+    /* ================================================================= */
+    void RefreshRoadNodes()
     {
         roadNodes.Clear();
-
         foreach (var go in GameObject.FindGameObjectsWithTag("RoadNode"))
-        {
-            if (!go.activeInHierarchy) continue;
-
-            // 해당 노드가 NavMesh 에 실제로 포함돼 있는지
-            if (NavMesh.SamplePosition(go.transform.position, out _, 0.25f, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(go.transform.position, out _, .3f, NavMesh.AllAreas))
                 roadNodes.Add(go.transform);
-        }
-    }
-
-    void PlaceAllMarkersRandom()
-    {
-        foreach (var m in markers)
-            MoveMarkerRandom(m);
-
-        surface.BuildNavMesh();            // 최초 1회 베이크
     }
 
     void MoveMarkerRandom(Transform marker)
     {
-        RefreshRoadNodeList();             // 항상 최신 노드 목록 사용
+        if (roadNodes.Count == 0) RefreshRoadNodes();
         if (roadNodes.Count == 0) return;
 
-        const int maxTry = 100;
-        for (int t = 0; t < maxTry; ++t)
-        {
-            Transform node = roadNodes[Random.Range(0, roadNodes.Count)];
-            if (IsTooClose(node.position, marker)) continue;
-
-            marker.position = node.position + Vector3.up * 0.3f;
-            marker.GetComponent<MoneyTrigger>()?.ResetTrigger(); // 충돌 플래그 초기화
-            return;
-        }
-        Debug.LogWarning("MoveMarkerRandom ▸ 조건에 맞는 RoadNode 를 찾지 못했습니다.");
+        Transform node = roadNodes[Random.Range(0, roadNodes.Count)];
+        marker.position = node.position + Vector3.up * .3f;
+        marker.GetComponent<MoneyTrigger>()?.ResetTrigger();
     }
 
-    bool IsTooClose(Vector3 pos, Transform self)
+    /// <summary>외부(도로 ON/OFF)에서 호출해 NavMesh를 즉시 재베이크</summary>
+    public void RebuildNavMesh()
     {
-        foreach (var m in markers)
-        {
-            if (m == self) continue;
-            if (Vector3.Distance(pos, m.position) < minDistanceBetween) return true;
-        }
-        return false;
+        if (surface != null)
+            surface.BuildNavMesh();
+        else
+            Debug.LogWarning("DestinationManager ▸ NavMeshSurface 참조가 없습니다.");
     }
-
-    #endregion
-    /* ===================================================================== */
 }
