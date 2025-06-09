@@ -20,8 +20,7 @@ public class PlayerCollisionWarning : MonoBehaviour
     {
         if (Time.time - lastWarningTime < cooldown)
         {
-            // 쿨타임 안 지나면 메시지 무시
-            return;
+            return; // 쿨타임 중
         }
 
         GameObject other = collision.gameObject;
@@ -29,16 +28,30 @@ public class PlayerCollisionWarning : MonoBehaviour
         if (other.CompareTag("Pedestrian"))
         {
             ShowWarning("위험! 보행자와 충돌했습니다!");
+
+            // 여기 ↓↓↓
+            if (GameManager.inst == null)
+            {
+                Debug.LogError("GameManager 인스턴스가 null입니다!");
+            }
+            else
+            {
+                Debug.Log("GameManager 인스턴스 정상 작동: " + GameManager.inst.name);
+                GameManager.inst.RoundOver();
+            }
         }
         else if (other.CompareTag("Building"))
         {
             ShowWarning("건물과 충돌했습니다!");
+            if (GameManager.inst != null) GameManager.inst.RoundOver();
         }
         else if (other.CompareTag("Car"))
         {
             ShowWarning("다른 차량과 충돌했습니다!");
+            if (GameManager.inst != null) GameManager.inst.RoundOver();
         }
     }
+
 
     void ShowWarning(string message)
     {
