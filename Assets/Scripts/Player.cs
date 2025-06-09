@@ -62,4 +62,13 @@ public class Player : MonoBehaviour
     {
         targetAngle = -angle;
     }
+    void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("GasStation") && GameManager.inst.uiManager.gearState == 1 && GameManager.fuel < 69)
+        {
+            currentSpeed = 0;
+            GameManager.inst.turnManager.midTurn();
+            GameManager.fuel += Time.deltaTime;
+        }
+    }
 }

@@ -24,6 +24,7 @@ public class DestinationManager : MonoBehaviour
 
     /* ────────── 런타임 상태 ────────── */
     readonly List<Transform> roadNodes = new();   // 현재 활성 도로노드
+    public List<Transform> stations;
     public Transform CurrentTarget { get; private set; }
 
     /* ===================================================================== */
@@ -49,6 +50,7 @@ public class DestinationManager : MonoBehaviour
         yield return null;                 // 한 프레임 대기
 
         RefreshRoadNodeList();
+        SetPlace(ref stations, "GasStation", 7);
         PlaceAllMarkersRandom();
         SelectTarget(0);                   // 기본 목표
         lastTargetPosition = player.position;
@@ -166,6 +168,19 @@ public class DestinationManager : MonoBehaviour
             if (Vector3.Distance(pos, m.position) < minDistanceBetween) return true;
         }
         return false;
+    }
+
+    void SetPlace(ref List<Transform> place, string tag, int count)
+    {
+        place.Clear();
+        for (int i = 0; i < count; i++)
+        {
+            Transform node = roadNodes[Random.Range(0, roadNodes.Count)];
+            roadNodes.Remove(node);
+            node.tag = tag;
+            place.Add(node);
+            GameManager.inst.pool.Spawn(tag, node.position, Quaternion.Euler(90, 0, 0));
+        }
     }
 
     #endregion

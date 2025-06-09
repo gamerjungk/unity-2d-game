@@ -19,7 +19,6 @@ public class UIManager : MonoBehaviour, IDragHandler, IPointerDownHandler, IPoin
     {
         turnText.text = string.Format("cur\nTurn: " + GameManager.inst.turnManager.curTurn);
         uiImages[3].rectTransform.localEulerAngles = new Vector3(0, 0, wheelAngle);     // 실시간으로 핸들 회전
-        GameManager.inst.player.Handling(wheelAngle);
         uiImages[7].rectTransform.rotation = Quaternion.Euler(0, 0, 70f - 2 * GameManager.fuel);
         if(isAccel) {
             pressTime += Time.deltaTime;
@@ -31,6 +30,7 @@ public class UIManager : MonoBehaviour, IDragHandler, IPointerDownHandler, IPoin
             pressTime += Time.deltaTime;
             GameManager.inst.player.Brake();
         }
+        if(isHandling) GameManager.inst.player.Handling(wheelAngle);
         if (!isHandling && GameManager.inst.turnManager.isMidTurn)
         {
             // 터치에서 손을 뗀 후 핸들 복귀 현재 핸들 각에 따라 복귀 속도 변화
