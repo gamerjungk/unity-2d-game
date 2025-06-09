@@ -10,15 +10,56 @@ public class UIManager : MonoBehaviour, IDragHandler, IPointerDownHandler, IPoin
     public int gearState = 4;       // 1: P     2: R    3: N    4: D
     private bool isAccel = false, isBrake = false, isHandling = false, isGear = false;
     public float wheelDelta = 0f;
-    public float prevWheelAngle = 0f;  
+    public float prevWheelAngle = 0f;
+
     void Start()
     {
         uiImages = GetComponentsInChildren<Image>();    // 1: accel    2: brake    3: handle   4: gear  5: gearStick     6: fuel     7: fuelStick     8: turnBar
     }
 
+    public void Init()
+    {
+    // 기본값들 초기화
+        wheelAngle = 0f;
+        lastWheelAngle = 0f;
+        pressTime = 0f;
+        wheelDelta = 0f;
+        prevWheelAngle = 0f;
+        isAccel = isBrake = isHandling = isGear = false;
+        gearState = 4;
+
+    // 기어스틱 위치 초기화
+        if (uiImages != null && uiImages.Length >= 6)
+        {
+            uiImages[5].rectTransform.position = new Vector3(
+                uiImages[5].rectTransform.position.x, 140f, 0);
+            uiImages[5].sprite = stickSprites[3];
+        }
+
+    // 핸들 회전 초기화
+        if (uiImages != null && uiImages.Length >= 4)
+        {
+            uiImages[3].rectTransform.localEulerAngles = Vector3.zero;
+        }
+
+    // UI 요소들 다시 활성화해줄 수도 있음 (필요한 경우)
+        for (int i = 0; i < uiImages.Length; i++)
+        {
+            if (uiImages[i] != null) uiImages[i].gameObject.SetActive(true);
+        }
+
+    // 텍스트 초기화 (예시)
+        if (turnText != null)
+            {
+                turnText.text = "cur\nTurn: 0";
+            }
+
+        Debug.Log("UIManager 초기화 완료");
+    }
+
     void Update()
     {
-        
+        Debug.Log("Update 호출!");
         turnText.text = string.Format("cur\nTurn: " + GameManager.inst.turnManager.curTurn);
         uiImages[3].rectTransform.localEulerAngles = new Vector3(0, 0, wheelAngle);  
         

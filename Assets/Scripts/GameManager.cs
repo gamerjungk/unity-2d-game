@@ -25,9 +25,30 @@ public class GameManager : MonoBehaviour
         inst = this;
         DontDestroyOnLoad(gameObject); // 씬 전환에도 살아있게
     }
+            void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
 
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // UIManager 자동 연결
+        uiManager = FindFirstObjectByType<UIManager>();
+        if (uiManager != null) uiManager.Init();
+
+        // 다른 매니저들도 필요시 자동 연결
+        turnManager = FindFirstObjectByType<TurnManager>();
+        player = FindFirstObjectByType<Player>();
+    }
+        
     void Start()
     {
+
     }
 
     void Update()
