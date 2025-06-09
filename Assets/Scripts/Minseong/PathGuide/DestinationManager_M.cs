@@ -16,18 +16,15 @@ public class DestinationManager : MonoBehaviour
     [SerializeField] NavMeshSurface surface;      // RoadRoot(NavMeshSurface)
     [Tooltip("Hierarchy 에 있는 4개의 Destination_* 파티클")]
     [SerializeField] Transform[] markers;         // 0~3
-    [SerializeField] DestinationUI_M destUI;
-    [SerializeField] DestinationUI_M ui;
 
     [Header("Option")]
     [Tooltip("목적지끼리 최소 거리(m)")]
     [Range(1, 50)] public float minDistanceBetween = 12f;
     private Vector3? lastTargetPosition = null;
 
-    int currentIndex = 0;
-
     /* ────────── 런타임 상태 ────────── */
     readonly List<Transform> roadNodes = new();   // 현재 활성 도로노드
+    public List<Transform> stations;
     public Transform CurrentTarget { get; private set; }
 
     /* ===================================================================== */
@@ -53,6 +50,7 @@ public class DestinationManager : MonoBehaviour
         yield return null;                 // 한 프레임 대기
 
         RefreshRoadNodeList();
+        SetPlace(ref stations, "GasStation", 7);
         PlaceAllMarkersRandom();
         SelectTarget(0);                   // 기본 목표
         lastTargetPosition = player.position;
@@ -70,7 +68,6 @@ public class DestinationManager : MonoBehaviour
     {
         if (idx < 0 || idx >= markers.Length) return;
 
-        currentIndex = idx;
         CurrentTarget = markers[idx];
         PathDrawer_m.Instance?.DrawPath(player, CurrentTarget);
     }
@@ -108,9 +105,6 @@ public class DestinationManager : MonoBehaviour
 
         // 경로 그리기
         PathDrawer_m.Instance?.DrawPath(player, CurrentTarget);
-
-        // UI 에게 “idx 목적지에 도착했다” 알림
-        ui.ArrivedAt(currentIndex);
     }
 
     /// 실시간 도로 On/Off 후 호출 (RoadToggle.cs)
@@ -174,6 +168,19 @@ public class DestinationManager : MonoBehaviour
             if (Vector3.Distance(pos, m.position) < minDistanceBetween) return true;
         }
         return false;
+    }
+
+    void SetPlace(ref List<Transform> place, string tag, int count)
+    {
+        place.Clear();
+        for (int i = 0; i < count; i++)
+        {
+            Transform node = roadNodes[Random.Range(0, roadNodes.Count)];
+            roadNodes.Remove(node);
+            node.tag = tag;
+            place.Add(node);
+            GameManager.inst.pool.Spawn(tag, node.position, Quaternion.Euler(90, 0, 0));
+        }
     }
 
     #endregion

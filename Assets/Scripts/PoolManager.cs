@@ -3,33 +3,64 @@ using UnityEngine;
 
 public class PoolManager : MonoBehaviour
 {
-    public GameObject[] prefabs; 
-    List<GameObject>[] pools;       
-
-    private void Awake()
+    [System.Serializable]
+    public class Pool
     {
-        pools = new List<GameObject>[prefabs.Length];       
-        for (int i = 0; i < pools.Length; i++) pools[i] = new List<GameObject>();
+        public string tag;
+        public GameObject prefab;
     }
 
-    public GameObject Get(int index)    
+    public static PoolManager Instance;
+
+    public List<Pool> pools;
+    private Dictionary<string, List<GameObject>> poolDictionary;
+    private Dictionary<string, GameObject> prefabLookup;
+
+    void Awake()
     {
-        GameObject select = null;
-        foreach (GameObject item in pools[index])
+        Instance = this;
+        poolDictionary = new Dictionary<string, List<GameObject>>();
+        prefabLookup = new Dictionary<string, GameObject>();
+
+        foreach (Pool pool in pools)
         {
-            if (!item.activeSelf)
+            poolDictionary[pool.tag] = new List<GameObject>();
+            prefabLookup[pool.tag] = pool.prefab;
+        }
+    }
+
+    public GameObject Spawn(string tag, Vector3 position, Quaternion rotation)
+    {
+        if (!poolDictionary.ContainsKey(tag))
+        {
+            Debug.LogWarning("Pool with tag " + tag + " doesn't exist.");
+            return null;
+        }
+
+        List<GameObject> pool = poolDictionary[tag];
+        GameObject objectToSpawn = null;
+
+        // 비활성화된 오브젝트 찾아서 재사용
+        foreach (var obj in pool)
+        {
+            if (!obj.activeInHierarchy)
             {
-                select = item;
-                select.SetActive(true);
+                objectToSpawn = obj;
                 break;
             }
         }
-        if (!select)
+
+        // 못 찾았으면 새로 생성
+        if (objectToSpawn == null)
         {
-            select = Instantiate(prefabs[index], transform);
-            pools[index].Add(select);
+            objectToSpawn = Instantiate(prefabLookup[tag]);
+            pool.Add(objectToSpawn); // 새로 만든 오브젝트만 풀에 등록
         }
 
-        return select;
+        objectToSpawn.transform.position = position;
+        objectToSpawn.transform.rotation = rotation;
+        objectToSpawn.SetActive(true);
+
+        return objectToSpawn;
     }
 }
