@@ -131,7 +131,6 @@ GameObject:
   - component: {fileID: 113342957}
   - component: {fileID: 113342956}
   - component: {fileID: 113342955}
-  - component: {fileID: 113342958}
   m_Layer: 5
   m_Name: Tutorial
   m_TagString: Untagged
@@ -203,7 +202,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 113342958}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SceneLoaderBehaviour, Assembly-CSharp
         m_MethodName: SceneLoad
         m_Mode: 5
@@ -253,11 +252,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 113342953}
   m_CullTransparentMesh: 1
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &218907668
 GameObject:
   m_ObjectHideFlags: 0
@@ -1347,7 +1341,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 162745120}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1319485628
 GameObject:
@@ -1378,7 +1372,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 162745120}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1331096674
 GameObject:
@@ -1701,7 +1695,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 162745120}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1574799821
 GameObject:
@@ -1732,7 +1726,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 162745120}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1605949571
 GameObject:
@@ -2112,7 +2106,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 162745120}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &7224269766047683176
 PrefabInstance:
@@ -2245,4 +2239,8 @@ SceneRoots:
   - {fileID: 7224269766047683176}
   - {fileID: 945362026}
   - {fileID: 1020849665}
-  - {fileID: 162745120}
+  - {fileID: 1188536931}
+  - {fileID: 1319485629}
+  - {fileID: 1404680238}
+  - {fileID: 1574799822}
+  - {fileID: 2136775078}

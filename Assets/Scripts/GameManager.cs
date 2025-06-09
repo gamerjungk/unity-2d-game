@@ -17,7 +17,13 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        if (inst != null && inst != this)
+        {
+            Destroy(gameObject); // 중복 방지
+            return;
+        }
         inst = this;
+        DontDestroyOnLoad(gameObject); // 씬 전환에도 살아있게
     }
 
     void Start()
@@ -41,7 +47,7 @@ public class GameManager : MonoBehaviour
     public void RoundOver()
     {
         Time.timeScale = 1; // 혹시 멈춰있을 수도 있으니 복원
-        SceneManager.LoadScene("Shop2");
+        SceneManager.LoadScene("Shop 2");
     }
 
     public void GameOver()
