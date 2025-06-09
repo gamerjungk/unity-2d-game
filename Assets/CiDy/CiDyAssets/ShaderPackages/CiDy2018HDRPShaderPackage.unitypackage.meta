@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 3c01db5f8e0335c4eb5f44a30e19597d
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 55298
+  packageName: CiDy 2
+  packageVersion: 2.7.4
+  assetPath: Assets/CiDy/CiDyAssets/ShaderPackages/CiDy2018HDRPShaderPackage.unitypackage
+  uploadId: 577102
