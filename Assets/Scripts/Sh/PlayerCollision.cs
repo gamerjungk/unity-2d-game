@@ -28,6 +28,10 @@ public class PlayerCollisionWarning : MonoBehaviour
                 Debug.Log($"[충돌] 보행자와 충돌! 현재 충돌 횟수: {pedestrianCollisionCount}/{pedestrianCollisionLimit}");
                 ShowWarning($"보행자와 충돌! ({pedestrianCollisionCount}/{pedestrianCollisionLimit})");
 
+                int reward = 5000 * pedestrianCollisionCount;
+                GameDataManager.Instance.SubMoney(reward);
+                
+                
                 if (pedestrianCollisionCount >= pedestrianCollisionLimit)
                 {
                     if (GameManager.inst != null)
