@@ -63,7 +63,7 @@ public class GameDataManager : MonoBehaviour
             Debug.Log("🎉 최초 실행 - 기본값 세팅");
             data.gold = 100;
             data.money = 10000;
-            data.turn = 0;
+            data.turn = 5;
             data.paidStageIndex = 0;
             data.currentRound = 1;
             data.ownedItems = new List<SerializableItem>();

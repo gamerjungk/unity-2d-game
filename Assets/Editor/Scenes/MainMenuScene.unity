@@ -1305,7 +1305,8 @@ MonoBehaviour:
   data:
     gold: 500
     money: 10000
-    turn: 0
+    turn: 5
+    maxTurnsPerRound: 5
     currentRound: 0
     paidStageIndex: 0
     ownedItems: []
