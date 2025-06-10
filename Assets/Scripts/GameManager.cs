@@ -25,13 +25,36 @@ public class GameManager : MonoBehaviour
         inst = this;
         DontDestroyOnLoad(gameObject); // 씬 전환에도 살아있게
     }
+            void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
 
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // UIManager 자동 연결
+        uiManager = FindFirstObjectByType<UIManager>();
+        if (uiManager != null) uiManager.Init();
+
+        // 다른 매니저들도 필요시 자동 연결
+        turnManager = FindFirstObjectByType<TurnManager>();
+        player = FindFirstObjectByType<Player>();
+        pool = FindFirstObjectByType<PoolManager>();
+    }
+        
     void Start()
     {
+
     }
 
     void Update()
     {
+        
     }
 
     public void Stop()      // ���� ����� 0������� ����. �� ���� ���ߴ� �Լ��Դϴ�.
@@ -46,14 +69,47 @@ public class GameManager : MonoBehaviour
 
     public void RoundOver()
     {
-        Time.timeScale = 1; // 혹시 멈춰있을 수도 있으니 복원
-        SceneManager.LoadScene("Shop 2");
+        Time.timeScale = 1;
+
+        if (GameDataManager.Instance != null)
+        {
+            GameDataManager.Instance.data.turn--;
+
+            if (GameDataManager.Instance.data.turn < 0)
+                GameDataManager.Instance.data.turn = 0;
+
+            Debug.Log($"턴 감소! 남은 턴: {GameDataManager.Instance.data.turn}");
+
+            // 턴 0일 경우 납부 시도 → 실패 시 조기 종료
+            if (GameDataManager.Instance.data.turn == 0)
+            {
+                Debug.Log("💰 턴 종료 - 납부 시도 중");
+
+                bool success = GameDataManager.Instance.TryPay();
+
+                if (!success)
+                {
+                    Debug.Log("납부 실패 - 게임 오버로 전환");
+                    GameOver(); // 🚨 게임 오버 처리
+                    return;     // ⛔ 이후 씬 전환 방지
+                }
+                else
+                {
+                    Debug.Log("납부 성공 - 다음 라운드로 이동");
+                    // (선택) GameDataManager.Instance.data.turn = 5;
+                }
+            }
+
+            GameDataManager.Instance.Save();
+        }
+
+        LoadSceneManager.Instance.ChangeScene("Shop 2"); // ← 납부할 돈이 충분하면 Shop 2로 이동.
     }
 
     public void GameOver()
     {
         Time.timeScale = 1; // 혹시 멈춰있을 수도 있으니 복원
-        SceneManager.LoadScene("GameOverScene");
+        LoadSceneManager.Instance.ChangeScene("GameOverScene");
     }
 
 }

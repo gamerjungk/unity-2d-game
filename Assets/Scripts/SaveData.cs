@@ -30,6 +30,9 @@ public class GameData
     public int money;
     public int turn;
 
+    // 해당 납부 단계에서 최대 플레이 가능한 라운드 수
+    public int maxTurnsPerRound = 5;
+
     //납부 관련
     public int currentRound;
     public int paidStageIndex;
