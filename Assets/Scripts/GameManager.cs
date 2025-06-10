@@ -103,7 +103,7 @@ public class GameManager : MonoBehaviour
             GameDataManager.Instance.Save();
         }
 
-        LoadSceneManager.Instance.ChangeScene("Shop 2"); // ← 여기까지 도달하는 건 안전한 경우만
+        LoadSceneManager.Instance.ChangeScene("Shop 2"); // ← 납부할 돈이 충분하면 Shop 2로 이동.
     }
 
     public void GameOver()
