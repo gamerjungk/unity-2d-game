@@ -73,9 +73,9 @@ public class MiniMapToggle_M : MonoBehaviour, IPointerClickHandler
         {
             Image icon = Instantiate(gasIconPrefab, transform.Find("MarkerRoot"));
             icon.transform.SetAsLastSibling();
-            // 투명도 살짝 낮춰서 별 아이콘 느낌
+            // 투명도
             Color c = icon.color;
-            c.a = 0.3f;
+            c.a = 0.7f;
             icon.color = c;
 
             uiIcons.Add(new UIIcon { img = icon, target = go.transform });
@@ -100,7 +100,7 @@ public class MiniMapToggle_M : MonoBehaviour, IPointerClickHandler
                                     .Select(go => go.transform).ToArray();
 
         foreach (var g in gasStationNodes)
-            CreateIcon(g, gasIconPrefab, Color.white);   // 색은 필요한 대로
+            CreateIcon(g, gasIconPrefab, Color.white, gasAlpha: 0.6f, scale: 0.9f);   // 색은 필요한 대로
 
         // 풀맵이 펼쳐져 있다면 즉시 보이도록
         if (isFull) SetIconsActive(true);
@@ -109,10 +109,19 @@ public class MiniMapToggle_M : MonoBehaviour, IPointerClickHandler
     /// <summary>
     /// Transform target에 대해 아이콘 프리팹 인스턴스화 + uiIcons 리스트에 추가
     /// </summary>
-    void CreateIcon(Transform target, Image prefab, Color tint)
+    void CreateIcon(Transform target, Image prefab, Color tint, float gasAlpha = 0.7f, float scale = 1.2f)
     {
         var icon = Instantiate(prefab, transform.Find("MarkerRoot"));
         icon.color = tint;
+        icon.transform.SetAsLastSibling();
+        uiIcons.Add(new UIIcon { img = icon, target = target });
+
+        // 투명도와 색상 적용
+        tint.a = gasAlpha;
+        icon.color = tint;
+
+        // 크기 조절
+        icon.rectTransform.localScale = Vector3.one * scale;
         icon.transform.SetAsLastSibling();
         uiIcons.Add(new UIIcon { img = icon, target = target });
     }
