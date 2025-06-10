@@ -31,7 +31,6 @@ public class PerformanceShopManager : MonoBehaviour
     public PerformanceItemSO[] allItems;
 
     private ShopTab currentTab = ShopTab.Vehicle;
-    private const int totalTurnsPerRound = 5;
     private bool isSubscribed = false;
 
     private void Awake()
@@ -39,8 +38,8 @@ public class PerformanceShopManager : MonoBehaviour
         if (Instance != null && Instance != this) Destroy(gameObject);
         else Instance = this;
 
-        payButton.onClick.RemoveAllListeners(); // 💡 중복 방지
-        payButton.onClick.AddListener(() => TryPayNextStage()); // ✅ 람다로 고정
+        payButton.onClick.RemoveAllListeners(); // 중복 방지
+        payButton.onClick.AddListener(() => TryPayNextStage()); // 람다로 고정
     }
 
     private void OnEnable()
@@ -204,10 +203,13 @@ public class PerformanceShopManager : MonoBehaviour
 
     public void UpdateTurnAndPaymentUI()
     {
-        int remainingTurns = totalTurnsPerRound - (GameDataManager.Instance.data.turn % totalTurnsPerRound);
+        var data = GameDataManager.Instance.data;
+
+        int remainingTurns = data.turn;
+        int maxTurns = data.maxTurnsPerRound;
         string color = remainingTurns <= 1 ? "#FF5555" : "#55FF55";
 
-        turnStatusText.text = $"<color={color}>남은 턴: {remainingTurns} / {totalTurnsPerRound}</color>";
+        turnStatusText.text = $"<color={color}>남은 턴: {remainingTurns} / {maxTurns}</color>";
         paymentAmountText.text = $"집세 : {GameDataManager.Instance.GetRequiredPayment()}원";
     }
 
@@ -218,6 +220,10 @@ public class PerformanceShopManager : MonoBehaviour
         bool success = GameDataManager.Instance.TryPay();
         if (success)
         {
+            GameDataManager.Instance.data.turn = GameDataManager.Instance.data.maxTurnsPerRound;
+
+            GameDataManager.Instance.Save();
+
             UpdateMoneyUI();
             UpdateTurnAndPaymentUI();
         }
