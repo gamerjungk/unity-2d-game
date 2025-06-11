@@ -3,6 +3,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class DestinationUI_M : MonoBehaviour
 {
@@ -24,6 +25,8 @@ public class DestinationUI_M : MonoBehaviour
         cg = panel.GetComponent<CanvasGroup>() ?? panel.gameObject.AddComponent<CanvasGroup>();
         cg.interactable = true;    // 터치 허용
         cg.blocksRaycasts = true;
+
+        DestinationManager.OnArrivedTarget += ArrivedAt; // 도착 이벤트
     }
 
     void Start()
@@ -36,6 +39,7 @@ public class DestinationUI_M : MonoBehaviour
             var btn = Instantiate(buttonPrefab, panel);
             btn.Init(i, this);
             buttons.Add(btn);
+            btn.SetAsPickup();
         }
     }
 

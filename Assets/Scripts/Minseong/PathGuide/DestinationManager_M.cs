@@ -11,6 +11,7 @@ public class DestinationManager : MonoBehaviour
     /* ────────── 싱글턴 ────────── */
     public static DestinationManager Instance { get; private set; }
     public static event Action OnGasStationsInitialized;
+    public static event Action<int> OnArrivedTarget; // UI 도착 알리는 이벤트
 
     /* ────────── 외부 연결 ────────── */
     [Header("External refs")]
@@ -81,6 +82,10 @@ public class DestinationManager : MonoBehaviour
         if (CurrentTarget == null) return;
 
         Vector3 currentPos = CurrentTarget.position;
+
+        // UI에게 도착 알림 보내기
+        int idx = Array.IndexOf(markers, CurrentTarget);
+        OnArrivedTarget?.Invoke(idx);
 
         if (lastTargetPosition.HasValue)
         {
