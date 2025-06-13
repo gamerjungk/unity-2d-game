@@ -1,14 +1,17 @@
-﻿
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Unity.AI.Navigation;
+using Random = UnityEngine.Random;
 
 public class DestinationManager : MonoBehaviour
 {
     /* ────────── 싱글턴 ────────── */
     public static DestinationManager Instance { get; private set; }
+    public static event Action OnGasStationsInitialized;
+    public static event Action<int> OnArrivedTarget; // UI 도착 알리는 이벤트
 
     /* ────────── 외부 연결 ────────── */
     [Header("External refs")]
@@ -17,6 +20,7 @@ public class DestinationManager : MonoBehaviour
     [Tooltip("Hierarchy 에 있는 4개의 Destination_* 파티클")]
     [SerializeField] Transform[] markers;         // 0~3
 
+
     [Header("Option")]
     [Tooltip("목적지끼리 최소 거리(m)")]
     [Range(1, 50)] public float minDistanceBetween = 12f;
@@ -24,7 +28,7 @@ public class DestinationManager : MonoBehaviour
 
     /* ────────── 런타임 상태 ────────── */
     readonly List<Transform> roadNodes = new();   // 현재 활성 도로노드
-    public List<Transform> stations;
+    public List<Transform> stations = new(); // 주유소
     public Transform CurrentTarget { get; private set; }
 
     /* ===================================================================== */
@@ -78,6 +82,10 @@ public class DestinationManager : MonoBehaviour
         if (CurrentTarget == null) return;
 
         Vector3 currentPos = CurrentTarget.position;
+
+        // UI에게 도착 알림 보내기
+        int idx = Array.IndexOf(markers, CurrentTarget);
+        OnArrivedTarget?.Invoke(idx);
 
         if (lastTargetPosition.HasValue)
         {
@@ -181,6 +189,8 @@ public class DestinationManager : MonoBehaviour
             place.Add(node);
             GameManager.inst.pool.Spawn(tag, node.position, Quaternion.Euler(90, 0, 0));
         }
+
+        OnGasStationsInitialized?.Invoke();
     }
 
     #endregion
