@@ -142,5 +142,9 @@ public class GameDataManager : MonoBehaviour
         data.money += amount;
         Debug.Log("현재 돈: " + data.money);
     }
-    
+    public void SubMoney(int amount)
+    {
+        data.money -= amount;
+        Debug.Log("현재 돈: " + data.money);
+    }
 }
