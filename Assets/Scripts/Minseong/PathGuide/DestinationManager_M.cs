@@ -76,42 +76,54 @@ public class DestinationManager : MonoBehaviour
         PathDrawer_m.Instance?.DrawPath(player, CurrentTarget);
     }
 
+  
+    private Vector3?[] pickupPositions = new Vector3?[4];
     /// 플레이어가 현재 타깃에 도달했을 때 MoneyTrigger → PlayerPath → 여기
     public void ArrivedCurrentTarget()
     {
         if (CurrentTarget == null) return;
 
+        int idx = Array.IndexOf(markers, CurrentTarget);
+        if (idx < 0) return;
+
         Vector3 currentPos = CurrentTarget.position;
 
-        // UI에게 도착 알림 보내기
-        int idx = Array.IndexOf(markers, CurrentTarget);
+
+        bool isPickup = DestinationUI_M.Instance.GetPickupState(idx);
+
+
+        // 도착 이벤트 알림
         OnArrivedTarget?.Invoke(idx);
 
-        if (lastTargetPosition.HasValue)
+      
+
+        if (isPickup)
         {
-            // 유클리드 거리 계산
-            float dx = currentPos.x - lastTargetPosition.Value.x;
-            float dy = currentPos.y - lastTargetPosition.Value.y;
-            float dz = currentPos.z - lastTargetPosition.Value.z;
-            float distance = Mathf.Sqrt(dx * dx + dy * dy + dz * dz);
-
-            int reward = Mathf.RoundToInt(distance * 100);
-            GameDataManager.Instance.AddMoney(reward);
-
-            Debug.Log($"도착한 마커 거리: {distance:F2}m → 보상 {reward} 지급");
+            // 픽업지 도착: 픽업 위치 저장
+            pickupPositions[idx] = currentPos;
+            Debug.Log($" 픽업 {idx + 1} 기록 완료");
         }
         else
         {
-            Debug.Log("🚩 최초 도착: 보상 없음 (거리 기준 없음)");
+            // 배달지 도착: 이전 픽업 위치가 있어야 거리 계산
+            if (pickupPositions[idx].HasValue)
+            {
+                float distance = Vector3.Distance(pickupPositions[idx].Value, currentPos);
+                int reward = Mathf.RoundToInt(distance * 100f);
+                GameDataManager.Instance.AddMoney(reward);
+                Debug.Log($"배달 {idx + 1} 완료 → 거리 {distance:F2}m → 보상 {reward} 지급");
+            }
+            else
+            {
+                Debug.LogWarning($" 배달 {idx + 1} 도착했지만 픽업 기록이 없습니다.");
+            }
+
+            // 픽업 위치 초기화
+            pickupPositions[idx] = null;
         }
 
-        // 이번 마커 위치를 다음 비교 기준으로 저장
-        lastTargetPosition = currentPos;
-
-        // 마커 이동
+        // 다음 목적지 배치
         MoveMarkerRandom(CurrentTarget);
-
-        // 경로 그리기
         PathDrawer_m.Instance?.DrawPath(player, CurrentTarget);
     }
 

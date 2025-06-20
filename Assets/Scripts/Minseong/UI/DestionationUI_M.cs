@@ -18,15 +18,20 @@ public class DestinationUI_M : MonoBehaviour
     CanvasGroup cg;
     int selectedIdx = -1;
     bool[] isPickup; // 픽업/배달 상태 저장
-
+    public static DestinationUI_M Instance { get; private set; }
     /* ─────────────────────────────────────────── */
     void Awake()
     {
+        Instance = this;
         cg = panel.GetComponent<CanvasGroup>() ?? panel.gameObject.AddComponent<CanvasGroup>();
         cg.interactable = true;    // 터치 허용
         cg.blocksRaycasts = true;
 
         DestinationManager.OnArrivedTarget += ArrivedAt; // 도착 이벤트
+    }
+    public bool GetPickupState(int idx)
+    {
+        return isPickup != null && idx >= 0 && idx < isPickup.Length && isPickup[idx];
     }
 
     void Start()
