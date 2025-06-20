@@ -1,29 +1,40 @@
 using UnityEngine;
+using Gley.TrafficSystem;
 
 public class TurnBarTrafficSync_M : MonoBehaviour
 {
     [SerializeField] TurnManager turnManager;
-    bool lastRunning;
+    bool lastMidTurn;
 
     void Awake()
     {
+        // Inspector에 할당 안 되어있으면 찾아서 가져오기
         if (turnManager == null)
-            turnManager = FindObjectOfType<TurnManager>();
+            turnManager = Object.FindFirstObjectByType<TurnManager>();
     }
 
-    void Start()               // 시작 상태 동기화
+    void Start()
     {
-        lastRunning = turnManager.isMidTurn;
-        TrafficPauseManager_M.SetPaused(!lastRunning);
+        // 시작 시점 동기화
+        lastMidTurn = turnManager.isMidTurn;
+        ApplyPause(!lastMidTurn);
     }
 
     void Update()
     {
-        bool nowRunning = turnManager.isMidTurn;
-        if (nowRunning != lastRunning)
+        // 매 프레임 현재 턴 진행 여부 체크
+        bool nowMidTurn = turnManager.isMidTurn;
+        if (nowMidTurn != lastMidTurn)
         {
-            TrafficPauseManager_M.SetPaused(!nowRunning);
-            lastRunning = nowRunning;
+            // 상태가 바뀌었으면 ApplyPause 호출
+            ApplyPause(!nowMidTurn);
+            lastMidTurn = nowMidTurn;
         }
+    }
+
+    void ApplyPause(bool shouldPause)
+    {
+        Debug.Log($"[TurnBarSync] SetPaused({shouldPause})");
+        TrafficPauseManager_M.SetPaused(shouldPause);
     }
 }

@@ -22,7 +22,7 @@ public class MapManager : MonoBehaviour
 
     void Start()
     {
-        graph = FindObjectOfType<CiDyGraph>();
+        graph = Object.FindFirstObjectByType<CiDyGraph>();
         if (graph == null)
         {
             Debug.LogError("CiDyGraph가 연결되지 않았습니다!");

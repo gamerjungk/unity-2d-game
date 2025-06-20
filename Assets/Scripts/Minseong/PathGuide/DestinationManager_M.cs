@@ -31,6 +31,9 @@ public class DestinationManager : MonoBehaviour
     public List<Transform> stations = new(); // 주유소
     public Transform CurrentTarget { get; private set; }
 
+    private bool isPickupPhase = true;   // true면 다음 도착은 픽업, false면 배달
+
+
     /* ===================================================================== */
     #region Unity Lifecycle
     /* ===================================================================== */
@@ -70,6 +73,13 @@ public class DestinationManager : MonoBehaviour
     /// UI 버튼에서 호출 (idx = 0~3)
     public void SelectTarget(int idx)
     {
+        // 배달 단계일 때 목표 변경 불가
+        if (!isPickupPhase)
+        {
+            Debug.LogWarning($"[{nameof(SelectTarget)}] 배달 단계에는 목표를 변경할 수 없습니다.");
+            return;
+        }
+
         if (idx < 0 || idx >= markers.Length) return;
 
         CurrentTarget = markers[idx];
@@ -89,16 +99,23 @@ public class DestinationManager : MonoBehaviour
 
         if (lastTargetPosition.HasValue)
         {
-            // 유클리드 거리 계산
             float dx = currentPos.x - lastTargetPosition.Value.x;
             float dy = currentPos.y - lastTargetPosition.Value.y;
             float dz = currentPos.z - lastTargetPosition.Value.z;
             float distance = Mathf.Sqrt(dx * dx + dy * dy + dz * dz);
-
             int reward = Mathf.RoundToInt(distance * 100);
-            GameDataManager.Instance.AddMoney(reward);
 
-            Debug.Log($"도착한 마커 거리: {distance:F2}m → 보상 {reward} 지급");
+            if (!isPickupPhase)
+            {
+                // 배달 단계: 보상 지급
+                GameDataManager.Instance.AddMoney(reward);
+                Debug.Log($"배달 완료! 거리 {distance:F2}m → 보상 {reward} 지급");
+            }
+            else
+            {
+                // 픽업 단계: 보상 없음
+                Debug.Log($"픽업 완료! ({distance:F2}m) → 보상 없음");
+            }
         }
         else
         {
@@ -107,6 +124,9 @@ public class DestinationManager : MonoBehaviour
 
         // 이번 마커 위치를 다음 비교 기준으로 저장
         lastTargetPosition = currentPos;
+
+        // 픽업→배달 또는 배달→픽업 단계 토글
+        isPickupPhase = !isPickupPhase;
 
         // 마커 이동
         MoveMarkerRandom(CurrentTarget);

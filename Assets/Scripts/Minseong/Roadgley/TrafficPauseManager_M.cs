@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Gley.TrafficSystem;   // VehicleComponent°¡ µé¾îÀÖ´Â ³×ÀÓ½ºÆäÀÌ½º
+using Gley.TrafficSystem;   // VehicleComponentê°€ ë“¤ì–´ìˆëŠ” ë„¤ì„ìŠ¤í˜ì´ìŠ¤
 
 public class TrafficPauseManager_M : MonoBehaviour
 {
     static bool paused;
-    static readonly List<(Rigidbody rb, Vector3 v, Vector3 w)> cached = new(); // ÀúÀå¿ë
+    static readonly List<(Rigidbody rb, Vector3 v, Vector3 w)> cached = new(); // ì €ì¥ìš©
 
     public static void SetPaused(bool value)
     {
@@ -14,10 +14,25 @@ public class TrafficPauseManager_M : MonoBehaviour
 
         if (paused)
         {
+            // 1) ìºì‹œ ì´ˆê¸°í™”
             cached.Clear();
-            foreach (var car in FindObjectsOfType<VehicleComponent>())
+
+            // 2) VehicleComponent ìˆ˜ì§‘
+#if UNITY_2023_2_OR_NEWER
+            var vehicles = Object.FindObjectsByType<VehicleComponent>(
+                FindObjectsInactive.Include,
+                FindObjectsSortMode.None
+            );
+#else
+            var vehicles = FindObjectsOfType<VehicleComponent>();
+#endif
+
+            // 3) ê° ì°¨ëŸ‰ ì •ì§€ ë° ì†ë„ ì €ì¥
+            foreach (var car in vehicles)
             {
                 var rb = car.rb;
+
+                // ê¸°ì¡´ ë²„ì „ì— ë”°ë¼ linearVelocity/velocity ë¶„ê¸°
 #if UNITY_6000_0_OR_NEWER
                 cached.Add((rb, rb.linearVelocity, rb.angularVelocity));
                 rb.linearVelocity = Vector3.zero;
@@ -26,15 +41,17 @@ public class TrafficPauseManager_M : MonoBehaviour
                 rb.velocity = Vector3.zero;
 #endif
                 rb.angularVelocity = Vector3.zero;
-                rb.isKinematic = true;     // ¹°¸® °è»ê Á¤Áö
+                rb.isKinematic = true;     // ë¬¼ë¦¬ ê³„ì‚° ì •ì§€
             }
         }
         else
         {
+            // ì–¸íŒŒì¦ˆ ì‹œ, ìºì‹œì— ì €ì¥ëœ ì›ë˜ ì†ë„ë¡œ ë³µêµ¬
             foreach (var (rb, v, w) in cached)
             {
-                if (rb == null) continue;      // ÀÌ¹Ì Ç®¿¡ ¹İ³³µÈ °æ¿ì
+                if (rb == null) continue;
                 rb.isKinematic = false;
+
 #if UNITY_6000_0_OR_NEWER
                 rb.linearVelocity = v;
 #else
