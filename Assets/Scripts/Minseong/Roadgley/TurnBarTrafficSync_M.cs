@@ -11,7 +11,7 @@ public class TurnBarTrafficSync_M : MonoBehaviour
             turnManager = FindObjectOfType<TurnManager>();
     }
 
-    void Start()               // ���� ���� ����ȭ
+    void Start()               // 초기화 시점에 TurnManager의 상태를 확인하여 차량 움직임을 설정
     {
         lastRunning = turnManager.isMidTurn;
         TrafficPauseManager_M.SetPaused(!lastRunning);
