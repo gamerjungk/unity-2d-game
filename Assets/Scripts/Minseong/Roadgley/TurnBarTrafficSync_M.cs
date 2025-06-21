@@ -3,38 +3,45 @@ using Gley.TrafficSystem;
 
 public class TurnBarTrafficSync_M : MonoBehaviour
 {
+    // ì¸ìŠ¤í™í„°ì—ì„œ í• ë‹¹í•  TurnManager ì°¸ì¡°
     [SerializeField] TurnManager turnManager;
+    // ì´ì „ í”„ë ˆì„ì˜ isMidTurn ìƒíƒœ ì €ì¥ ë³€ìˆ˜
     bool lastMidTurn;
 
     void Awake()
     {
-        // Inspector¿¡ ÇÒ´ç ¾È µÇ¾îÀÖÀ¸¸é Ã£¾Æ¼­ °¡Á®¿À±â
+        // Inspectorì— í• ë‹¹ ì•ˆ ë˜ì–´ìˆìœ¼ë©´ ì°¾ì•„ì„œ ê°€ì ¸ì˜¤ê¸°
         if (turnManager == null)
             turnManager = Object.FindFirstObjectByType<TurnManager>();
     }
 
     void Start()
     {
-        // ½ÃÀÛ ½ÃÁ¡ µ¿±âÈ­
+        // ì‹œì‘ ì‹œì  ë™ê¸°í™”
         lastMidTurn = turnManager.isMidTurn;
+        // í„´ì´ ì§„í–‰ ì¤‘ì´ ì•„ë‹ˆë©´ ì°¨ëŸ‰ ì •ì§€, ì§„í–‰ ì¤‘ì´ë©´ ì¬ìƒ
         ApplyPause(!lastMidTurn);
     }
 
     void Update()
     {
-        // ¸Å ÇÁ·¹ÀÓ ÇöÀç ÅÏ ÁøÇà ¿©ºÎ Ã¼Å©
+        // ë§¤ í”„ë ˆì„ í˜„ì¬ í„´ ì§„í–‰ ì—¬ë¶€ ì²´í¬
         bool nowMidTurn = turnManager.isMidTurn;
+
+        // ìƒíƒœê°€ ì´ì „ê³¼ ë‹¬ë¼ì¡Œìœ¼ë©´
         if (nowMidTurn != lastMidTurn)
         {
-            // »óÅÂ°¡ ¹Ù²î¾úÀ¸¸é ApplyPause È£Ãâ
+            // ìƒíƒœê°€ ë°”ë€Œì—ˆìœ¼ë©´ ApplyPause í˜¸ì¶œ
             ApplyPause(!nowMidTurn);
-            lastMidTurn = nowMidTurn;
+            lastMidTurn = nowMidTurn; // lastMidTurn ê°±ì‹ 
         }
     }
 
+    // ì°¨ëŸ‰ ì¼ì‹œì •ì§€ ìƒíƒœ ì„¤ì • í•¨ìˆ˜
     void ApplyPause(bool shouldPause)
     {
         Debug.Log($"[TurnBarSync] SetPaused({shouldPause})");
+        // TrafficPauseManagerë¥¼ í˜¸ì¶œí•´ ì°¨ëŸ‰ ì •ì§€/ì¬ìƒ
         TrafficPauseManager_M.SetPaused(shouldPause);
     }
 }

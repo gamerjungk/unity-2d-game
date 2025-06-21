@@ -4,34 +4,33 @@ using UnityEngine.UI;
 
 public class DestinationButton_M : MonoBehaviour
 {
+    // ë²„íŠ¼ì— í‘œì‹œí•  TextMeshPro í…ìŠ¤íŠ¸ ì»´í¬ë„ŒíŠ¸ ì°¸ì¡°
     [SerializeField] TMP_Text label;
 
-    // »ö»ó Ãß°¡(3ÁÙ)
-    [Header("Text Colors")]
-    [SerializeField] Color pickupColor = Color.black;     // ±âº»(ÇÈ¾÷Áö) »ö
-    [SerializeField] Color deliveryColor = new(0.12f, 0.55f, 1f); // ¹è´ŞÁö »ö
+    // ìƒ‰ìƒ ì¶”ê°€(3ì¤„)
+    [Header("Text Colors")] // í—¤ë” í‘œì‹œ
+    [SerializeField] Color pickupColor = Color.black; // í”½ì—… ìƒíƒœì¼ ë•Œ í…ìŠ¤íŠ¸ ìƒ‰ìƒ (ê¸°ë³¸: ê²€ì •)
+    [SerializeField] Color deliveryColor = new(0.12f, 0.55f, 1f); // ë°°ë‹¬ ìƒíƒœì¼ ë•Œ í…ìŠ¤íŠ¸ ìƒ‰ìƒ(íŒŒë‘ìƒ‰)
 
-    int index;
-    DestinationUI_M ui;
-
-    /* ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡ */
-    /* ÃÊ±âÈ­                                          */
-    /* ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡ */
+    int index; // ì´ ë²„íŠ¼ì´ ê°€ë¦¬í‚¤ëŠ” ì¸ë±ìŠ¤ ì €ì¥ ë³€ìˆ˜
+    DestinationUI_M ui; // ìƒìœ„ DestinationUI ê´€ë¦¬ ìŠ¤í¬ë¦½íŠ¸ ì°¸ì¡°
+ 
+    /* ì´ˆê¸°í™” */
     public void Init(int idx, DestinationUI_M parent)
     {
-        index = idx;
-        ui = parent;
-        GetComponent<Button>()
-            .onClick.AddListener(() => ui.SelectIndex(index));
+        index = idx; // ì „ë‹¬ëœ ì¸ë±ìŠ¤ë¡œ ì„¤ì •
+        ui = parent; // ë¶€ëª¨ UI ìŠ¤í¬ë¦½íŠ¸ ì°¸ì¡° ì €ì¥
+        GetComponent<Button>() // Button ì»´í¬ë„ŒíŠ¸ë¥¼ ê°€ì ¸ì˜¤ê¸°
+            .onClick.AddListener(() => ui.SelectIndex(index)); // í´ë¦­ ì‹œ ë¶€ëª¨ UIì— ë²„íŠ¼ì˜ ì¸ë±ìŠ¤ ì „ë‹¬
     }
 
     public void SetLabel(string text)
     {
-        label.text = text;
+        label.text = text; // ì „ë‹¬ëœ ë¬¸ìì—´ë¡œ ë²„íŠ¼ ë¼ë²¨ í…ìŠ¤íŠ¸ ì„¤ì •
     }
 
-    // ÇÈ¾÷/¹è´Ş¿¡ µû¸¥ »ö º¯°æ Ãß°¡
-    public void SetAsPickup() => label.color = pickupColor;
-    public void SetAsDelivery() => label.color = deliveryColor;
+    // í”½ì—…/ë°°ë‹¬ì— ë”°ë¥¸ ìƒ‰ ë³€ê²½ ì¶”ê°€
+    public void SetAsPickup() => label.color = pickupColor; // í”½ì—… ìƒíƒœì¼ ë•Œ ìƒ‰ìƒ ì ìš©
+    public void SetAsDelivery() => label.color = deliveryColor; // ë°°ë‹¬ ìƒíƒœì¼ ë•Œ ìƒ‰ìƒ ì ìš©
 
 }

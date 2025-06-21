@@ -2,20 +2,22 @@ using UnityEngine;
 
 public class TopDownCamera_M : MonoBehaviour
 {
-    public Transform target; // ÀÚµ¿Â÷
-    public Vector3 offset = new Vector3(0, 10, 0); // À§¿¡¼­ ¾Æ·¡·Î º¸±â
+   public Transform target; // íƒ€ê²Ÿ(ìë™ì°¨)ì˜ Transform ì»´í¬ë„ŒíŠ¸ í• ë‹¹
+    public Vector3 offset = new Vector3(0, 10, 0); // ìœ„ì—ì„œ ì•„ë˜ë¡œ ë³´ê¸°
 
-    public float followSpeed = 5f;
+    public float followSpeed = 5f; // ì¹´ë©”ë¼ ì†ë„(5f) ì„¤ì •
 
     void LateUpdate()
     {
-        if (target == null) return;
+        if (target == null) return; // ëŒ€ìƒì´ í• ë‹¹ë˜ì§€ ì•Šìœ¼ë©´ ì¢…ë£Œ
 
-        // ÇÃ·¹ÀÌ¾î À§¿¡¼­ offset¸¸Å­ À§Ä¡
+        // í”Œë ˆì´ì–´ ìœ„ì—ì„œ offsetë§Œí¼ ìœ„ì¹˜
         Vector3 targetPos = target.position + offset;
+        // í˜„ ìœ„ì¹˜ì—ì„œ ëª©í‘œ ìœ„ì¹˜ë¡œ followSpeed ë¹„ìœ¨ë§Œí¼ ì´ë™
         transform.position = Vector3.Lerp(transform.position, targetPos, followSpeed * Time.deltaTime);
 
-        // Ç×»ó Á¤¼öÁ÷(90µµ)À¸·Î °íÁ¤
+        // í•­ìƒ ì •ìˆ˜ì§(90ë„)ìœ¼ë¡œ ê³ ì •
         transform.rotation = Quaternion.Euler(90f, target.eulerAngles.y, 0f);
     }
+    
 }

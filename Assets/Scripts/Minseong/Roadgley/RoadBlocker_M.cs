@@ -1,88 +1,96 @@
 using System.Collections;
 using UnityEngine;
 using Gley.TrafficSystem;
-using Unity.AI.Navigation;   // NavMeshModifier
+using Unity.AI.Navigation;
 
 public class RoadBlocker_M : MonoBehaviour
 {
-    [Header("ÇÊ¼ö: RoadRoot µå·¡±×")]
-    [SerializeField] Transform roadRoot;
+    [Header("í•„ìˆ˜: RoadRoot ë“œë˜ê·¸")] // í—¤ë” í‘œì‹œ
+    [SerializeField] Transform roadRoot; // ê²€ì‚¬í•  ë„ë¡œ ë¸”ë¡ë“¤ì˜ ë£¨íŠ¸ Transform
 
-    [Tooltip("IntersectionPoolManager °¡ NavMesh¸¦ ´Ù½Ã ºôµåÇÑ µÚ ´ë±âÇÒ ÇÁ·¹ÀÓ ¼ö")]
-    [SerializeField] int delayFrames = 5;
+    [Tooltip("IntersectionPoolManager ê°€ NavMeshë¥¼ ë‹¤ì‹œ ë¹Œë“œí•œ ë’¤ ëŒ€ê¸°í•  í”„ë ˆì„ ìˆ˜")]
+    [SerializeField] int delayFrames = 5; // NavMesh ì¬ë¹Œë“œ í›„ ëŒ€ê¸°í•  í”„ë ˆì„ ìˆ˜
 
+    // ê²Œì„ ì‹œì‘ ì‹œ ìë™ ì‹¤í–‰ë˜ëŠ” ì½”ë£¨í‹´
     IEnumerator Start()
     {
         //------------------------------------------------------------------
-        // 1) Traffic System ÀÌ ¿ÏÀüÈ÷ ÃÊ±âÈ­µÉ ¶§±îÁö ´ë±â
+        // 1) Traffic System ì´ ì™„ì „íˆ ì´ˆê¸°í™”ë  ë•Œê¹Œì§€ ëŒ€ê¸°
         //------------------------------------------------------------------
-        TrafficComponent tc = null;
+        TrafficComponent tc = null; // TrafficComponent ì°¸ì¡° ì €ì¥ ë³€ìˆ˜
+        // ì¡°ê±´ì´ ì°¸ì´ ë  ë•Œê¹Œì§€ ëŒ€ê¸°
         yield return new WaitUntil(() =>
         {
+            // ì”¬ì—ì„œ TrafficComponent ì°¾ê¸°
             tc = Object.FindAnyObjectByType<TrafficComponent>();
-            return tc != null;
+            return tc != null; // ì°¾ì•˜ìœ¼ë©´ true ë°˜í™˜
         });
 
         //------------------------------------------------------------------
-        // 2) IntersectionPoolManager °¡ NavMesh Rebuild ¸¦ ³¡³»µµ·Ï
-        //    ÁöÁ¤ÇÑ ÇÁ·¹ÀÓ¼ö¸¸Å­ ¿©À¯¸¦ µĞ´Ù
+        // 2) IntersectionPoolManager ê°€ NavMesh Rebuild ë¥¼ ëë‚´ë„ë¡
+        //    ì§€ì •í•œ í”„ë ˆì„ìˆ˜ë§Œí¼ ì—¬ìœ ë¥¼ ë‘”ë‹¤
         //------------------------------------------------------------------
-        for (int i = 0; i < delayFrames; ++i)
+        for (int i = 0; i < delayFrames; ++i) // delayFrames í”„ë ˆì´ë§Œí¼ ë§¤ í”„ë ˆì„ ëŒ€ê¸°
             yield return null;
 
-        int blocked = 0;
+        int blocked = 0; // ì°¨ë‹¨ëœ ë¸”ë¡ ê°œìˆ˜ ì¹´ìš´í„°
 
         //------------------------------------------------------------------
-        // 3) RoadRoot ¾Æ·¡ RoadToggle ÀüºÎ °Ë»ç
+        // 3) RoadRoot ì•„ë˜ RoadToggle ì „ë¶€ ê²€ì‚¬
         //------------------------------------------------------------------
         foreach (var tog in roadRoot.GetComponentsInChildren<RoadToggle>(true))
         {
+            // ì™¸ê³½Â·ê³ ì • ë„ë¡œ ê±´ë„ˆëœ€
             if (tog == null || tog.alwaysWalkable)
-                continue;                       // ¿Ü°û¡¤°íÁ¤ µµ·Î °Ç³Ê¶Ü
+                continue;
 
-            // ¦¡¦¡ (A) ·»´õ·¯°¡ ÀÌ¹Ì ²¨Á³´Â°¡?
-            bool visuallyOff = !tog.gameObject.activeInHierarchy ||
-                               !AnyRendererEnabled(tog.transform);
+            // â”€â”€ (A) ë Œë”ëŸ¬ê°€ ì´ë¯¸ êº¼ì¡ŒëŠ”ê°€?
+            bool visuallyOff = !tog.gameObject.activeInHierarchy || // ê²Œì„ì˜¤ë¸Œì íŠ¸ ë¹„í™œì„±í™”
+                               !AnyRendererEnabled(tog.transform); // ìì‹ ë Œë”ëŸ¬ ëª¨ë‘ ë¹„í™œì„±í™”
 
-            // ¦¡¦¡ (B) NavMeshModifier ·Î Area °¡ ¡°Not Walkable(1)¡± ÀÎ°¡?
+            // â”€â”€ (B) NavMeshModifier ë¡œ Area ê°€ â€œNot Walkable(1)â€ ì¸ê°€?
             bool areaOff = false;
-            var mod = tog.GetComponent<NavMeshModifier>();
-            if (mod && mod.overrideArea && mod.area == 1)
-                areaOff = true;
+            var mod = tog.GetComponent<NavMeshModifier>(); // NavMeshModifier ì»´í¬ë„ŒíŠ¸ ê°€ì ¸ì˜¤ê¸°
+            if (mod && mod.overrideArea && mod.area == 1) // overrideAreaê°€ ì¼œì ¸ ìˆê³  ì˜ì—­ì´ 1ì´ë©´
+                areaOff = true; // ë³´í–‰ ë¶ˆê°€ ì˜ì—­ìœ¼ë¡œ ê°„ì£¼
 
-            // µÑ Áß ÇÏ³ª¶óµµ ÂüÀÌ¸é ¡°²¨Áø ºí·Ï¡±À¸·Î ÆÇ´Ü
+            // ë‘˜ ì¤‘ í•˜ë‚˜ë¼ë„ ì°¸ì´ë©´ â€œêº¼ì§„ ë¸”ë¡â€ìœ¼ë¡œ íŒë‹¨
             if (visuallyOff || areaOff)
             {
+                // í•´ë‹¹ ì˜ì—­ ì›¨ì´í¬ì¸íŠ¸ ë° ì°¨ëŸ‰ ì°¨ë‹¨
                 DisableZone(tog);
-                blocked++;
+                blocked++; // ì°¨ë‹¨ ì¹´ìš´íŠ¸ ì¦ê°€
             }
         }
 
-        Debug.Log($"[RoadBlocker] waypoint Â÷´Ü ºí·Ï ¼ö = {blocked}");
+        Debug.Log($"[RoadBlocker] waypoint ì°¨ë‹¨ ë¸”ë¡ ìˆ˜ = {blocked}");
     }
 
-    // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡ Helper ¦¡¦¡
+    // --- Helper ---
+    // ìì‹ ë Œë”ëŸ¬ ì¤‘ í™œì„±í™”ëœ ê²ƒì´ ìˆëŠ”ì§€ í™•ì¸
     bool AnyRendererEnabled(Transform root)
     {
         foreach (var r in root.GetComponentsInChildren<Renderer>(true))
-            if (r.enabled)
+            if (r.enabled) // í•˜ë‚˜ë¼ë„ enabledë©´ true ë°˜í™˜
                 return true;
-        return false;
+        return false; // ëª¨ë‘ ë¹„í™œì„±í™”ë©´ false ë°˜í™˜
     }
 
+    // íŠ¹ì • RoadToggle ì˜ì—­ ì°¨ë‹¨ ì²˜ë¦¬
     void DisableZone(RoadToggle tog)
     {
-        // °¡Àå Å« Äİ¶óÀÌ´õ¸¦ Ã£¾Æ¼­ ¿µ¿ª Áß½É¡¤¹İ°æ °è»ê
+        // ê°€ì¥ í° ì½œë¼ì´ë”ë¥¼ ì°¾ì•„ì„œ ì˜ì—­ ì¤‘ì‹¬Â·ë°˜ê²½ ê³„ì‚°
         Collider col = tog.GetComponentInChildren<Collider>(true);
-        if (col == null) return;
+        if (col == null) return; // Collider ì—†ìœ¼ë©´ ì¢…
 
+        // ê²½ê³„ ìƒì ê°€ì ¸ì˜¤ê¸°
         Bounds b = col.bounds;
-        float radius = Mathf.Max(b.extents.x, b.extents.z);
+        float radius = Mathf.Max(b.extents.x, b.extents.z); // X/Z ì¤‘ í° extentsë¥¼ ë°˜ê²½ìœ¼ë¡œ ì‚¬ìš©
 
-        // 1) ÇØ´ç ¿µ¿ª ¿şÀÌÆ÷ÀÎÆ® OFF
+        // 1) í•´ë‹¹ ì˜ì—­ ì›¨ì´í¬ì¸íŠ¸ OFF
         API.DisableAreaWaypoints(b.center, radius);
 
-        // 2) ÀÌ¹Ì ´Ş¸®°í ÀÖ´ø Â÷·® È¸¼ö
+        // 2) ì´ë¯¸ ë‹¬ë¦¬ê³  ìˆë˜ ì°¨ëŸ‰ íšŒìˆ˜
         API.ClearTrafficOnArea(b.center, radius);
     }
 }

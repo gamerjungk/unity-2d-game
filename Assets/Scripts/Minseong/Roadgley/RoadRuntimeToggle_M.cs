@@ -3,34 +3,43 @@ using Gley.TrafficSystem;
 
 public class RoadRuntimeToggle_M : MonoBehaviour
 {
-    // ¦¡¦¡ µµ·Î ²ø ¶§ ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    // â”€â”€ ë„ë¡œ ëŒ ë•Œ
     public void DisableRoad(GameObject road)
     {
+        // ì „ë‹¬ëœ ë„ë¡œ ì˜¤ë¸Œì íŠ¸ì—ì„œ Collider ì»´í¬ë„ŒíŠ¸ ê°€ì ¸ì˜¤ê¸°  
         Collider col = road.GetComponent<Collider>();
-        if (col == null) return;
+        if (col == null) return; // Colliderê°€ ì—†ìœ¼ë©´ ë” ì´ìƒ ì§„í–‰í•˜ì§€ ì•ŠìŒ  
 
+        // Colliderì˜ ê²½ê³„ ìƒìë¥¼ ê°€ì ¸ì™€ì„œ  
         Bounds b = col.bounds;
+        // Xì™€ Z í™•ì¥ê°’ ì¤‘ í° ê°’ì„ ë°˜ê²½ìœ¼ë¡œ ì‚¬ìš©  
         float r = Mathf.Max(b.extents.x, b.extents.z);
 
-        // v3.1.1 ¡æ 2-ÀÎ¼ö ¹öÀü
+        // í•´ë‹¹ ì˜ì—­ ë‚´ ì›¨ì´í¬ì¸íŠ¸ ë¹„í™œì„±í™” (v3.1.1 ë‘ ì¸ìˆ˜ ë²„ì „ API)  
         API.DisableAreaWaypoints(b.center, r);
+        // í•´ë‹¹ ì˜ì—­ ë‚´ ì´ë™ ì¤‘ì¸ ì°¨ëŸ‰ íšŒìˆ˜  
         API.ClearTrafficOnArea(b.center, r);
 
+        // ë„ë¡œ ê²Œì„ì˜¤ë¸Œì íŠ¸ ë¹„í™œì„±í™”(ë³´ì´ì§€ ì•Šê²Œ í•¨)  
         road.SetActive(false);
     }
 
-    // ¦¡¦¡ µµ·Î ÄÓ ¶§ ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    // â”€â”€ ë„ë¡œ ì¼¤ ë•Œ
     public void EnableRoad(GameObject road)
     {
+        // ë„ë¡œ ê²Œì„ì˜¤ë¸Œì íŠ¸ í™œì„±í™”(ë‹¤ì‹œ ë³´ì´ê²Œ í•¨)  
         road.SetActive(true);
 
+        // í™œì„±í™”ëœ ë„ë¡œì—ì„œ Collider ì»´í¬ë„ŒíŠ¸ ê°€ì ¸ì˜¤ê¸°  
         Collider col = road.GetComponent<Collider>();
-        if (col == null) return;
+        if (col == null) return;               // Colliderê°€ ì—†ìœ¼ë©´ ë” ì´ìƒ ì§„í–‰í•˜ì§€ ì•ŠìŒ  
 
+        // Colliderì˜ ê²½ê³„ ìƒìë¥¼ ê°€ì ¸ì™€ì„œ  
         Bounds b = col.bounds;
+        // Xì™€ Z í™•ì¥ê°’ ì¤‘ í° ê°’ì„ ë°˜ê²½ìœ¼ë¡œ ì‚¬ìš©  
         float r = Mathf.Max(b.extents.x, b.extents.z);
 
-        // ¿şÀÌÆ÷ÀÎÆ® ÀçÈ°¼º : Á¸ÀçÇÏÁö ¾ÊÀ¸¸é »èÁ¦
-        //API.EnableAreaWaypoints(b.center, r);
+        // ì›¨ì´í¬ì¸íŠ¸ ì¬í™œì„±í™”: í•„ìš” ì‹œ API í˜¸ì¶œ  
+        // API.EnableAreaWaypoints(b.center, r);  
     }
 }
