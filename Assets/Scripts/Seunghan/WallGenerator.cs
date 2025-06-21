@@ -96,3 +96,9 @@ GameObject FindInactiveObject(string name, Transform[] allTransforms)
         return new Vector2(x, y);
     }
 }
+
+/*
+게임 시작 시 모든 벽 블록을 확인하고, 필요한 경우 새로운 벽 블록 생성
+Hierarchy에서 비활성화된 벽 블록을 찾아 활성화하거나, 없으면 새로 생성
+벽 블록의 위치는 GetHorizontalPosition과 GetVerticalPosition 함수를 통해 계산
+*/

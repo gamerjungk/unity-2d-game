@@ -6,17 +6,17 @@ public class DestinationButton_M : MonoBehaviour
 {
     [SerializeField] TMP_Text label;
 
-    // »ö»ó Ãß°¡(3ÁÙ)
+    // ìƒ‰ìƒ ì¶”ê°€(3ì¤„)
     [Header("Text Colors")]
-    [SerializeField] Color pickupColor = Color.black;     // ±âº»(ÇÈ¾÷Áö) »ö
-    [SerializeField] Color deliveryColor = new(0.12f, 0.55f, 1f); // ¹è´ÞÁö »ö
+    [SerializeField] Color pickupColor = Color.black;     // ê¸°ë³¸(í”½ì—…ì§€) ìƒ‰
+    [SerializeField] Color deliveryColor = new(0.12f, 0.55f, 1f); // ë°°ë‹¬ì§€ ìƒ‰
 
     int index;
     DestinationUI_M ui;
 
-    /* ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡ */
-    /* ÃÊ±âÈ­                                          */
-    /* ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡ */
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ì´ˆê¸°í™”                                          */
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     public void Init(int idx, DestinationUI_M parent)
     {
         index = idx;
@@ -30,8 +30,14 @@ public class DestinationButton_M : MonoBehaviour
         label.text = text;
     }
 
-    // ÇÈ¾÷/¹è´Þ¿¡ µû¸¥ »ö º¯°æ Ãß°¡
+    // í”½ì—…/ë°°ë‹¬ì— ë”°ë¥¸ ìƒ‰ ë³€ê²½ ì¶”ê°€
     public void SetAsPickup() => label.color = pickupColor;
     public void SetAsDelivery() => label.color = deliveryColor;
 
 }
+
+/*
+    - ëª©ì ì§€ ë²„íŠ¼ì˜ UI ìš”ì†Œë¥¼ ê´€ë¦¬í•˜ëŠ” ìŠ¤í¬ë¦½íŠ¸
+    - ë²„íŠ¼ í´ë¦­ ì‹œ DestinationUI_Mì˜ SelectIndex ë©”ì„œë“œë¥¼ í˜¸ì¶œí•˜ì—¬ ì„ íƒëœ ì¸ë±ìŠ¤ë¥¼ ì „ë‹¬
+    - ëª©ì ì§€ì˜ ì¢…ë¥˜ì— ë”°ë¼ í…ìŠ¤íŠ¸ ìƒ‰ìƒì„ ë³€ê²½í•˜ëŠ” ê¸°ëŠ¥ í¬í•¨
+*/

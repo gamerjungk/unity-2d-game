@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class TopDownCamera_M : MonoBehaviour
 {
-    public Transform target; // ÀÚµ¿Â÷
-    public Vector3 offset = new Vector3(0, 10, 0); // À§¿¡¼­ ¾Æ·¡·Î º¸±â
+    public Transform target; // ìë™ì°¨
+    public Vector3 offset = new Vector3(0, 10, 0); // ìœ„ì—ì„œ ì•„ë˜ë¡œ ë³´ê¸°
 
     public float followSpeed = 5f;
 
@@ -11,11 +11,19 @@ public class TopDownCamera_M : MonoBehaviour
     {
         if (target == null) return;
 
-        // ÇÃ·¹ÀÌ¾î À§¿¡¼­ offset¸¸Å­ À§Ä¡
+        // í”Œë ˆì´ì–´ ìœ„ì—ì„œ offsetë§Œí¼ ìœ„ì¹˜
         Vector3 targetPos = target.position + offset;
         transform.position = Vector3.Lerp(transform.position, targetPos, followSpeed * Time.deltaTime);
 
-        // Ç×»ó Á¤¼öÁ÷(90µµ)À¸·Î °íÁ¤
+        // í•­ìƒ ì •ìˆ˜ì§(90ë„)ìœ¼ë¡œ ê³ ì •
         transform.rotation = Quaternion.Euler(90f, target.eulerAngles.y, 0f);
     }
 }
+
+/*
+ íƒ‘ ë‹¤ìš´ ì¹´ë©”ë¼ ìŠ¤í¬ë¦½íŠ¸
+ - target: ë”°ë¼ê°ˆ ëŒ€ìƒ (í”Œë ˆì´ì–´ ë“±)
+    - offsetìœ¼ë¡œ ì¹´ë©”ë¼ ìœ„ì¹˜ ì¡°ì •
+    - followSpeedë¡œ ì„¤ì • ë° Inspectorì—ì„œ ì¡°ì • ê°€ëŠ¥
+    - LateUpdate()ì—ì„œ ì¹´ë©”ë¼ ìœ„ì¹˜ì™€ íšŒì „ ì—…ë°ì´íŠ¸
+*/

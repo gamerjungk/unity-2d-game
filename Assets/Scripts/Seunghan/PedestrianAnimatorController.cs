@@ -36,3 +36,9 @@ public class PedestrianAnimatorController : MonoBehaviour
         }
     }
 }
+
+/*
+pedestrian의 애니메이션 제어 스크립트
+NavMesh의 속도를 기반으로 애니메이션 상태 변경
+속도에 따라 boolean으로 걷기, 달리기, 대기 상태를 전환
+*/

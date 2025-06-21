@@ -15,3 +15,8 @@ public class PlayerPath : MonoBehaviour
         }
     }
 }
+
+/*
+ 플레이어가 목적지에 도달했는지 확인하는 스크립트
+목표 지점에 도달했는지 확인하고, 도달했을 경우 DestinationManager의 ArrivedCurrentTarget 메서드를 호출
+*/

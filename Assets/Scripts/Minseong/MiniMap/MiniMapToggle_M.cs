@@ -226,3 +226,14 @@ public class MiniMapToggle_M : MonoBehaviour, IPointerClickHandler
             ui.img.enabled = on;
     }
 }
+
+/*
+    미니맵 토글 스크립트
+    - 미니맵과 풀맵을 전환하는 기능
+    - 목적지와 주유소 아이콘을 표시하도록 함
+    - 풀맵 모드에서 아이콘 위치를 화면 가장자리 여백에 맞춰 조정
+    
+    - 미니맵 카메라와 풀맵 카메라를 각각 할당
+    - RawImage 컴포넌트를 통해 미니맵과 풀맵을 표시
+    - 목적지와 주유소 Transform 배열을 설정하여 아이콘 생성
+*/
