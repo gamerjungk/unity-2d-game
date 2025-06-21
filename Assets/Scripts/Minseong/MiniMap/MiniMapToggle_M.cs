@@ -161,11 +161,11 @@ public class MiniMapToggle_M : MonoBehaviour, IPointerClickHandler
         else // 미니맵 모드이면
         {
             // 펼칠 때: 풀맵 카메라/Raw 켬
-            fullCam.enabled = false; // 풀맵 카메라 끔
-            fullRaw.enabled = false; // 풀맵 RawImage 끔
-            miniCam.enabled = true; // 미니맵 카메라 켬
-            miniRaw.enabled = true; // 미니맵 RawImage 켬
-            co = StartCoroutine(Shrink()); // 축소 애니메이션 코루틴 시작
+            fullCam.enabled = true; // 풀맵 카메라 켬
+            fullRaw.enabled = true; // 풀맵 RawImage 켬
+            miniCam.enabled = false; // 미니맵 카메라 끔
+            miniRaw.enabled = false; // 미니맵 RawImage 끔
+            co = StartCoroutine(Expand()); // 축소 애니메이션 코루틴 시작
         }
         isFull = !isFull; // 모드 상태 토글: 풀맵 <-> 미니맵
     }
