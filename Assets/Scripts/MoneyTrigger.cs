@@ -5,8 +5,6 @@ public class MoneyTrigger : MonoBehaviour
 {
     bool rewarded;
   
-   
-
     void OnTriggerEnter(Collider other)
     {
         if ( rewarded || !other.CompareTag("Player")) return;

@@ -237,7 +237,7 @@ namespace CiDy
 		{
 			if (graph == null)
 			{
-				graph = FindObjectOfType<CiDyGraph>();
+				graph = Object.FindFirstObjectByType<CiDyGraph>();
 				if (graph == null)
 				{
 					return;
