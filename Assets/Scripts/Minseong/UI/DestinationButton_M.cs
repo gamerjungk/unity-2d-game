@@ -32,5 +32,10 @@ public class DestinationButton_M : MonoBehaviour
     // 픽업/배달에 따른 색 변경 추가
     public void SetAsPickup() => label.color = pickupColor; // 픽업 상태일 때 색상 적용
     public void SetAsDelivery() => label.color = deliveryColor; // 배달 상태일 때 색상 적용
-
 }
+
+/*
+    - 목적지 버튼의 UI 요소를 관리하는 스크립트
+    - 버튼 클릭 시 DestinationUI_M의 SelectIndex 메서드를 호출하여 선택된 인덱스를 전달
+    - 목적지의 종류에 따라 텍스트 색상을 변경하는 기능 포함
+*/

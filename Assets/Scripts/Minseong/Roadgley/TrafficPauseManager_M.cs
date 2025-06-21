@@ -66,3 +66,9 @@ public class TrafficPauseManager_M : MonoBehaviour
         }
     }
 }
+
+/*
+    - Gley Traffic System API를 사용하여 차량의 움직임을 일시 정지하고 재개하는 매니저
+    - SetPaused 메서드는 차량의 Rigidbody를 제어하여 움직임을 멈추거나 재개
+    - paused 상태에 따라 차량의 속도와 회전 속도를 저장하고 복원
+*/

@@ -100,3 +100,11 @@ public class DestinationUI_M : MonoBehaviour
         else buttons[idx].SetAsDelivery();
     }
 }
+
+/*
+목적지 UI를 관리하는 스크립트
+
+    - 버튼 클릭 시 DestinationManager의 SelectTarget 메서드를 호출하여 선택된 인덱스를 전달
+    - 현재 플레이어와의 거리 정보를 표시하고, 픽업/배달 상태에 따라 버튼 색상을 변경
+    - 도착 이벤트를 받아 픽업/배달 상태를 토글하는 기능 포함
+*/

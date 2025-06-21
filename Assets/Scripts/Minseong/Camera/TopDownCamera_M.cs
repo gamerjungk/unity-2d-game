@@ -21,3 +21,11 @@ public class TopDownCamera_M : MonoBehaviour
     }
     
 }
+
+/*
+ 탑 다운 카메라 스크립트
+ - target: 따라갈 대상 (플레이어 등)
+    - offset으로 카메라 위치 조정
+    - followSpeed로 설정 및 Inspector에서 조정 가능
+    - LateUpdate()에서 카메라 위치와 회전 업데이트
+*/

@@ -58,3 +58,11 @@ public class RoadToggle : MonoBehaviour
         }
     }
 }
+
+/* 
+ NavMeshModifier 를 사용하여 도로 블록의 Walkable 상태를 토글하는 스크립트
+    alwaysWalkable 옵션이 true인 경우, 해당 블록은 항상 Walkable 상태로 유지
+    SetActiveRoad 메서드를 통해 가변 도로의 활성화/비활성화를 제어
+    비활성화 시, 해당 영역의 웨이포인트와 차량을 회수
+    Gley Traffic System과 통합되어 차량 제어를 지원
+*/

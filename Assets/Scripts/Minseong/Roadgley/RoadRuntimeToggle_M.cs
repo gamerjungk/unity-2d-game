@@ -43,3 +43,9 @@ public class RoadRuntimeToggle_M : MonoBehaviour
         // API.EnableAreaWaypoints(b.center, r);  
     }
 }
+
+/*
+    - Gley Traffic System API를 사용하여 웨이포인트와 차량을 관리
+    - DisableRoad 메서드는 도로를 비활성화하고 해당 영역의 웨이포인트와 차량을 회수
+    - EnableRoad 메서드는 도로를 활성화하지만 웨이포인트는 활성화하지 않음 (주석 처리된 부분)
+*/

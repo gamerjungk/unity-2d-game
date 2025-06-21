@@ -113,8 +113,8 @@ public class DestinationManager : MonoBehaviour
         // 도착 이벤트 알림
         OnArrivedTarget?.Invoke(idx);
 
-        // 이전 위치가 있으면
-        if (lastTargetPosition.HasValue)
+        // 이전 위치가 있다면
+        if (isPickup)
         {
             // 유클리드 거리 계산
             float dx = currentPos.x - lastTargetPosition.Value.x;
@@ -223,3 +223,14 @@ public class DestinationManager : MonoBehaviour
     #endregion
     /* ===================================================================== */
 }
+/*
+도로 노드와 목적지 마커를 관리하는 스크립트
+
+    - 싱글턴 패턴으로 구현되어 게임 전역에서 접근 가능
+    - 플레이어의 현재 목적지 관리 및 도달 여부 확인
+    - 목적지 마커를 도로 노드에 랜덤하게 배치
+    - 주유소와 같은 특정 장소를 초기화하고 관리
+    - UI 이벤트와 연동하여 목적지 선택 및 도달 알림
+    
+    + PlayerPath_M.cs 스크립트와 함께 사용되어 플레이어가 목적지에 도달했는지 확인하는 기능을 수행
+*/

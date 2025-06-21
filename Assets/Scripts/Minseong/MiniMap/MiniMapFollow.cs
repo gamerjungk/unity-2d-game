@@ -19,3 +19,10 @@ public class MiniMapFollow : MonoBehaviour
         }
     }
 }
+
+/*
+ 미니맵이 플레이어를 따라가도록 설정 스크립트
+ - 플레이어의 위치를 따라가며 Y축 회전만 적용
+ - LateUpdate()에서 target의 위치를 따라가고 Y축 회전만 적용
+ - target은 플레이어의 Transform으로 설정
+*/

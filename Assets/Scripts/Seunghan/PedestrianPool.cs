@@ -80,3 +80,10 @@ public class PedestrianPoolManager : MonoBehaviour
         pedestrianPrefabs.Remove(prefab);
     }
 }
+
+/*
+보행자 Pool Manager 스크립트
+보행자 프리팹을 관리하고 재사용
+- 초기 풀 사이즈 설정
+- 보행자 오브젝트를 풀에서 가져오거나 새로 생성
+*/

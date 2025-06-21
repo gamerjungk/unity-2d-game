@@ -78,3 +78,13 @@ public class MiniMapAutoSize_M : MonoBehaviour
         }
     }
 }
+
+/*
+미니맵 크기 자동 조정 스크립트
+- RectTransform을 사용하여 크기 조정
+- CanvasScaler를 통해 화면 비율에 맞춰 크기 조정
+- avoidLabel을 통해 상단 라벨과의 겹침 방지
+- marginPixel로 라벨과의 최소 간격 설정
+- borderThickness로 안쪽 여백 설정
+- OnValidate()를 통해 에디터에서도 즉시 반영
+*/
