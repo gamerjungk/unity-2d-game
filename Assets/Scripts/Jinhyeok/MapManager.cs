@@ -5,11 +5,11 @@ using UnityEngine;
 public class MapManager : MonoBehaviour
 {
     public CiDyGraph graph;
-    public int nodeCount = 10; // »ý¼ºÇÒ ³ëµå °³¼ö
-    public float areaSize = 100f; // ¹«ÀÛÀ§ ¹èÄ¡ ¹üÀ§
+    public int nodeCount = 10; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public float areaSize = 100f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
     public float nodeScale = 5f;
 
-    // ¿¬°á¿ë ÆÄ¶ó¹ÌÅÍ (±âº»°ªÀº CiDy ¿¡µðÅÍ ±âÁØ)
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½ (ï¿½âº»ï¿½ï¿½ï¿½ï¿½ CiDy ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
     public float laneWidth = 5f;
     public int roadSegmentLength = 5;
     public int flattenAmount = 1;
@@ -25,17 +25,17 @@ public class MapManager : MonoBehaviour
         graph = FindObjectOfType<CiDyGraph>();
         if (graph == null)
         {
-            Debug.LogError("CiDyGraph°¡ ¿¬°áµÇÁö ¾Ê¾Ò½À´Ï´Ù!");
+            Debug.LogError("CiDyGraphï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò½ï¿½ï¿½Ï´ï¿½!");
             return;
         }
 
         List<CiDyNode> nodes = new List<CiDyNode>();
 
-        // ±âÁØÁ¡ (0,0,0) ³ëµå »ý¼º
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (0,0,0) ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         CiDyNode firstNode = graph.NewMasterNode(Vector3.zero, nodeScale);
         nodes.Add(firstNode);
 
-        // ¹«ÀÛÀ§ À§Ä¡¿¡ ³ëµå »ý¼º
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         for (int i = 0; i < nodeCount - 1; i++)
         {
             Vector3 pos = new Vector3(
@@ -51,11 +51,11 @@ public class MapManager : MonoBehaviour
             }
         }
 
-        // ³ëµå ¿¬°á: ´Ü¼øÇÑ ¿¬°á ¹æ½Ä (¿¬°á ½ÇÆÐ ½Ã Àç½Ãµµ °¡´É)
+        // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: ï¿½Ü¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Ãµï¿½ ï¿½ï¿½ï¿½ï¿½)
         for (int i = 1; i < nodes.Count; i++)
         {
             CiDyNode a = nodes[i];
-            CiDyNode b = nodes[Random.Range(0, i)]; // ÀÌÀü±îÁöÀÇ ³ëµå Áß ·£´ý ¼±ÅÃ
+            CiDyNode b = nodes[Random.Range(0, i)]; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
             bool success = graph.ConnectNodes(
                 a, b, laneWidth, roadSegmentLength, flattenAmount,
@@ -65,10 +65,10 @@ public class MapManager : MonoBehaviour
 
             if (!success)
             {
-                Debug.LogWarning($"³ëµå ¿¬°á ½ÇÆÐ: {a.name} - {b.name}");
+                Debug.LogWarning($"ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: {a.name} - {b.name}");
             }
         }
 
-        Debug.Log($"ÃÑ {nodes.Count}°³ÀÇ ³ëµå¿Í ¿¬°áÀÌ »ý¼ºµÇ¾ú½À´Ï´Ù.");
+        Debug.Log($"ï¿½ï¿½ {nodes.Count}ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
     }
 }
