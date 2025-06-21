@@ -60,3 +60,10 @@ public class PoolManager_wall : MonoBehaviour
         poolQueue.Enqueue(obj);
     }
 }
+
+/*
+ 오브젝트의 이동을 제한하기 위한 투명한 벽을 관리하는 PoolManager
+    이 스크립트는 벽 오브젝트를 풀링하여 재사용
+    - 벽 오브젝트는 지정된 위치와 회전으로 활성화되며, 사용 후에는 비활성화되어 풀로 반환됨
+    - NavMeshObstacle 컴포넌트를 사용하여 네비게이션 시스템과 호환되도록 연결
+*/

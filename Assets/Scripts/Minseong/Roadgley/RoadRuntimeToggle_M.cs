@@ -3,7 +3,7 @@ using Gley.TrafficSystem;
 
 public class RoadRuntimeToggle_M : MonoBehaviour
 {
-    // ¦¡¦¡ µµ·Î ²ø ¶§ ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public void DisableRoad(GameObject road)
     {
         Collider col = road.GetComponent<Collider>();
@@ -12,14 +12,14 @@ public class RoadRuntimeToggle_M : MonoBehaviour
         Bounds b = col.bounds;
         float r = Mathf.Max(b.extents.x, b.extents.z);
 
-        // v3.1.1 ¡æ 2-ÀÎ¼ö ¹öÀü
+        // v3.1.1 ï¿½ï¿½ 2-ï¿½Î¼ï¿½ ï¿½ï¿½ï¿½ï¿½
         API.DisableAreaWaypoints(b.center, r);
         API.ClearTrafficOnArea(b.center, r);
 
         road.SetActive(false);
     }
 
-    // ¦¡¦¡ µµ·Î ÄÓ ¶§ ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public void EnableRoad(GameObject road)
     {
         road.SetActive(true);
@@ -30,7 +30,13 @@ public class RoadRuntimeToggle_M : MonoBehaviour
         Bounds b = col.bounds;
         float r = Mathf.Max(b.extents.x, b.extents.z);
 
-        // ¿şÀÌÆ÷ÀÎÆ® ÀçÈ°¼º : Á¸ÀçÇÏÁö ¾ÊÀ¸¸é »èÁ¦
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½È°ï¿½ï¿½ : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         //API.EnableAreaWaypoints(b.center, r);
     }
 }
+
+/*
+    - Gley Traffic System APIë¥¼ ì‚¬ìš©í•˜ì—¬ ì›¨ì´í¬ì¸íŠ¸ì™€ ì°¨ëŸ‰ì„ ê´€ë¦¬
+    - DisableRoad ë©”ì„œë“œëŠ” ë„ë¡œë¥¼ ë¹„í™œì„±í™”í•˜ê³  í•´ë‹¹ ì˜ì—­ì˜ ì›¨ì´í¬ì¸íŠ¸ì™€ ì°¨ëŸ‰ì„ íšŒìˆ˜
+    - EnableRoad ë©”ì„œë“œëŠ” ë„ë¡œë¥¼ í™œì„±í™”í•˜ì§€ë§Œ ì›¨ì´í¬ì¸íŠ¸ëŠ” í™œì„±í™”í•˜ì§€ ì•ŠìŒ (ì£¼ì„ ì²˜ë¦¬ëœ ë¶€ë¶„)
+*/

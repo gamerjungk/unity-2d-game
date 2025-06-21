@@ -6,17 +6,17 @@ public class DestinationButton_M : MonoBehaviour
 {
     [SerializeField] TMP_Text label;
 
-    // »ö»ó Ãß°¡(3ÁÙ)
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½(3ï¿½ï¿½)
     [Header("Text Colors")]
-    [SerializeField] Color pickupColor = Color.black;     // ±âº»(ÇÈ¾÷Áö) »ö
-    [SerializeField] Color deliveryColor = new(0.12f, 0.55f, 1f); // ¹è´ÞÁö »ö
+    [SerializeField] Color pickupColor = Color.black;     // ï¿½âº»(ï¿½È¾ï¿½ï¿½ï¿½) ï¿½ï¿½
+    [SerializeField] Color deliveryColor = new(0.12f, 0.55f, 1f); // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 
     int index;
     DestinationUI_M ui;
 
-    /* ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡ */
-    /* ÃÊ±âÈ­                                          */
-    /* ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡ */
+    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
+    /* ï¿½Ê±ï¿½È­                                          */
+    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
     public void Init(int idx, DestinationUI_M parent)
     {
         index = idx;
@@ -30,8 +30,14 @@ public class DestinationButton_M : MonoBehaviour
         label.text = text;
     }
 
-    // ÇÈ¾÷/¹è´Þ¿¡ µû¸¥ »ö º¯°æ Ãß°¡
+    // ï¿½È¾ï¿½/ï¿½ï¿½Þ¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
     public void SetAsPickup() => label.color = pickupColor;
     public void SetAsDelivery() => label.color = deliveryColor;
 
 }
+
+/*
+    - ëª©ì ì§€ ë²„íŠ¼ì˜ UI ìš”ì†Œë¥¼ ê´€ë¦¬í•˜ëŠ” ìŠ¤í¬ë¦½íŠ¸
+    - ë²„íŠ¼ í´ë¦­ ì‹œ DestinationUI_Mì˜ SelectIndex ë©”ì„œë“œë¥¼ í˜¸ì¶œí•˜ì—¬ ì„ íƒëœ ì¸ë±ìŠ¤ë¥¼ ì „ë‹¬
+    - ëª©ì ì§€ì˜ ì¢…ë¥˜ì— ë”°ë¼ í…ìŠ¤íŠ¸ ìƒ‰ìƒì„ ë³€ê²½í•˜ëŠ” ê¸°ëŠ¥ í¬í•¨
+*/

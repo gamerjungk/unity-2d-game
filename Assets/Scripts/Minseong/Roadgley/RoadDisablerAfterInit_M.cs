@@ -67,3 +67,9 @@ public class RoadDisablerAfterInit_M : MonoBehaviour
         API.ClearTrafficOnArea(b.center, r);         // 이미 달리는 차량 회수
     }
 }
+
+/*
+    - Traffic System 초기화 후, IntersectionPoolManager 가 비활성화한 도로 블록의 웨이포인트와 차량을 회수하는 스크립트
+    - RoadRoot 아래 모든 RoadToggle 컴포넌트를 검사하여, 비활성화된 도로 블록에 대해 웨이포인트와 차량을 회수
+    - NavMeshModifier 를 사용하여 Not Walkable 상태인 도로 블록을 식별
+*/

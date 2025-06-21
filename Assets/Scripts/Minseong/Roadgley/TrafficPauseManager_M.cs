@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Gley.TrafficSystem;   // VehicleComponent°¡ µé¾îÀÖ´Â ³×ÀÓ½ºÆäÀÌ½º
+using Gley.TrafficSystem;   // VehicleComponentï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½Ó½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½
 
 public class TrafficPauseManager_M : MonoBehaviour
 {
     static bool paused;
-    static readonly List<(Rigidbody rb, Vector3 v, Vector3 w)> cached = new(); // ÀúÀå¿ë
+    static readonly List<(Rigidbody rb, Vector3 v, Vector3 w)> cached = new(); // ï¿½ï¿½ï¿½ï¿½ï¿½
 
     public static void SetPaused(bool value)
     {
@@ -26,14 +26,14 @@ public class TrafficPauseManager_M : MonoBehaviour
                 rb.velocity = Vector3.zero;
 #endif
                 rb.angularVelocity = Vector3.zero;
-                rb.isKinematic = true;     // ¹°¸® °è»ê Á¤Áö
+                rb.isKinematic = true;     // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             }
         }
         else
         {
             foreach (var (rb, v, w) in cached)
             {
-                if (rb == null) continue;      // ÀÌ¹Ì Ç®¿¡ ¹İ³³µÈ °æ¿ì
+                if (rb == null) continue;      // ï¿½Ì¹ï¿½ Ç®ï¿½ï¿½ ï¿½İ³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
                 rb.isKinematic = false;
 #if UNITY_6000_0_OR_NEWER
                 rb.linearVelocity = v;
@@ -46,3 +46,9 @@ public class TrafficPauseManager_M : MonoBehaviour
         }
     }
 }
+
+/*
+    - Gley Traffic System APIë¥¼ ì‚¬ìš©í•˜ì—¬ ì°¨ëŸ‰ì˜ ì›€ì§ì„ì„ ì¼ì‹œ ì •ì§€í•˜ê³  ì¬ê°œí•˜ëŠ” ë§¤ë‹ˆì €
+    - SetPaused ë©”ì„œë“œëŠ” ì°¨ëŸ‰ì˜ Rigidbodyë¥¼ ì œì–´í•˜ì—¬ ì›€ì§ì„ì„ ë©ˆì¶”ê±°ë‚˜ ì¬ê°œ
+    - paused ìƒíƒœì— ë”°ë¼ ì°¨ëŸ‰ì˜ ì†ë„ì™€ íšŒì „ ì†ë„ë¥¼ ì €ì¥í•˜ê³  ë³µì›
+*/

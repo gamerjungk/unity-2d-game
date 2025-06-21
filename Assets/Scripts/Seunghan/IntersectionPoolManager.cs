@@ -61,3 +61,13 @@ public class IntersectionPoolManager : MonoBehaviour
         DestinationManager.Instance?.RebuildNavMesh();
     }
 }
+
+
+/*
+교차로 생성하기 위한 PoolManager
+- 도로 블록을 무작위로 ON/OFF
+- 최소 활성 도로 수를 설정할 수 있음
+- 총 12개의 도로 블록(세로/가로) 중 최소 8개 이상 활성화
+- 가장 바깥 도로가 고정되어 있으며(Pixed block) 내부 도로에 간섭하여 랜덤 생성
+- 중심 블록(6,7번)은 항상 ON
+*/

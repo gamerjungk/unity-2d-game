@@ -34,3 +34,8 @@ public class PedestrianMovement : MonoBehaviour
         moveDirection = new Vector3(x, 0f, z).normalized;
     }
 }
+
+/*
+pedestrian의 이동 스크립트
+이동 방향을 랜덤하게 선택하여 일정 시간마다 변경
+*/
