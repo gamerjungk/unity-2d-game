@@ -32,3 +32,10 @@ public class PedestrianController : MonoBehaviour
         if (col != null) col.enabled = false;
     }
 }
+
+/*
+pedestrian의 충돌 처리 스크립트
+충돌 시 Hit 애니메이션 트리거 설정
+충돌 후 Rigidbody를 비활성화하고 Collider를 비활성화하여 물리적 상호작용 방지
+충돌 후 isDead 상태로 설정하여 추가 충돌 방지
+*/

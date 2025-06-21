@@ -118,3 +118,13 @@ public class PathDrawer_m : MonoBehaviour
         }
     }
 }
+
+/*
+목표 지점까지의 경로를 시각적으로 표시하는 스크립트
+    NavMesh를 사용하여 경로를 계산하고, LineRenderer로 표시
+    경로를 부드럽게 하기 위해 Chaikin 알고리즘과 Catmull-Rom 보간을 사용
+    경로를 주기적으로 갱신하여 플레이어의 위치에 따라 실시간으로 업데이트
+    - Chaikin 알고리즘: 경로의 날카로운 모서리를 둥글게 만듦
+    - Catmull-Rom 보간: 경로를 부드럽게 연결하여 자연스러운 곡선을 생성
+    RepathRoop으로 주기적으로 경로를 갱신
+*/
