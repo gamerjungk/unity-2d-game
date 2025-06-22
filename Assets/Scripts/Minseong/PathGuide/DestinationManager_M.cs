@@ -97,45 +97,41 @@ public class DestinationManager : MonoBehaviour
     // 플레이어가 현재 타깃에 도달했을 때 MoneyTrigger → PlayerPath → 여기
     public void ArrivedCurrentTarget()
     {
-        // 목표 설정 없으면 무시
         if (CurrentTarget == null) return;
 
-        // 현재 목표 인덱스 찾기
         int idx = Array.IndexOf(markers, CurrentTarget);
         if (idx < 0) return;
 
-        // 도착 위치
         Vector3 currentPos = CurrentTarget.position;
 
-        // UI 상태 조회
+        // ❗ 상태 먼저 확인 (중요)
         bool isPickup = DestinationUI_M.Instance.GetPickupState(idx);
 
-        // 도착 이벤트 알림
+        // 📢 상태 토글 이벤트는 그 다음에
         OnArrivedTarget?.Invoke(idx);
 
-        // 이전 위치가 있다면
         if (isPickup)
         {
-            // 유클리드 거리 계산
-            float dx = currentPos.x - lastTargetPosition.Value.x;
-            float dy = currentPos.y - lastTargetPosition.Value.y;
-            float dz = currentPos.z - lastTargetPosition.Value.z;
-            float distance = Mathf.Sqrt(dx * dx + dy * dy + dz * dz);
-
-            int reward = Mathf.RoundToInt(distance * 100); // 보상 계산
-            GameDataManager.Instance.AddMoney(reward); // 보상 지급
-
-            Debug.Log($"도착한 마커 거리: {distance:F2}m → 보상 {reward} 지급");
+            pickupPositions[idx] = currentPos;
+            Debug.Log($" 픽업 {idx + 1} 기록 완료");
         }
         else
         {
-            Debug.Log("🚩 최초 도착: 보상 없음 (거리 기준 없음)");
-        }
-        
-        // 픽업 위치 초기화
-        pickupPositions[idx] = null;
+            if (pickupPositions[idx].HasValue)
+            {
+                float distance = Vector3.Distance(pickupPositions[idx].Value, currentPos);
+                int reward = Mathf.RoundToInt(distance * 100f);
+                GameDataManager.Instance.AddMoney(reward);
+                Debug.Log($"배달 {idx + 1} 완료 → 거리 {distance:F2}m → 보상 {reward} 지급");
+            }
+            else
+            {
+                Debug.LogWarning($"배달 {idx + 1} 도착했지만 픽업 기록이 없습니다.");
+            }
 
-        // 다음 목적지 배치
+            pickupPositions[idx] = null;
+        }
+
         MoveMarkerRandom(CurrentTarget);
         PathDrawer_m.Instance?.DrawPath(player, CurrentTarget);
     }
