@@ -922,13 +922,13 @@ PlayerSettings:
   qnxGraphicConfPath: 
   apiCompatibilityLevel: 6
   captureStartupLogs: {}
-  activeInputHandler: 2
+  activeInputHandler: 1
   windowsGamepadBackendHint: 0
-  cloudProjectId: 30a2175c-035e-4258-bbef-dc69a0f17d18
+  cloudProjectId: a335440b-d26d-4991-9840-e8681e1c006d
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Quick Rider run 4 rent
-  organizationId: pjhyeok001-gmail-com
+  projectName: team-04
+  organizationId: ridzanda
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
