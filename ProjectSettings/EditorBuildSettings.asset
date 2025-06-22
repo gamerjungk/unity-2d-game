@@ -8,12 +8,39 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Editor/Scenes/MainMenuScene.unity
     guid: 2b3518da124fd8c488c461afc2365dd7
-  - enabled: 1
+  - enabled: 0
     path: Assets/Editor/Scenes/TutorialScene.unity
     guid: 820914dc671aef644af069e59de437ee
-  - enabled: 1
+  - enabled: 0
     path: Assets/Editor/Scenes/MainGameScene.unity
     guid: e98fdf14786c6ba48b9b38df4fa0f823
+  - enabled: 1
+    path: Assets/Editor/Scenes/Polygon.unity
+    guid: ae2ad9c6d3dc0164daa3d9e5c90baa12
+  - enabled: 1
+    path: Assets/Editor/Scenes/Shop.unity
+    guid: ecd945aa55022495fa4ecddae7ece2fe
+  - enabled: 1
+    path: Assets/Editor/Scenes/Shop 2.unity
+    guid: 8470c7984422e4addb35e52cd1c80c83
+  - enabled: 0
+    path: Assets/Editor/Scenes/3D_Implement(Ongoing).unity
+    guid: d6355a6feccf8034dab5e51acf6691f5
+  - enabled: 1
+    path: Assets/Editor/Scenes/GameOverScene.unity
+    guid: 2c7d6e64a13f6164b9a828f7c4915bca
+  - enabled: 1
+    path: Assets/Editor/Scenes/Polygon 1.unity
+    guid: f173e0ced1d3ad44496b948b4121c14d
+  - enabled: 1
+    path: Assets/Editor/Scenes/Polygon_Y.unity
+    guid: 6ee6428c354cfd2449c72c33ebe53be8
+  - enabled: 1
+    path: Assets/Editor/Scenes/Tutorial.unity
+    guid: 00dbc128c63e4ae48afbdaabb09d4159
   m_configObjects:
+    com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000, guid: 42ea2a3c5e2d28f4a96ee30a785b069c, type: 2}
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: f3f0f34d093db6c4ebf5389231a49fe0, type: 2}
+    com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000, guid: 1954711b87e370a4b9e42e6e1849ee7d, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 65ebc16b6d3d8624ab465feb586c9177, type: 2}
   m_UseUCBPForAssetBundles: 0

@@ -5,24 +5,36 @@ TagManager:
   serializedVersion: 3
   tags:
   - Car
+  - Road
+  - RoadNode
+  - SideWalk
+  - Destination
+  - Ocean
+  - TrafficLight
+  - Terrain
+  - Node
+  - Cell
+  - Pedestrian
+  - Building
+  - GasStation
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Road
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Pedestrian
+  - Traffic
+  - Buliding
+  - Obstacle
+  - Player
+  - Terrain
+  - Node
+  - Road
+  - Cell
+  - sidewalk
+  - FootCollider
   - 
   - 
   - 
@@ -41,6 +53,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Road
+    uniqueID: 1010771379
     locked: 0
   m_RenderingLayers:
   - Default

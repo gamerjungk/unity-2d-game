@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85dea0073926b9f4886220ddfee6531c, type: 3}
+  m_Name: PedestrianPool
+  m_EditorClassIdentifier: 
+  _pedestrians:
+  - _pedestrianPrefab: {fileID: 6796165826500395930, guid: 5eb56b8cf0e1faf409e4c5f23e1ec84d, type: 3}
+    _percent: 100
+    _dontInstantiate: 0
+  - _pedestrianPrefab: {fileID: 3631090995250557725, guid: 3802de3db63268f4c97784363006947a, type: 3}
+    _percent: 100
+    _dontInstantiate: 0
+  - _pedestrianPrefab: {fileID: 2107196105913189171, guid: d1a3203e01b2dc3408f5a4048c29e5ce, type: 3}
+    _percent: 100
+    _dontInstantiate: 0
+  - _pedestrianPrefab: {fileID: 6656562984258722809, guid: 7d384e15f2432744db78d3cd68851e89, type: 3}
+    _percent: 100
+    _dontInstantiate: 0
+  - _pedestrianPrefab: {fileID: 1993802662430513354, guid: dff2260c393867d419d0689c7fb34c46, type: 3}
+    _percent: 100
+    _dontInstantiate: 0
+  - _pedestrianPrefab: {fileID: 1340956774919023101, guid: 1fcf070077c56c743aa55f41c306398d, type: 3}
+    _percent: 100
+    _dontInstantiate: 0
+  - _pedestrianPrefab: {fileID: 6800029457925092544, guid: 97e02734b3734284baa760c53ee2cac3, type: 3}
+    _percent: 100
+    _dontInstantiate: 0
+  - _pedestrianPrefab: {fileID: 6295020069099261390, guid: 80dfa842c6a1c9e458bf911b1a98e40d, type: 3}
+    _percent: 100
+    _dontInstantiate: 0
+  - _pedestrianPrefab: {fileID: 6605249619830601879, guid: f341ef85c4e3ea541a7ec541434b1f3f, type: 3}
+    _percent: 100
+    _dontInstantiate: 0
+  - _pedestrianPrefab: {fileID: 3005929407718690202, guid: a4365665161156043a7a15b62238f377, type: 3}
+    _percent: 100
+    _dontInstantiate: 0
+  - _pedestrianPrefab: {fileID: 1402921113647097143, guid: cf9a445f575c7804f971175d60a6217b, type: 3}
+    _percent: 100
+    _dontInstantiate: 0
+  - _pedestrianPrefab: {fileID: 1430335019448100684, guid: 21c4d1a1797575349b7c65e12444a1c6, type: 3}
+    _percent: 100
+    _dontInstantiate: 0
