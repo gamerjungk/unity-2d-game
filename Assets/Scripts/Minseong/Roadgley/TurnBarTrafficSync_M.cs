@@ -1,30 +1,49 @@
 using UnityEngine;
+using Gley.TrafficSystem;
 
 public class TurnBarTrafficSync_M : MonoBehaviour
 {
+    // 인스펙터에서 할당할 TurnManager 참조
     [SerializeField] TurnManager turnManager;
-    bool lastRunning;
+    // 이전 프레임의 isMidTurn 상태 저장 변수
+    bool lastMidTurn;
 
     void Awake()
     {
+        // Inspector에 할당 안 되어있으면 찾아서 가져오기
         if (turnManager == null)
-            turnManager = FindObjectOfType<TurnManager>();
+            turnManager = Object.FindFirstObjectByType<TurnManager>();
     }
 
-    void Start()               // 초기화 시점에 TurnManager의 상태를 확인하여 차량 움직임을 설정
+    // 초기화 시점에 TurnManager의 상태를 확인하여 차량 움직임을 설정
+    void Start()
     {
-        lastRunning = turnManager.isMidTurn;
-        TrafficPauseManager_M.SetPaused(!lastRunning);
+        // 시작 시점 동기화
+        lastMidTurn = turnManager.isMidTurn;
+        // 턴이 진행 중이 아니면 차량 정지, 진행 중이면 재생
+        ApplyPause(!lastMidTurn);
     }
 
     void Update()
     {
-        bool nowRunning = turnManager.isMidTurn;
-        if (nowRunning != lastRunning)
+        // 매 프레임 현재 턴 진행 여부 체크
+        bool nowMidTurn = turnManager.isMidTurn;
+
+        // 상태가 이전과 달라졌으면
+        if (nowMidTurn != lastMidTurn)
         {
-            TrafficPauseManager_M.SetPaused(!nowRunning);
-            lastRunning = nowRunning;
+            // 상태가 바뀌었으면 ApplyPause 호출
+            ApplyPause(!nowMidTurn);
+            lastMidTurn = nowMidTurn; // lastMidTurn 갱신
         }
+    }
+
+    // 차량 일시정지 상태 설정 함수
+    void ApplyPause(bool shouldPause)
+    {
+        Debug.Log($"[TurnBarSync] SetPaused({shouldPause})");
+        // TrafficPauseManager를 호출해 차량 정지/재생
+        TrafficPauseManager_M.SetPaused(shouldPause);
     }
 }
 
