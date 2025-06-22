@@ -29,8 +29,7 @@ public class MoneyDisplay : MonoBehaviour
             cachedMoney = currentMoney; 
             moneyText.text = $"Money : {currentMoney}";
         }
-
-        if (SceneManager.GetActiveScene().name == "Tutorial" && currentMoney >= 50000)
+        if (SceneManager.GetActiveScene().name == "Tutorial" && currentMoney >= 30000)
         {
             SceneManager.LoadScene("MainMenuScene");
         }
