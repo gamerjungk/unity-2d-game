@@ -1,13 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class PlayerCollisionWarning : MonoBehaviour
 {
     public Text warningText;
 
-    private float cooldown = 1f;        // ì¿¨íƒ€ì„ 1ì´ˆ
-    private float lastWarningTime = -10f;  // ë§ˆì§€ë§‰ ê²½ê³  ì‹œê°„ ì´ˆê¸°ê°’ (ì¶©ëŒ ì§í›„ì—ë„ ë°”ë¡œ ë©”ì‹œì§€ ëœ° ìˆ˜ ìˆë„ë¡ ì¶©ë¶„íˆ ê³¼ê±°ë¡œ)
-
+    private float cooldown = 1f;        // °æ°í Ç¥½Ã ÄğÅ¸ÀÓ 1ÃÊ
+    private float lastWarningTime = -10f; // ¸¶Áö¸·À¸·Î °æ°í¸¦ ¶ç¿î ½Ã°£ (¿¬¼ÓÀ¸·Î ¸Ş½ÃÁö¸¦ ¶ç¿ìÁö ¾Ê±â À§ÇØ ±¸ºĞ)
     private int pedestrianCollisionCount = 0;
     private float lastPedestrianCollisionTime = -999f;
     private float pedestrianCollisionCooldown = 3f;
@@ -16,17 +15,27 @@ public class PlayerCollisionWarning : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         GameObject other = collision.gameObject;
+        string currentScene = SceneManager.GetActiveScene().name;
 
-        // ë³´í–‰ìì™€ ì¶©ëŒ
+        // º¸ÇàÀÚ¿Í Ãæµ¹
         if (other.CompareTag("Pedestrian"))
         {
+
+            if (currentScene == "Tutorial")
+            {
+                int reward = 2000 * (pedestrianCollisionCount + 1); // Ä«¿îÆ®´Â Áõ°¡ ¾È ÇÏÁö¸¸ º¸»óÀº ´©Àû ±âÁØ
+                GameDataManager.Instance.SubMoney(reward);
+                Debug.Log("[Tutorial] µ·¸¸ Â÷°¨: " + reward);
+                return;
+            }
+
             if (Time.time - lastPedestrianCollisionTime >= pedestrianCollisionCooldown)
             {
                 pedestrianCollisionCount++;
                 lastPedestrianCollisionTime = Time.time;
 
-                Debug.Log($"[ì¶©ëŒ] ë³´í–‰ìì™€ ì¶©ëŒ! í˜„ì¬ ì¶©ëŒ íšŸìˆ˜: {pedestrianCollisionCount}/{pedestrianCollisionLimit}");
-                ShowWarning($"ë³´í–‰ìì™€ ì¶©ëŒ! ({pedestrianCollisionCount}/{pedestrianCollisionLimit})");
+                Debug.Log($"[Ãæµ¹] º¸ÇàÀÚ Ãæµ¹! ÇöÀç Ãæµ¹ È½¼ö: {pedestrianCollisionCount}/{pedestrianCollisionLimit}");
+                ShowWarning($"º¸ÇàÀÚ Ãæµ¹! ({pedestrianCollisionCount}/{pedestrianCollisionLimit})");
 
                 int reward = 5000 * pedestrianCollisionCount;
                 GameDataManager.Instance.SubMoney(reward);
@@ -36,22 +45,22 @@ public class PlayerCollisionWarning : MonoBehaviour
                 {
                     if (GameManager.inst != null)
                     {
-                        Debug.Log("ë³´í–‰ì ì¶©ëŒ í•œë„ ì´ˆê³¼. ë¼ìš´ë“œ ì¢…ë£Œ!");
+                        Debug.Log("º¸ÇàÀÚ Ãæµ¹ È½¼ö ÃÊ°ú. ¶ó¿îµå Á¾·á!");
                         GameManager.inst.RoundOver();
                     }
                 }
             }
             else
             {
-                Debug.Log("[ì¶©ëŒ] ì¿¨íƒ€ì„ ì¤‘ì´ë¯€ë¡œ ë³´í–‰ì ì¶©ëŒ ì¹´ìš´íŠ¸ ì¦ê°€ ì—†ìŒ");
+                Debug.Log("[Ãæµ¹] ÄğÅ¸ÀÓÀ¸·Î ÀÎÇØ º¸ÇàÀÚ Ãæµ¹ ¹«½ÃµÊ");
             }
         }
 
-        // ê±´ë¬¼ê³¼ ì¶©ëŒ
+        // ê±´ë¬¼ê³?ì¶©ëŒ
         else if (other.CompareTag("Building"))
         {
-            ShowWarning("ê±´ë¬¼ê³¼ ì¶©ëŒí–ˆìŠµë‹ˆë‹¤!");
-            Debug.Log("[ì¶©ëŒ] ê±´ë¬¼ê³¼ ì¶©ëŒ ë°œìƒ");
+            ShowWarning("°Ç¹°°ú Ãæµ¹Çß½À´Ï´Ù!");
+            Debug.Log("[Ãæµ¹] °Ç¹°°ú Ãæµ¹ ¹ß»ı");
 
             if (GameManager.inst != null)
             {
@@ -59,11 +68,11 @@ public class PlayerCollisionWarning : MonoBehaviour
             }
         }
 
-        // ì°¨ëŸ‰ê³¼ ì¶©ëŒ
+        // ì°¨ëŸ‰ê³?ì¶©ëŒ
         else if (other.CompareTag("Car"))
         {
-            ShowWarning("ë‹¤ë¥¸ ì°¨ëŸ‰ê³¼ ì¶©ëŒí–ˆìŠµë‹ˆë‹¤!");
-            Debug.Log("[ì¶©ëŒ] ì°¨ëŸ‰ê³¼ ì¶©ëŒ ë°œìƒ");
+            ShowWarning("´Ù¸¥ Â÷·®°ú Ãæµ¹Çß½À´Ï´Ù!");
+            Debug.Log("[Ãæµ¹] Â÷·®°ú Ãæµ¹ ¹ß»ı");
 
             if (GameManager.inst != null)
             {
@@ -74,7 +83,7 @@ public class PlayerCollisionWarning : MonoBehaviour
 
     void ShowWarning(string message)
     {
-        lastWarningTime = Time.time;  // ë§ˆì§€ë§‰ ë©”ì‹œì§€ ë°œìƒ ì‹œê°„ ì—…ë°ì´íŠ¸
+        lastWarningTime = Time.time;  // ¸¶Áö¸· ¸Ş½ÃÁö Ãâ·Â ½Ã°£ ±â·Ï
         Debug.Log(message);
 
         if (warningText != null)
@@ -85,11 +94,11 @@ public class PlayerCollisionWarning : MonoBehaviour
 }
 
 /*
- í”Œë ˆì´ì–´ê°€ ì¶©ëŒ ì‹œ ê²½ê³  ë©”ì‹œì§€ë¥¼ í‘œì‹œí•˜ëŠ” ìŠ¤í¬ë¦½íŠ¸
- ì¶©ëŒ ëŒ€ìƒì— ë”°ë¼ ë‹¤ë¥¸ ë©”ì‹œì§€ë¥¼ í‘œì‹œ
-    - ì¶©ëŒ íšŸìˆ˜ì— ë”°ë¼ ë³´í–‰ìì™€ì˜ ì¶©ëŒ í•œë„ë¥¼ ì„¤ì •
-    - ë³´í–‰ìì™€ì˜ ì¶©ëŒ íšŸìˆ˜ì— ë”°ë¼ ê²Œì„ ë°ì´í„°ì—ì„œ ëˆì„ ì°¨ê°
-    - ë³´í–‰ìì™€ì˜ ì¶©ëŒ í•œë„ë¥¼ ì´ˆê³¼í•˜ë©´ ë¼ìš´ë“œ ì¢…ë£Œ
-    - ê±´ë¬¼ì´ë‚˜ ì°¨ëŸ‰ê³¼ ì¶©ëŒ ì‹œ ë¼ìš´ë“œ ì¢…ë£Œ
-    - ì¿¨íƒ€ì„ì„ ì„¤ì •í•˜ì—¬ ì—°ì† ì¶©ëŒ ë°©ì§€
+    ÇÃ·¹ÀÌ¾î°¡ Ãæµ¹ÇßÀ» ¶§ °æ°í ¸Ş½ÃÁö¸¦ Ãâ·ÂÇÏ´Â ½ºÅ©¸³Æ®
+
+    Ãæµ¹ ´ë»ó¿¡ µû¶ó °¢°¢ ´Ù¸¥ °æ°í ¸Ş½ÃÁö¸¦ Ãâ·Â
+    - º¸ÇàÀÚ Ãæµ¹ ½Ã °æ°í ¹× º¸»ó Â÷°¨, ÃÖ´ë 2È¸±îÁö Çã¿ë
+    - º¸ÇàÀÚ Ãæµ¹ÀÌ ÀÏÁ¤ È½¼ö¸¦ ³ÑÀ¸¸é ¶ó¿îµå Á¾·á
+    - °Ç¹° ¶Ç´Â Â÷·®°ú Ãæµ¹ ½Ã Áï½Ã ¶ó¿îµå Á¾·á
+    - ÄğÅ¸ÀÓÀ» ¼³Á¤ÇÏ¿© ³Ê¹« ÀÚÁÖ Ãæµ¹ÇÏÁö ¾Êµµ·Ï ¹æÁö
 */

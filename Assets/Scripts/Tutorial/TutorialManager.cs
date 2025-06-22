@@ -38,7 +38,7 @@ public class TutorialManager : MonoBehaviour
         nextButton.onClick.AddListener(NextStep);
         ShowStep();
     }
-  
+
     void Update()
     {
 
@@ -47,7 +47,7 @@ public class TutorialManager : MonoBehaviour
         {
             arrowAnimTime += Time.unscaledDeltaTime; // Time.timeScale = 0이어도 작동
             float offsetY = Mathf.Sin(arrowAnimTime * arrowMoveSpeed) * arrowMoveAmplitude;
-            arrowRect.anchoredPosition = originalArrowPos + new Vector2(0f, offsetY); 
+            arrowRect.anchoredPosition = originalArrowPos + new Vector2(0f, offsetY);
         }
     }
 
@@ -91,5 +91,3 @@ public class TutorialManager : MonoBehaviour
         ShowStep();
     }
 }
-
-//튜토리얼에서 텍스트를 출력하고 플레이어가 버튼을 클릭하면 섦여을 이해했다고 판단하고 이후 텍스트를 출력, 시각적으로 무엇을 설명을 하고있는지 도움을 주기 위해 화살표를 움직이게 설정
