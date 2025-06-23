@@ -99,6 +99,9 @@ public class DestinationUI_M : MonoBehaviour
         if (isPickup[idx]) buttons[idx].SetAsPickup();
         else buttons[idx].SetAsDelivery();
     }
+    /* 외부 조회용 : 지금 단계가 픽업인가? */
+    public bool IsPickup(int idx) =>            
+            isPickup != null && idx >= 0 && idx < isPickup.Length && isPickup[idx];
 }
 
 /*

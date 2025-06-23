@@ -33,6 +33,7 @@ public class DestinationManager : MonoBehaviour
     public Transform CurrentTarget { get; private set; } // 현재 선택된 목표 Transform
 
     private bool isPickupPhase = true; // true면 다음 도착은 픽업, false면 배달
+    private readonly Vector3?[] pickupPos = new Vector3?[4];
 
 
     /* ===================================================================== */
@@ -102,36 +103,34 @@ public class DestinationManager : MonoBehaviour
         int idx = Array.IndexOf(markers, CurrentTarget);
         if (idx < 0) return;
 
-        Vector3 currentPos = CurrentTarget.position;
 
-        // ❗ 상태 먼저 확인 (중요)
-        bool isPickup = DestinationUI_M.Instance.GetPickupState(idx);
+        bool nowPickup = DestinationUI_M.Instance.IsPickup(idx);   // 상태 먼저 읽기
+        OnArrivedTarget?.Invoke(idx);                              // UI 토글
 
-        // 📢 상태 토글 이벤트는 그 다음에
-        OnArrivedTarget?.Invoke(idx);
-
-        if (isPickup)
+        if (nowPickup)
         {
-            pickupPositions[idx] = currentPos;
-            Debug.Log($" 픽업 {idx + 1} 기록 완료");
+            // 픽업 : 위치만 기록, 돈은 주지 않는다
+            pickupPos[idx] = CurrentTarget.position;
+            Debug.Log($"[픽업 완료] #{idx + 1} 위치 기록");
         }
         else
         {
-            if (pickupPositions[idx].HasValue)
+            // 배달 : 직전에 기록한 픽업 위치가 있어야만 보상
+            if (pickupPos[idx].HasValue)
             {
-                float distance = Vector3.Distance(pickupPositions[idx].Value, currentPos);
-                int reward = Mathf.RoundToInt(distance * 100f);
+                float dist = Vector3.Distance(pickupPos[idx].Value, CurrentTarget.position);
+                int reward = Mathf.RoundToInt(dist * 100f);      // 1 m = 100원
                 GameDataManager.Instance.AddMoney(reward);
-                Debug.Log($"배달 {idx + 1} 완료 → 거리 {distance:F2}m → 보상 {reward} 지급");
+                Debug.Log($"[배달 완료] #{idx + 1}  거리 {dist:F1} m  → 보상 {reward}원");
             }
             else
             {
-                Debug.LogWarning($"배달 {idx + 1} 도착했지만 픽업 기록이 없습니다.");
+                Debug.LogWarning($"배달 도착했지만 픽업 기록 없음!  (보상 X)");
             }
-
-            pickupPositions[idx] = null;
+            pickupPos[idx] = null;  // 다음 라운드를 위해 초기화
         }
 
+        // 마커를 새 위치로 이동하고 경로선 갱신
         MoveMarkerRandom(CurrentTarget);
         PathDrawer_m.Instance?.DrawPath(player, CurrentTarget);
     }
