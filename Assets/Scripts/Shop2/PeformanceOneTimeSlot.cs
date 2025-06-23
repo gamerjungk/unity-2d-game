@@ -9,6 +9,7 @@ public class PerformanceOneTimeSlot : MonoBehaviour
     public Image itemImage;                 // 아이템 이미지
     public TextMeshProUGUI itemNameText;    // 아이템 이름 텍스트
     public TextMeshProUGUI priceText;       // 가격 텍스트
+    public TextMeshProUGUI descriptionText; // 아이템 설명 텍스트
     public Toggle checkToggle;              // 선택 여부를 표시하는 토글
 
     private PerformanceItemSO itemData;     // 아이템 데이터 참조
@@ -24,6 +25,7 @@ public class PerformanceOneTimeSlot : MonoBehaviour
         itemImage.sprite = itemData.image;          // 이미지 설정
         itemNameText.text = itemData.DisplayName;   // 이름 설정
         priceText.text = $"{itemData.price}원";     // 가격 표시
+        descriptionText.text = itemData.DisplayDescription;
 
         // 돈이 부족하면 토글 비활성화
         if (GameDataManager.Instance.data.money < itemData.price)

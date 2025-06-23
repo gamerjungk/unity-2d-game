@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class MoneyDisplay : MonoBehaviour
 {
@@ -27,6 +28,10 @@ public class MoneyDisplay : MonoBehaviour
         {
             cachedMoney = currentMoney; 
             moneyText.text = $"Money : {currentMoney}";
+        }
+        if (SceneManager.GetActiveScene().name == "Tutorial" && currentMoney >= 30000)
+        {
+            SceneManager.LoadScene("MainMenuScene");
         }
     }
 }

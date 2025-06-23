@@ -33,6 +33,7 @@ public class DestinationManager : MonoBehaviour
     public Transform CurrentTarget { get; private set; } // 현재 선택된 목표 Transform
 
     private bool isPickupPhase = true; // true면 다음 도착은 픽업, false면 배달
+    private readonly Vector3?[] pickupPos = new Vector3?[4];
 
 
     /* ===================================================================== */
@@ -97,45 +98,39 @@ public class DestinationManager : MonoBehaviour
     // 플레이어가 현재 타깃에 도달했을 때 MoneyTrigger → PlayerPath → 여기
     public void ArrivedCurrentTarget()
     {
-        // 목표 설정 없으면 무시
         if (CurrentTarget == null) return;
 
-        // 현재 목표 인덱스 찾기
         int idx = Array.IndexOf(markers, CurrentTarget);
         if (idx < 0) return;
 
-        // 도착 위치
-        Vector3 currentPos = CurrentTarget.position;
 
-        // UI 상태 조회
-        bool isPickup = DestinationUI_M.Instance.GetPickupState(idx);
+        bool nowPickup = DestinationUI_M.Instance.IsPickup(idx);   // 상태 먼저 읽기
+        OnArrivedTarget?.Invoke(idx);                              // UI 토글
 
-        // 도착 이벤트 알림
-        OnArrivedTarget?.Invoke(idx);
-
-        // 이전 위치가 있다면
-        if (isPickup)
+        if (nowPickup)
         {
-            // 유클리드 거리 계산
-            float dx = currentPos.x - lastTargetPosition.Value.x;
-            float dy = currentPos.y - lastTargetPosition.Value.y;
-            float dz = currentPos.z - lastTargetPosition.Value.z;
-            float distance = Mathf.Sqrt(dx * dx + dy * dy + dz * dz);
-
-            int reward = Mathf.RoundToInt(distance * 100); // 보상 계산
-            GameDataManager.Instance.AddMoney(reward); // 보상 지급
-
-            Debug.Log($"도착한 마커 거리: {distance:F2}m → 보상 {reward} 지급");
+            // 픽업 : 위치만 기록, 돈은 주지 않는다
+            pickupPos[idx] = CurrentTarget.position;
+            Debug.Log($"[픽업 완료] #{idx + 1} 위치 기록");
         }
         else
         {
-            Debug.Log("🚩 최초 도착: 보상 없음 (거리 기준 없음)");
+            // 배달 : 직전에 기록한 픽업 위치가 있어야만 보상
+            if (pickupPos[idx].HasValue)
+            {
+                float dist = Vector3.Distance(pickupPos[idx].Value, CurrentTarget.position);
+                int reward = Mathf.RoundToInt(dist * 100f);      // 1 m = 100원
+                GameDataManager.Instance.AddMoney(reward);
+                Debug.Log($"[배달 완료] #{idx + 1}  거리 {dist:F1} m  → 보상 {reward}원");
+            }
+            else
+            {
+                Debug.LogWarning($"배달 도착했지만 픽업 기록 없음!  (보상 X)");
+            }
+            pickupPos[idx] = null;  // 다음 라운드를 위해 초기화
         }
-        
-        // 픽업 위치 초기화
-        pickupPositions[idx] = null;
 
-        // 다음 목적지 배치
+        // 마커를 새 위치로 이동하고 경로선 갱신
         MoveMarkerRandom(CurrentTarget);
         PathDrawer_m.Instance?.DrawPath(player, CurrentTarget);
     }
