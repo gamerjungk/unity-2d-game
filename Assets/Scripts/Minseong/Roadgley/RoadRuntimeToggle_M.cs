@@ -16,9 +16,9 @@ public class RoadRuntimeToggle_M : MonoBehaviour
         float r = Mathf.Max(b.extents.x, b.extents.z);
 
         // 해당 영역 내 웨이포인트 비활성화 (v3.1.1 두 인수 버전 API)  
-        API.DisableAreaWaypoints(b.center, r);
+        //API.DisableAreaWaypoints(b.center, r);
         // 해당 영역 내 이동 중인 차량 회수  
-        API.ClearTrafficOnArea(b.center, r);
+        //API.ClearTrafficOnArea(b.center, r);
 
         // 도로 게임오브젝트 비활성화(보이지 않게 함)  
         road.SetActive(false);
@@ -40,7 +40,7 @@ public class RoadRuntimeToggle_M : MonoBehaviour
         float r = Mathf.Max(b.extents.x, b.extents.z);
 
         // 웨이포인트 재활성화: 필요 시 API 호출  
-        // API.EnableAreaWaypoints(b.center, r);  
+        API.EnableAllWaypoints();
     }
 }
 

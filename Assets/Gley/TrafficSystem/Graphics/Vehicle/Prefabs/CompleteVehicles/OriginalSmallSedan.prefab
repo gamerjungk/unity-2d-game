@@ -174,11 +174,11 @@ MonoBehaviour:
     raycastLength: 0.49310988
     maxSuspension: 0.16436996
   maxSteer: 30
-  maxSuspension: 0
+  maxSuspension: 0.4
   springStiffness: 10
   vehicleType: 0
   minPossibleSpeed: 20
-  maxPossibleSpeed: 90
+  maxPossibleSpeed: 30
   accelerationTime: 10
   brakeTime: 10
   steeringTime: 1.5

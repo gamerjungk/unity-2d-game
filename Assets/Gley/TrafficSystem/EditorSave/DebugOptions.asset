@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DebugOptions
   m_EditorClassIdentifier: 
   debug: 1
-  debugSpeed: 1
+  debugSpeed: 0
   debugBehaviours: 0
   debugIntersections: 0
   debugWaypoints: 1
@@ -21,9 +21,9 @@ MonoBehaviour:
   drawBodyForces: 0
   debugDensity: 0
   debugPathFinding: 1
-  DebugSpawnWaypoints: 1
-  DebugPlayModeWaypoints: 1
+  DebugSpawnWaypoints: 0
+  DebugPlayModeWaypoints: 0
   ShowIndex: 0
   ShowPosition: 0
   ShowBlinkers: 0
-  DebugGiveWay: 1
+  DebugGiveWay: 0

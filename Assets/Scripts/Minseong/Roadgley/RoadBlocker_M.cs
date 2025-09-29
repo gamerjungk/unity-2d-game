@@ -12,6 +12,7 @@ public class RoadBlocker_M : MonoBehaviour
     [SerializeField] int delayFrames = 5; // NavMesh 재빌드 후 대기할 프레임 수
 
     // 게임 시작 시 자동 실행되는 코루틴
+    /*
     IEnumerator Start()
     {
         //------------------------------------------------------------------
@@ -65,6 +66,8 @@ public class RoadBlocker_M : MonoBehaviour
 
         Debug.Log($"[RoadBlocker] waypoint 차단 블록 수 = {blocked}");
     }
+    */
+    IEnumerator Start() { yield break; }
 
     // --- Helper ---
     // 자식 렌더러 중 활성화된 것이 있는지 확인
@@ -88,9 +91,9 @@ public class RoadBlocker_M : MonoBehaviour
         float radius = Mathf.Max(b.extents.x, b.extents.z); // X/Z 중 큰 extents를 반경으로 사용
 
         // 1) 해당 영역 웨이포인트 OFF
-        API.DisableAreaWaypoints(b.center, radius);
+        //API.DisableAreaWaypoints(b.center, radius);
 
         // 2) 이미 달리고 있던 차량 회수
-        API.ClearTrafficOnArea(b.center, radius);
+        //API.ClearTrafficOnArea(b.center, radius);
     }
 }

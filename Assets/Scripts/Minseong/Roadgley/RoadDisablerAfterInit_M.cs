@@ -11,8 +11,10 @@ public class RoadDisablerAfterInit_M : MonoBehaviour
     [SerializeField] int waitFrames = 2; // NavMesh 재빌드 후 대기할 프레임 수
 
     // 게임 시작 시 자동 실행되는 코루틴
+    
     IEnumerator Start()
     {
+        API.EnableAllWaypoints();
         // ① Traffic System 초기화 완료 대기
         yield return new WaitUntil(() =>
             Object.FindAnyObjectByType<TrafficComponent>() != null);
@@ -43,13 +45,14 @@ public class RoadDisablerAfterInit_M : MonoBehaviour
             // IntersectionPoolManager 에 의해 이미 비활성화된 블록만 처리
             if (visuallyOff || areaBlocked)
             {
-                DisableWaypointsAndTraffic(tog); // 웨이포인트 및 차량 차단
+                //DisableWaypointsAndTraffic(tog); // 웨이포인트 및 차량 차단
                 effected++; // 카운터 증가
             }
         }
 
         Debug.Log($"[AfterInit] disabled waypoint 영역 수 = {effected}");
     }
+
 
     // ----------------- Helper -----------------
     // 자식 렌더러 중 활성화된 것이 있는지 확인
@@ -73,8 +76,8 @@ public class RoadDisablerAfterInit_M : MonoBehaviour
         // X/Z 중 큰 extents를 반경으로 사용
         float r = Mathf.Max(b.extents.x, b.extents.z);
 
-        API.DisableAreaWaypoints(b.center, r); // 웨이포인트 OFF
-        API.ClearTrafficOnArea(b.center, r); // 이미 달리는 차량 회수
+        //API.DisableAreaWaypoints(b.center, r); // 웨이포인트 OFF
+        //API.ClearTrafficOnArea(b.center, r); // 이미 달리는 차량 회수
     }
 }
 
