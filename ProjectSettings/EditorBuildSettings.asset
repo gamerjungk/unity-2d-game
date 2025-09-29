@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Editor/Scenes/MainMenuScene.unity
     guid: 2b3518da124fd8c488c461afc2365dd7
-  - enabled: 1
+  - enabled: 0
     path: Assets/Editor/Scenes/TutorialScene.unity
     guid: 820914dc671aef644af069e59de437ee
   - enabled: 0
@@ -35,6 +35,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Editor/Scenes/Polygon_Y.unity
     guid: 6ee6428c354cfd2449c72c33ebe53be8
+  - enabled: 1
+    path: Assets/Editor/Scenes/Tutorial.unity
+    guid: 00dbc128c63e4ae48afbdaabb09d4159
   m_configObjects:
     com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000, guid: 42ea2a3c5e2d28f4a96ee30a785b069c, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: f3f0f34d093db6c4ebf5389231a49fe0, type: 2}

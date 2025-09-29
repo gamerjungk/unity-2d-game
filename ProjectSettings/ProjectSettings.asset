@@ -141,10 +141,7 @@ PlayerSettings:
   visionOSBundleVersion: 1.0
   tvOSBundleVersion: 1.0
   bundleVersion: 1.0.0
-  preloadedAssets:
-  - {fileID: 3149070556727865853, guid: f3f0f34d093db6c4ebf5389231a49fe0, type: 2}
-  - {fileID: 11400000, guid: 42ea2a3c5e2d28f4a96ee30a785b069c, type: 2}
-  - {fileID: 11400000, guid: 1954711b87e370a4b9e42e6e1849ee7d, type: 2}
+  preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -812,7 +809,7 @@ PlayerSettings:
   webGLCloseOnQuit: 0
   webWasm2023: 0
   scriptingDefineSymbols:
-    Android: DOTWEEN;CiDy;MODULAR_3D_TEXT
+    Android: DOTWEEN;CiDy;MODULAR_3D_TEXT;GLEY_PEDESTRIAN_SYSTEM;GLEY_TRAFFIC_SYSTEM
     EmbeddedLinux: DOTWEEN
     GameCoreScarlett: DOTWEEN
     GameCoreXboxOne: DOTWEEN
@@ -827,7 +824,7 @@ PlayerSettings:
     WebGL: DOTWEEN
     Windows Store Apps: DOTWEEN
     XboxOne: DOTWEEN
-    iPhone: DOTWEEN;CiDy;MODULAR_3D_TEXT
+    iPhone: DOTWEEN;CiDy;MODULAR_3D_TEXT;GLEY_TRAFFIC_SYSTEM;GLEY_PEDESTRIAN_SYSTEM
     tvOS: DOTWEEN
   additionalCompilerArguments: {}
   platformArchitecture: {}
@@ -925,13 +922,13 @@ PlayerSettings:
   qnxGraphicConfPath: 
   apiCompatibilityLevel: 6
   captureStartupLogs: {}
-  activeInputHandler: 2
+  activeInputHandler: 1
   windowsGamepadBackendHint: 0
-  cloudProjectId: 30a2175c-035e-4258-bbef-dc69a0f17d18
+  cloudProjectId: a335440b-d26d-4991-9840-e8681e1c006d
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Quick Rider run 4 rent
-  organizationId: pjhyeok001-gmail-com
+  projectName: team-04
+  organizationId: ridzanda
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}

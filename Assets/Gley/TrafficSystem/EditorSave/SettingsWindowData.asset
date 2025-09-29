@@ -38,7 +38,7 @@ MonoBehaviour:
     RoutesColor:
     - {r: 1, g: 1, b: 1, a: 1}
     - {r: 1, g: 1, b: 1, a: 1}
-    Active: 0101
+    Active: 0001
   PathFindingRoutes:
     RoutesColor:
     - {r: 1, g: 1, b: 1, a: 1}
@@ -49,13 +49,13 @@ MonoBehaviour:
     Active: 01
   ShowConnections: 0
   ShowPriority: 0
-  ShowVehicles: 0
+  ShowVehicles: 1
   ViewOtherRoads: 0
   ViewRoadLanes: 0
   ViewRoadWaypoints: 1
   ViewLabels: 0
   PathFindingEnabled: 1
-  WaypointDistance: 4
+  WaypointDistance: 5
   LaneWidth: 5
   MoveTool: 1
   speedRoutes:
@@ -67,10 +67,10 @@ MonoBehaviour:
   showSpeed: 0
   viewRoadLaneChanges: 1
   leftSideTraffic: 0
-  maxSpeed: 50
-  nrOfLanes: 4
+  maxSpeed: 20
+  nrOfLanes: 2
   otherLaneLinkDistance: 1
-  globalCarList: 
+  globalCarList: 0000000001000000
   showAllIntersections: 0
   showExitWaypoints: 1
   showPedestrianWaypoints: 1

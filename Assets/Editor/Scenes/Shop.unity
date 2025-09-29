@@ -2124,7 +2124,6 @@ MonoBehaviour:
   bottomSpacerPrefab: {fileID: 6129700992708915801, guid: 27c690d43d065495d85fd63b8ab84da4, type: 3}
   items:
   - {fileID: 11400000, guid: 821b4366c7fe140fface585bf26906c2, type: 2}
-  - {fileID: 11400000, guid: 641816cd4916a46b38d9248e24ffa12b, type: 2}
   - {fileID: 11400000, guid: a25daa8e12ab242b18ecac14383d851c, type: 2}
   - {fileID: 11400000, guid: 3d703588b9ae8467291a6db1e71724c6, type: 2}
 --- !u!1 &1186042179
