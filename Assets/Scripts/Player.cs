@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     public float currentSpeed = 0f, currentAngle = 0f, targetAngle = 0f;
     public float steerSensitivity = 3f;
 
+    // 시작할 때 플레이어의 각도 초기화
     void Start()
     {
         currentAngle = transform.eulerAngles.y;
@@ -14,6 +15,7 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
+        // 턴이 진행중일 때 조작 처리
         if (GameManager.inst.turnManager.isMidTurn)
         {
             // 연료 소모 및 감속 처리
@@ -37,6 +39,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    // 플레이어 가속
     public void Accelerate(float force)
     {
         if (force >= 0)
@@ -53,6 +56,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    // 플레이어 감속
     public void Brake()
     {
         currentSpeed = Mathf.Lerp(currentSpeed, 0f, deceleration * Time.deltaTime);
@@ -67,8 +71,11 @@ public class Player : MonoBehaviour
     // {
     //     targetAngle = -angle;
     // }
+
+    // 플레이어가 특정 트리거에 존재할 경우 처리
     void OnTriggerStay(Collider other)
     {
+        // 주유소 트리거에서 P기어로 조작 시 주유 시작. 턴 소비
         if (other.CompareTag("GasStation") && GameManager.inst.uiManager.gearState == 1 && GameManager.fuel < 69)
         {
             currentSpeed = 0;

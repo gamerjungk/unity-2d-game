@@ -6,9 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager inst;         // �ܺο��� GameManager �Լ��� �����ϰ� ���� �� GameManager.inst.function() �������� �����ϸ� �˴ϴ�.
-    public PoolManager pool;                // �ܺο��� PoolManager �Լ��� �����ϰ� ���� �� GameManager.inst.pool.function() �������� �����ϸ� �˴ϴ�.
-    public Player player;                   // �ܺο��� Player�� �����ϰ� ���� �� GameManager.inst.player.function() �������� �����ϸ� �˴ϴ�.
+    // 외부에서 특정 클래스에 접근할때 사용할 변수
+    public static GameManager inst;         
+    public PoolManager pool;                
+    public Player player;                  
     public TurnManager turnManager;
     public UIManager uiManager;
     public static float fuel = 70;
@@ -25,7 +26,7 @@ public class GameManager : MonoBehaviour
         inst = this;
         DontDestroyOnLoad(gameObject); // 씬 전환에도 살아있게
     }
-            void OnEnable()
+    void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
@@ -57,16 +58,19 @@ public class GameManager : MonoBehaviour
         
     }
 
-    public void Stop()      // ���� ����� 0������� ����. �� ���� ���ߴ� �Լ��Դϴ�.
+    // 시간 정지 함수
+    public void Stop()
     {
         Time.timeScale = 0;
     }
 
-    public void Resume()    // ���� ����� 1������� ����. �� ���� �簳�ϴ� �Լ��Դϴ�.
+    // 시간 재개 함수
+    public void Resume()
     {
         Time.timeScale = 1;
     }
 
+    // 라운드 종료 처리 함수
     public void RoundOver()
     {
         Time.timeScale = 1;
@@ -106,6 +110,7 @@ public class GameManager : MonoBehaviour
         LoadSceneManager.Instance.ChangeScene("Shop 2"); // ← 납부할 돈이 충분하면 Shop 2로 이동.
     }
 
+    // 게임 오버 처리 함수. 게임 오버 화면으로 전환
     public void GameOver()
     {
         Time.timeScale = 1; // 혹시 멈춰있을 수도 있으니 복원

@@ -128,8 +128,9 @@ public class UIManager : MonoBehaviour, IDragHandler, IPointerDownHandler, IPoin
         }
     }
 
-    public void OnPointerDown(PointerEventData eventData)   // 터치 누를 때 작동하는 함수
+    public void OnPointerDown(PointerEventData eventData)   
     {
+        // 플레이어가 조작하고 있는 UI 확인해서 변수 조절
         if (IsPointerOn(eventData, uiImages[1]))
         {
             isAccel = true;
@@ -155,7 +156,8 @@ public class UIManager : MonoBehaviour, IDragHandler, IPointerDownHandler, IPoin
         }
     }
 
-    public void OnDrag(PointerEventData eventData)       // 터치해서 드래그할 때 작동하는 함수 현재는 핸들 ui를 드래그하면 그에 맞게 핸들이랑 player 회전
+    // 터치해서 드래그할 때 작동하는 함수 현재는 핸들 UI를 드래그하면 그에 맞게 핸들과 player 회전
+    public void OnDrag(PointerEventData eventData)      
     {
         if(IsPointerOn(eventData, uiImages[3])) {
         float newAngle = GetAngle(eventData.position);   
@@ -171,25 +173,31 @@ public class UIManager : MonoBehaviour, IDragHandler, IPointerDownHandler, IPoin
         }
     }
 
+    // 터치를 멈췄을 때 변수 조절
     public void OnPointerUp(PointerEventData eventData)
     {
         isHandling = false;
         isGear = false;
-        if(IsPointerOn(eventData, uiImages[1])) {
+        if (IsPointerOn(eventData, uiImages[1]))
+        {
             isAccel = false;
         }
-        if(IsPointerOn(eventData, uiImages[2])) {
+        if (IsPointerOn(eventData, uiImages[2]))
+        {
             isBrake = false;
         }
     }
 
-    private float GetAngle(Vector2 touchPos)        // 터치한 곳과 핸들사이 각도 계산
+    // 터치한 곳과 핸들사이 각도 계산
+    private float GetAngle(Vector2 touchPos)
     {
-        Vector2 dir = touchPos - (Vector2)uiImages[3].rectTransform.position;   
+        Vector2 dir = touchPos - (Vector2)uiImages[3].rectTransform.position;
         return Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
     }
 
-        private bool IsPointerOn(PointerEventData eventData, Image targetUI)
+
+    // targetUI를 조작하고 있는지 확인
+    private bool IsPointerOn(PointerEventData eventData, Image targetUI)
     {
         return RectTransformUtility.RectangleContainsScreenPoint(targetUI.rectTransform, eventData.position);
     }

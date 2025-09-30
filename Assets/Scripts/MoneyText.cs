@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class MoneyDisplay : MonoBehaviour
 {
@@ -25,8 +26,14 @@ public class MoneyDisplay : MonoBehaviour
         // 값이 바뀌었을 때만 텍스트 갱신 → GC / 문자열 할당 최소화
         if (currentMoney != cachedMoney)
         {
-            cachedMoney = currentMoney;
+            cachedMoney = currentMoney; 
             moneyText.text = $"Money : {currentMoney}";
+        }
+        if (SceneManager.GetActiveScene().name == "Tutorial" && currentMoney >= 30000)
+        {
+            SceneManager.LoadScene("MainMenuScene");
         }
     }
 }
+
+//GameDataManaager.Instance.data.money 값이 변경되면 화면의 텍스트에서 그값만큼 더하거나 빼는것을 실시간으로 확인

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PoolManager : MonoBehaviour
 {
+    // ìì£¼ ìƒì„±í•  ì˜¤ë¸Œì íŠ¸ë¥¼ ë“±ë¡í•´ë‘ê³  Spawn í•¨ìˆ˜ë¥¼ í†µí•´ ìƒì„±í•´ì„œ íš¨ìœ¨ì ì¸ ë³µì œ
     [System.Serializable]
     public class Pool
     {
@@ -29,6 +30,7 @@ public class PoolManager : MonoBehaviour
         }
     }
 
+    // íŠ¹ì • tagë¥¼ ê°€ì§„ ì˜¤ë¸Œì íŠ¸ë¥¼ positionìœ„ì¹˜ì— rotation íšŒì „ê°ìœ¼ë¡œ ìƒì„±
     public GameObject Spawn(string tag, Vector3 position, Quaternion rotation)
     {
         if (!poolDictionary.ContainsKey(tag))
@@ -40,7 +42,6 @@ public class PoolManager : MonoBehaviour
         List<GameObject> pool = poolDictionary[tag];
         GameObject objectToSpawn = null;
 
-        // ºñÈ°¼ºÈ­µÈ ¿ÀºêÁ§Æ® Ã£¾Æ¼­ Àç»ç¿ë
         foreach (var obj in pool)
         {
             if (!obj.activeInHierarchy)
@@ -50,11 +51,10 @@ public class PoolManager : MonoBehaviour
             }
         }
 
-        // ¸ø Ã£¾ÒÀ¸¸é »õ·Î »ı¼º
         if (objectToSpawn == null)
         {
             objectToSpawn = Instantiate(prefabLookup[tag]);
-            pool.Add(objectToSpawn); // »õ·Î ¸¸µç ¿ÀºêÁ§Æ®¸¸ Ç®¿¡ µî·Ï
+            pool.Add(objectToSpawn); 
         }
 
         objectToSpawn.transform.position = position;

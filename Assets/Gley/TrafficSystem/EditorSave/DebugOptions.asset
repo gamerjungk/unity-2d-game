@@ -22,7 +22,7 @@ MonoBehaviour:
   debugDensity: 0
   debugPathFinding: 1
   DebugSpawnWaypoints: 1
-  DebugPlayModeWaypoints: 0
+  DebugPlayModeWaypoints: 1
   ShowIndex: 0
   ShowPosition: 0
   ShowBlinkers: 0
