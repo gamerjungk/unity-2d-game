@@ -1,18 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bdb38f654ed749a6a1bacc780af1aa6, type: 3}
-  m_Name: car
-  m_EditorClassIdentifier: 
-  categoryName: "\uCC28"
-  description: 
-  allowMultipleEquip: 0
-  allowMultipleEffect: 0
+version https://git-lfs.github.com/spec/v1
+oid sha256:ffde2ad065b08f3db89ac32f1bf133b358251b21fb50072a7ae422da7f5cbf61
+size 500
