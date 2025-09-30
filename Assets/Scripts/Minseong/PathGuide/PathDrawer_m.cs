@@ -16,12 +16,28 @@ public class PathDrawer_m : MonoBehaviour
     // 부드러운 곡선 경로 사용 여부  
     [SerializeField] private bool useSmooth = false;
 
+    // 0903 추가
+    // 퍼포먼스 아이템 SO의 itemId (리소스/세이브와 동일해야 함)
+    [SerializeField] private string navPassItemId = "NavGuidePass";
+
     private LineRenderer line; // 경로 시각화를 위한 LineRenderer 참조  
     private Coroutine repathRoutine; // 경로 갱신 코루틴 참조  
     private NavMeshPath navPath; // NavMesh.CalculatePath 결과를 저장할 객체  
 
     private Transform startTf; // 경로 시작 지점 Transform  
     private Transform endTf; // 경로 목표 지점 Transform
+
+    // 0903 추가
+    // 보유 여부 계산 프로퍼티: PerformanceInventoryManager의 ownedItemIds를 확인
+    private bool Allowed
+    {
+        get
+        {
+            // 퍼포먼스 인벤토리 매니저가 있고, NavGuidePass를 보유했는지 확인
+            return PerformanceInventoryManager.Instance != null &&
+                   PerformanceInventoryManager.Instance.ownedItemIds.Contains(navPassItemId);
+        }
+    }
 
     void Awake()
     {
@@ -34,9 +50,39 @@ public class PathDrawer_m : MonoBehaviour
         navPath = new NavMeshPath(); // NavMeshPath 객체 생성  
     }
 
+    // 0903 추가(RefreshPermission 함수까지 작성)
+    void OnEnable()
+    {
+        PerformanceInventoryManager.OnInventoryLoaded += RefreshPermission;
+        RefreshPermission();
+    }
+    void OnDisable()
+    {
+        PerformanceInventoryManager.OnInventoryLoaded -= RefreshPermission;
+    }
+    private void RefreshPermission()
+    {
+        if (!Allowed)
+        {
+            // 미보유 상태면 라인 감추고 루프도 멈춤
+            if (repathRoutine != null) { StopCoroutine(repathRoutine); repathRoutine = null; }
+            if (line) line.positionCount = 0;
+        }
+    }
+
+
     // 경로 그리기 요청 함수
     public void DrawPath(Transform fromTf, Transform toTf)
     {
+        // 0903 추가
+        // 네비게이션 아이템 미보유 시, 경로 계산/표시 금지
+        if (!Allowed)
+        {
+            if (line) line.positionCount = 0; // 혹시 켜져있던 라인도 끔
+            if (repathRoutine != null) { StopCoroutine(repathRoutine); repathRoutine = null; }
+            return;
+        }
+
         startTf = fromTf; // 시작 지점 설정
         endTf = toTf; // 목표 지점 설정
 
@@ -105,32 +151,43 @@ public class PathDrawer_m : MonoBehaviour
     // 경로를 주기적으로 재계산하는 코루틴
     private IEnumerator RepathLoop()
     {
-        // 무한 루프
+        // 0903 추가
         while (true)
         {
-            // 경로 계산해서 완전 경로인지 충분한 코너가 있는지 확인
-            if (startTf != null && endTf != null &&
-                NavMesh.CalculatePath(startTf.position, endTf.position, NavMesh.AllAreas, navPath) &&
-                navPath.status == NavMeshPathStatus.PathComplete &&
-                navPath.corners.Length > 1)
+            // 중간에 권한이 사라지면 즉시 라인 제거하고 루프 종료
+            if (!Allowed)
             {
-                // 부드러운 점으로 라인 설정
-                if (useSmooth)
-                {
-                    var pts = SmoothPath(navPath.corners, baseSub: 4, useChaikin: false);
-                    line.positionCount = pts.Count;
-                    line.SetPositions(pts.ToArray());
-                }
-                else
-                {
-                    // 직선: NavMesh 코너 그대로
-                    line.positionCount = navPath.corners.Length;
-                    line.SetPositions(navPath.corners);
-                }
+                line.positionCount = 0;
+                yield break;
             }
-            else line.positionCount = 0; // 유효 경로 없으면 라인 제거
 
-            yield return new WaitForSeconds(repathInterval); // 주기만큼 대기
+            // 무한 루프
+            while (true)
+            {
+                // 경로 계산해서 완전 경로인지 충분한 코너가 있는지 확인
+                if (startTf != null && endTf != null &&
+                    NavMesh.CalculatePath(startTf.position, endTf.position, NavMesh.AllAreas, navPath) &&
+                    navPath.status == NavMeshPathStatus.PathComplete &&
+                    navPath.corners.Length > 1)
+                {
+                    // 부드러운 점으로 라인 설정
+                    if (useSmooth)
+                    {
+                        var pts = SmoothPath(navPath.corners, baseSub: 4, useChaikin: false);
+                        line.positionCount = pts.Count;
+                        line.SetPositions(pts.ToArray());
+                    }
+                    else
+                    {
+                        // 직선: NavMesh 코너 그대로
+                        line.positionCount = navPath.corners.Length;
+                        line.SetPositions(navPath.corners);
+                    }
+                }
+                else line.positionCount = 0; // 유효 경로 없으면 라인 제거
+
+                yield return new WaitForSeconds(repathInterval); // 주기만큼 대기
+            }
         }
     }
 }

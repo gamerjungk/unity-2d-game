@@ -108,7 +108,13 @@ public class PerformanceShopManager : MonoBehaviour
             Destroy(child.gameObject);  // 기존 슬롯 제거
 
         foreach (var item in allItems)
-        {   
+        {
+            // 0903 추가
+            // NRE 방지 가드
+            bool owned = false;
+            if (PerformanceInventoryManager.Instance != null)
+                owned = PerformanceInventoryManager.Instance.IsOwned(item);
+
             // 디버깅용 로그: 아이템 이름, ID, 보유 여부 출력
             Debug.Log($"[CHECK] item.name = {item.name}, itemId = {item.itemId}, isOwned: {PerformanceInventoryManager.Instance.IsOwned(item)}");
             if (!IsItemInCurrentTab(item)) continue;     // 해당 탭의 아이템만 표시
@@ -125,7 +131,7 @@ public class PerformanceShopManager : MonoBehaviour
                 if (item.itemType == ItemType.Consumable)
                 {
                     generalSlot.EnableUseButton(() =>
-                    {   
+                    {
                         // 현재 보유 중인 해당 아이템을 찾아서
                         var ownedItem = GameDataManager.Instance.data.ownedItems.Find(x => x.itemId == item.itemId);
                         if (ownedItem != null && ownedItem.count > 0)
@@ -138,7 +144,7 @@ public class PerformanceShopManager : MonoBehaviour
 
                             GameDataManager.Instance.Save();    // 변경된 데이터 저장
                             PerformanceInventoryManager.Instance.LoadFromGameData(GameDataManager.Instance.data);   // 인벤토리 다시 불러오기
-                        RefreshAllSlots(); // UI 슬롯 새로고침
+                            RefreshAllSlots(); // UI 슬롯 새로고침
                             RefreshAllSlots();
                         }
                     });
@@ -203,7 +209,7 @@ public class PerformanceShopManager : MonoBehaviour
 
         // 패널의 자식들(슬롯들)을 순회하며
         foreach (Transform child in targetPanel)
-        {   
+        {
             // PerformanceItemSlot 컴포넌트를 가진 경우만 Refresh 호출
             if (child.TryGetComponent(out PerformanceItemSlot slot))
                 slot.Refresh(); // 슬롯 UI 새로고침 (보유 상태, 버튼 상태 등 갱신)
@@ -212,7 +218,7 @@ public class PerformanceShopManager : MonoBehaviour
 
     // 상단의 돈 UI를 현재 데이터 기준으로 갱신
     public void UpdateMoneyUI()
-    {   
+    {
         // GameDataManager에서 현재 돈을 가져와 텍스트에 반영
         moneyText.text = GameDataManager.Instance.data.money + "원";    // 돈 텍스트 갱신
     }
@@ -232,7 +238,7 @@ public class PerformanceShopManager : MonoBehaviour
 
     // 다음 라운드를 위한 집세 납부 시도 함수
     public void TryPayNextStage()
-    {   
+    {
         // 디버깅 로그: 현재 돈 출력
         Debug.Log($"[TryPayNextStage] 호출됨 - money: {GameDataManager.Instance.data.money}");
 
@@ -253,7 +259,7 @@ public class PerformanceShopManager : MonoBehaviour
             UpdateTurnAndPaymentUI();
         }
         else
-        {   
+        {
             // 실패 시 로그 출력(디버그용)
             Debug.Log("돈이 부족합니다.");
         }
@@ -305,7 +311,7 @@ public class PerformanceShopManager : MonoBehaviour
     }
 
     public void ApplySelectedOneTimeItems()
-    {   
+    {
         // 현재 씬에서 모든 일회성 슬롯을 가져옴
         var oneTimeSlots = Object.FindObjectsByType<PerformanceOneTimeSlot>(FindObjectsSortMode.None);
 
@@ -319,7 +325,9 @@ public class PerformanceShopManager : MonoBehaviour
                 GameDataManager.Instance.data.money -= data.price;  // 돈 차감
                 GameDataManager.Instance.data.ownedItems.Add(new SerializableItem
                 {
-                    itemId = data.name,
+                    //itemId = data.name,
+                    // 0903 추가(데이터 이름을 데이터 아이템 아이디로)
+                    itemId = data.itemId,
                     itemType = ItemType.OneTime,
                     count = 1,
                     isUnlocked = true,
@@ -332,10 +340,13 @@ public class PerformanceShopManager : MonoBehaviour
 
         GameDataManager.Instance.Save();    // 저장
         UpdateMoneyUI();    // 돈 UI 갱신
+
+        // 0903 추가
+        PerformanceInventoryManager.Instance.LoadFromGameData(GameDataManager.Instance.data);
     }
 
     private GameObject GetPrefabForItem(ItemType itemType)
-    {   
+    {
         // 아이템 타입에 따라 적절한 프리팹 반환
         return itemType switch
         {
@@ -349,7 +360,7 @@ public class PerformanceShopManager : MonoBehaviour
         Debug.Log("외부에서 데이터가 갱신됨, 상점 UI 다시 생성");
         OnGameDataReady(); // 전체 UI 초기화 및 재구성
     }
-    
+
     public void OnGamePrepareButtonClicked()
     {
         gamePrepareButton.SetActive(false);  // 준비 버튼 숨김

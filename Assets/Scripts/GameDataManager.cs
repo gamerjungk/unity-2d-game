@@ -124,6 +124,20 @@ public class GameDataManager : MonoBehaviour
         Debug.Log($"🧹 라운드 종료로 일회성 아이템 {before - after}개 제거됨");
     }
 
+    // 0903 추가
+    // 라운드 종료를 처리하는 UI/GameManager 호출
+    public void EndRoundCleanup()
+    {
+        // 1) 저장 데이터에서 일회용 아이템 제거
+        ClearOneTimeItems();
+
+        // 2) 다시 퍼포먼스 인벤토리에 반영
+        PerformanceInventoryManager.Instance.LoadFromGameData(data);
+
+        // 3) 저장
+        Save();
+    }
+
     // 전체 게임 데이터 초기화 (세이브 삭제 + 인벤토리 초기화) 험슈
     public void ResetGameData()
     {

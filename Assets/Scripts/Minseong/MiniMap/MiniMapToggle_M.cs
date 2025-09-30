@@ -21,6 +21,10 @@ public class MiniMapToggle_M : MonoBehaviour, IPointerClickHandler
     [SerializeField] Transform[] gasStationNodes; // 주유소 Transform 배열
     [SerializeField] Image gasIconPrefab; // 주유소 아이콘(배터리)
 
+    [Header("Player Marker")] // 헤더 표시
+    [SerializeField] Transform player;     // 플레이어 Transform
+    [SerializeField] Image playerIconPrefab; // 플레이어 아이콘
+
     [Header("Animation Settings")] // 헤더 표시
     [SerializeField] float animTime = 0.25f; // 미니맵 펼치기/접기 애니메이션 시간
     [SerializeField] float fullCamSize = 75f; // 풀맵 모드 카메라 orthographicSize 목표값
@@ -92,6 +96,12 @@ public class MiniMapToggle_M : MonoBehaviour, IPointerClickHandler
             uiIcons.Add(new UIIcon { img = icon, target = go.transform });
         }
 
+        // 3) 플레이어 아이콘 생성
+        if(player != null && playerIconPrefab != null)
+        {
+            CreateIcon(player, playerIconPrefab, Color.white, 1f, 1.0f);
+        }
+
         // 모든 아이콘 비활성화해서 시작 상태에선 보이지 않게 설정
         SetIconsActive(false);
     }
@@ -139,7 +149,8 @@ public class MiniMapToggle_M : MonoBehaviour, IPointerClickHandler
         // 크기 조절
         icon.rectTransform.localScale = Vector3.one * scale; //이아콘 스케일 = Vector3.one * scale 배율
         icon.transform.SetAsLastSibling(); // 렌더 순서 최상위로 설정
-        uiIcons.Add(new UIIcon { img = icon, target = target }); // usIcons 리스트에 중복 추가
+
+        //uiIcons.Add(new UIIcon { img = icon, target = target }); // usIcons 리스트에 중복 추가
     }
 
     Coroutine co;
