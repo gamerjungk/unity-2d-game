@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8638482a4f027ec4b947bcc62a568800
+ComputeShaderImporter:
+  externalObjects: {}
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 282649
+  packageName: Megacity - Low Poly City 3D Models Pack
+  packageVersion: 1.3
+  assetPath: Assets/ithappy/Megacity/Traffic/Scripts/Compute/Trafiic.compute
+  uploadId: 729757

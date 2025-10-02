@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: de871cf1488a1174a8323fb056aadbe9
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 282649
+  packageName: Megacity - Low Poly City 3D Models Pack
+  packageVersion: 1.3
+  assetPath: Assets/ithappy/Megacity/Traffic/Scripts/Singleton.cs
+  uploadId: 729757

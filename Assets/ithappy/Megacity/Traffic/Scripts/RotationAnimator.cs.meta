@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: d2e3bc02672c2864083f03afd9caac97
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 282649
+  packageName: Megacity - Low Poly City 3D Models Pack
+  packageVersion: 1.3
+  assetPath: Assets/ithappy/Megacity/Traffic/Scripts/RotationAnimator.cs
+  uploadId: 729757
